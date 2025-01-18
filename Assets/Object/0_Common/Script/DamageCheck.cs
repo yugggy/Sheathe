@@ -8,8 +8,8 @@ public class DamageCheck : MonoBehaviour
 		{
 			return;
 		}
-        var attackChara = collision.transform.parent.parent;
-		var damageChara = transform.parent.parent;
+        var attackChara = collision.transform.parent.parent.parent;
+		var damageChara = transform.parent.parent.parent;
 		if (attackChara == null || damageChara == null)
 		{
 			return;

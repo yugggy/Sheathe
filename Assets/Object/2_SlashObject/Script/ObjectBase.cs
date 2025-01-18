@@ -17,7 +17,8 @@ public class ObjectBase : MonoBehaviour
     protected virtual void Start()
     {
 		bodyCollider = GetComponent<BoxCollider2D>();
-		var collider = transform.Find("Collider");
+		var scale = transform.Find("Scale");
+		var collider = scale.transform.Find("Collider");
 		attackCollider = collider.Find("Attack").GetComponent<BoxCollider2D>();
 		damageCollider = collider.Find("Damage").GetComponent<BoxCollider2D>();
 	}
