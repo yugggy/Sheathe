@@ -46,6 +46,8 @@ public class ObjectSpawner : MonoBehaviour
     {
 		var objHandle = Addressables.LoadAssetAsync<GameObject>(ObjectID);
 		var obj = await objHandle.Task;
+		// TODO：地面から一定距離の地点から落下
+
 		var lashObj = Instantiate(obj, transform.position, transform.rotation, transform.parent);
 		var slashObj = lashObj.GetComponent<SlashBase>();
 		Destroy(this.gameObject);

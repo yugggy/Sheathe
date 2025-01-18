@@ -8,7 +8,7 @@ public class PlayerController : ObjectBase
     [SerializeField, Label("ジャンプ力")] float jumpPower;
     [SerializeField, Label("重力")] float gravity;
     private Vector3 _velocity;
-    private bool _isJump;
+    //private bool _isJump;
     private float _attackTimer;
 	private float AttackTimer = 0.1f;
 
@@ -40,10 +40,18 @@ public class PlayerController : ObjectBase
         if (Input.GetKey(KeyCode.RightArrow))
         {
             _velocity.x = moveSpd;
-        }
+			if (moveSpd == 0)
+			{
+				Debug.Log("移動速度0");
+			}
+		}
 		else if (Input.GetKey(KeyCode.LeftArrow))
 		{
 			_velocity.x = -moveSpd;
+			if (moveSpd == 0)
+			{
+				Debug.Log("移動速度0");
+			}
 		}
 		else
 		{
@@ -59,7 +67,7 @@ public class PlayerController : ObjectBase
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
 			_velocity.y += jumpPower;
-			_isJump = true;
+			//_isJump = true;
         }
 
         //if (_isJump)
@@ -150,7 +158,7 @@ public class PlayerController : ObjectBase
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		_isJump = true;
+		//_isJump = true;
 		_velocity.y = 0;
 	}
 }
