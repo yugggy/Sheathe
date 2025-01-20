@@ -7,7 +7,7 @@ public class StageManager : MonoBehaviour
 	private bool isDestroyCompletely;
 	private float firstAttackTimer = 0;
 	private bool isFirstAttack = false;
-	private float firstAttackTime = 5;
+	private float firstAttackTime = 10;
 
 	public static StageManager Current;
 
@@ -24,7 +24,7 @@ public class StageManager : MonoBehaviour
 			firstAttackTimer += Time.deltaTime;
 			if (firstAttackTimer >= firstAttackTime)
 			{
-				Debug.Log("最初の攻撃から5秒");
+				Debug.Log("最初の攻撃から10秒");
 				firstAttackTimer = 0;
 				GameOver();
 			}
@@ -44,6 +44,7 @@ public class StageManager : MonoBehaviour
 		// ステージ判定
 		if (isDestroyCompletely)
 		{
+			isFirstAttack = false;
 			Debug.Log("ステージクリア");
 		}
 		else

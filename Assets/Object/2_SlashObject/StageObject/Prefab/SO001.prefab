@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 844209143966144463}
   - component: {fileID: 5254421482484616199}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3194923113297769346}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Scale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 8839197554895248117}
   - component: {fileID: 4712000567255638227}
   - component: {fileID: 2365265163365158000}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SO001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 1536113525387876966}
   - component: {fileID: 3852244399666989241}
   - component: {fileID: 3106818744231881763}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Damage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,7 +344,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 418983204352522729}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Animation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -377,7 +377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2915174668575731947}
   - component: {fileID: 5088455050599861934}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +455,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4208414328554871813}
   - component: {fileID: 4062120283521266644}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SlashAnime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -541,7 +541,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6673150005554411634}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
