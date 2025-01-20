@@ -48,9 +48,7 @@ public class StageManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("ステージ再ロード");
-			// TODO：ステージ再ロード
-
+			SceneGameManager.Current.ReloadStage();
 		}
 
 		isDestroyCompletely = false;
@@ -58,8 +56,7 @@ public class StageManager : MonoBehaviour
 
 	public void GameOver()
 	{
-		Debug.Log("ステージ再ロード");
-		// TODO：ステージ再ロード
+		SceneGameManager.Current.ReloadStage();
 
 		isDestroyCompletely = false;
 	}
