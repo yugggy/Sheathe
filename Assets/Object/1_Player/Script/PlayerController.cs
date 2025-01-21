@@ -98,7 +98,7 @@ public class PlayerController : ObjectBase
 	{
 		if (Input.GetKeyDown(KeyCode.Y))
 		{
-			attackCollider.gameObject.SetActive(true);
+			_attackCollider.gameObject.SetActive(true);
 			_attackTimer = AttackTimer;
 		}
 
@@ -110,7 +110,7 @@ public class PlayerController : ObjectBase
 			if (_attackTimer <= 0)
 			{
 				_attackTimer = 0;
-				attackCollider.gameObject.SetActive(false);
+				_attackCollider.gameObject.SetActive(false);
 			}
 		}
 	}

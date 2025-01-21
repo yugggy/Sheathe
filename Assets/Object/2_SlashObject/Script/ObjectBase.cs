@@ -4,9 +4,10 @@ public class ObjectBase : MonoBehaviour
 {
 	[SerializeField] private Direnction direnction;
 
-	protected BoxCollider2D bodyCollider;
-	protected BoxCollider2D attackCollider;
-	protected BoxCollider2D damageCollider;
+	protected Vector3 _scale;
+	protected BoxCollider2D _bodyCollider;
+	protected BoxCollider2D _attackCollider;
+	protected BoxCollider2D _damageCollider;
 
 	enum Direnction
     {
@@ -16,13 +17,20 @@ public class ObjectBase : MonoBehaviour
     
     protected virtual void Start()
     {
-		bodyCollider = GetComponent<BoxCollider2D>();
+		_bodyCollider = GetComponent<BoxCollider2D>();
 		var scale = transform.Find("Scale");
+		_scale = scale.localScale;
 		var collider = scale.transform.Find("Collider");
-		attackCollider = collider.Find("Attack").GetComponent<BoxCollider2D>();
-		damageCollider = collider.Find("Damage").GetComponent<BoxCollider2D>();
+		_attackCollider = collider.Find("Attack").GetComponent<BoxCollider2D>();
+		_damageCollider = collider.Find("Damage").GetComponent<BoxCollider2D>();
 	}
 
+	public Vector3 GetFootPos()
+	{
+		var a = _scale;
+		return Vector3.zero;
+	}
+	
 	private void OnValidate()
 	{
 		SetDirection();

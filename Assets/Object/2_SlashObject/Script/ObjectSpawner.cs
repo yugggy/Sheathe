@@ -7,6 +7,34 @@ public class ObjectSpawner : MonoBehaviour
 {
 	[SerializeField] private string ObjectID;
 
+	private async void Start()
+    {
+		var objHandle = Addressables.LoadAssetAsync<GameObject>(ObjectID);
+		var obj = await objHandle.Task;
+
+		var lashObj = Instantiate(obj, transform.position, transform.rotation, transform.parent);
+		var slashObj = lashObj.GetComponent<SlashBase>();
+
+		// 地面から一定距離の地点から落下
+		var hit = Physics2D.Raycast(transform.position, -transform.up * 10);
+		if (hit.collider != null)
+		{
+			// TODO：オブジェクトのサイズから算出
+			//var a = slashObj.GetFootPos();
+			var gorundPos = hit.point;
+			gorundPos.y += 1;
+			slashObj.transform.position = gorundPos;
+		}
+
+		Destroy(this.gameObject);
+
+		if (slashObj.IsCanSlash)
+		{
+			ObjectManager.Current.SetSlashObjectList(slashObj);
+		}
+	}
+
+	// 非実行時
 	public void OnValidate()
 	{
 		//Debug.Log("OnValidate");
@@ -38,23 +66,6 @@ public class ObjectSpawner : MonoBehaviour
 					Debug.Log("画像がありません");
 				}
 			}
-		}
-	}
-
-	// Start is called once before the first execution of Update after the MonoBehaviour is created
-	private async void Start()
-    {
-		var objHandle = Addressables.LoadAssetAsync<GameObject>(ObjectID);
-		var obj = await objHandle.Task;
-		// TODO：地面から一定距離の地点から落下
-
-		var lashObj = Instantiate(obj, transform.position, transform.rotation, transform.parent);
-		var slashObj = lashObj.GetComponent<SlashBase>();
-		Destroy(this.gameObject);
-
-		if (slashObj.IsCanSlash)
-		{
-			ObjectManager.Current.SetSlashObjectList(slashObj);
 		}
 	}
 }

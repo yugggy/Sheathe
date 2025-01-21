@@ -13,7 +13,6 @@ public class SlashBase : ObjectBase
 	public virtual void SetSlashed()
 	{
 		isSlashed = true;
-		//bodyCollider.isTrigger = true;
 		slashAnime.SetActive(true);
 		StageManager.Current.StartFirstAttack();
 	}
