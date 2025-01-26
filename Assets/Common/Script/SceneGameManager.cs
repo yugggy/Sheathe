@@ -20,6 +20,15 @@ public class SceneGameManager : MonoBehaviour
 		CreateStage();
 	}
 
+	private void Update()
+	{
+		// Rキーでリトライ
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			ReloadStage();
+		}
+	}
+
 	// ステージ生成
 	private async void CreateStage()
 	{
