@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
-	private bool isDestroyCompletely;
 	private float firstAttackTimer = 0;
 	private bool isFirstAttack = false;
 	private float firstAttackTime = 10;
@@ -31,39 +30,35 @@ public class StageManager : MonoBehaviour
 		}
 	}
 
-	public void SetDestroyCompletely(bool value)
-	{
-		isDestroyCompletely = value;
-	}
-
 	/// <summary>
 	/// 結果発表
 	/// </summary>
-	public async void Result()
+	public void Result()
 	{
-		// ステージ判定
-		if (isDestroyCompletely)
+		// 全滅判定
+		if (ObjectManager.Current.GetDestroyCompletely())
 		{
 			isFirstAttack = false;
 
 			// 斬った敵殲滅
-			await ObjectManager.Current.DestroySlashObject();
+			ObjectManager.Current.DestroySlashObject();
 
 			Debug.Log("ステージクリア");
 		}
 		else
 		{
+			isFirstAttack = false;
+
+			// 斬った敵殲滅
+			ObjectManager.Current.DestroySlashObject();
+
 			SceneGameManager.Current.ReloadStage();
 		}
-
-		isDestroyCompletely = false;
 	}
 
 	public void GameOver()
 	{
 		SceneGameManager.Current.ReloadStage();
-
-		isDestroyCompletely = false;
 	}
 
 	/// <summary>

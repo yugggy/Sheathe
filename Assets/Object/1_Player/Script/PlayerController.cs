@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : ObjectBase
@@ -13,6 +13,7 @@ public class PlayerController : ObjectBase
 	private float _attackTimer;
 	private float AttackTimer = 0.1f;
 	private float timer = 0f;
+	private bool _isSheath = false;
 
 	void Update()
     {
@@ -99,7 +100,7 @@ public class PlayerController : ObjectBase
 	/// </summary>
 	private void Attack()
 	{
-		if (Input.GetKeyDown(KeyCode.Z))
+		if (Input.GetKeyDown(KeyCode.X))
 		{
 			_attackCollider.gameObject.SetActive(true);
 			_attackTimer = AttackTimer;
@@ -123,16 +124,30 @@ public class PlayerController : ObjectBase
     /// </summary>
     private void Sheath()
     {
+		// 納刀は一度のみ
+		if (_isSheath)
+		{
+			return;
+		}
+
+		// 指定のボタン押下で納刀アクション
 		if (Input.GetKeyDown(KeyCode.A))
+		{
+			StartCoroutine(Sheath());
+		}
+
+		IEnumerator Sheath()
 		{
 			Debug.Log("納刀");
 
-            // TODO：納刀アニメ
+			_isSheath = true;
 
-            // 全滅判定保存
-            StageManager.Current.SetDestroyCompletely(ObjectManager.Current.GetDestroyCompletely());
+			// 納刀アニメ
+			_animator.SetBool("IsSheath", true);
+			yield return WaitAnimeFinish();
+			//yield return new WaitForSeconds(0.1f);
 
-            // 結果発表
+			// 結果発表
 			StageManager.Current.Result();
 		}
 	}

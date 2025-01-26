@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ObjectBase : MonoBehaviour
@@ -5,6 +6,7 @@ public class ObjectBase : MonoBehaviour
 	[SerializeField] private Direnction direnction;
 
 	protected Vector3 _scale;
+	protected Animator _animator;
 	protected BoxCollider2D _bodyCollider;
 	protected BoxCollider2D _attackCollider;
 	protected BoxCollider2D _damageCollider;
@@ -17,9 +19,18 @@ public class ObjectBase : MonoBehaviour
     
     protected virtual void Start()
     {
-		_bodyCollider = GetComponent<BoxCollider2D>();
+		// Scale
 		var scale = transform.Find("Scale");
 		_scale = scale.localScale;
+
+		// Animation
+		if (scale.Find("Animation").TryGetComponent<Animator>(out var animator))
+		{
+			_animator = animator;
+		}
+
+		// Collider
+		_bodyCollider = GetComponent<BoxCollider2D>();
 		var collider = scale.transform.Find("Collider");
 		_attackCollider = collider.Find("Attack").GetComponent<BoxCollider2D>();
 		_damageCollider = collider.Find("Damage").GetComponent<BoxCollider2D>();
@@ -54,4 +65,21 @@ public class ObjectBase : MonoBehaviour
 
 		transform.eulerAngles = eulerAngles;
 	}
+
+	/// <summary>
+	/// アニメが終了するまで待機
+	/// </summary>
+	protected IEnumerator WaitAnimeFinish()
+	{
+		// アニメの切り替えのため1フレーム待機
+		yield return null;
+
+		// アニメが終了するまで待機
+		while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
+		{
+			//Debug.Log("normalizedTime" + _animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+			yield return null;
+		}
+	}
+
 }
