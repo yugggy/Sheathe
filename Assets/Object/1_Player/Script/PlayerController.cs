@@ -8,10 +8,11 @@ public class PlayerController : ObjectBase
     [SerializeField, Label("ジャンプ力")] float jumpPower;
     [SerializeField, Label("重力")] float gravity;
     private Vector3 _velocity;
-    //private bool _isJump;
-    private float _attackTimer;
+	private bool _isJump = false;
+	private bool _isGround = false;
+	private float _attackTimer;
 	private float AttackTimer = 0.1f;
-
+	private float timer = 0f;
 
 	void Update()
     {
@@ -64,39 +65,41 @@ public class PlayerController : ObjectBase
     /// </summary>
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+		_velocity.y = 0;
+
+		if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-			_velocity.y += jumpPower;
-			//_isJump = true;
-        }
+			if (!_isJump)
+			{
+				_isJump = true;
+				_isGround = false;
+				//_velocity.y = jumpPower;
+			}
+		}
 
-        //if (_isJump)
-        //{
+		if (_isJump)
+		{
+			_velocity.y = jumpPower;
+			//_velocity.y -= gravity * Time.deltaTime;
+		}
+		else
+		{
+			// 空中にいる
+			if (!_isGround)
+			{
+				//_velocity.y -= gravity;
+			}
+		}
 
-        //    //重力
-        //    if (_velocity.y > 0)
-        //    {
-        //        _velocity.y -= gravity;
-        //    }
-        //}
+		//_velocity.y -= gravity;
+	}
 
-
-        //if (_velocity.y > 0)
-        //{
-        //    _velocity.y -= _gravity;
-        //}
-        //else
-        //{
-        //    _velocity.y = 0;
-        //}
-    }
-
-    /// <summary>
-    /// 攻撃
-    /// </summary>
-    private void Attack()
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	private void Attack()
 	{
-		if (Input.GetKeyDown(KeyCode.Y))
+		if (Input.GetKeyDown(KeyCode.Z))
 		{
 			_attackCollider.gameObject.SetActive(true);
 			_attackTimer = AttackTimer;
@@ -129,36 +132,19 @@ public class PlayerController : ObjectBase
             // 全滅判定保存
             StageManager.Current.SetDestroyCompletely(ObjectManager.Current.GetDestroyCompletely());
 
-			// 斬った敵殲滅
-			DestroySlashObject();
-
             // 結果発表
 			StageManager.Current.Result();
 		}
 	}
 
-	/// <summary>
-	/// 斬った敵殲滅
-	/// </summary>
-	public void DestroySlashObject()
+	private void OnCollisionStay2D(Collision2D collision)
 	{
-		foreach (var slash in ObjectManager.Current.SlashList)
+		var stageLayer = 8;
+		if (collision.gameObject.layer == stageLayer)
 		{
-			if (slash.IsSlashed)
-			{
-				// TODO：殲滅アニメ再生
-
-				Destroy(slash.gameObject);
-			}
+			_isGround = true;
+			_isJump = false;
+			_velocity.y = 0;
 		}
-
-		ObjectManager.Current.ClearSlashObjectList();
-	}
-
-
-	private void OnCollisionEnter2D(Collision2D collision)
-	{
-		//_isJump = true;
-		_velocity.y = 0;
 	}
 }

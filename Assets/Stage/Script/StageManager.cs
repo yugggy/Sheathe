@@ -39,12 +39,16 @@ public class StageManager : MonoBehaviour
 	/// <summary>
 	/// 結果発表
 	/// </summary>
-	public void Result()
+	public async void Result()
 	{
 		// ステージ判定
 		if (isDestroyCompletely)
 		{
 			isFirstAttack = false;
+
+			// 斬った敵殲滅
+			await ObjectManager.Current.DestroySlashObject();
+
 			Debug.Log("ステージクリア");
 		}
 		else

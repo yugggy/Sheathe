@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using UnityEngine;
 
@@ -29,6 +30,26 @@ public class ObjectManager : MonoBehaviour
 	public bool GetDestroyCompletely()
 	{
 		return !_slashList.Any(x => !x.IsSlashed);
+	}
+
+	/// <summary>
+	/// a‚Á‚½“GŸr–Å
+	/// </summary>
+	public async Task DestroySlashObject()
+	{
+		await Task.Delay(1000);
+
+		foreach (var slash in SlashList)
+		{
+			if (slash.IsSlashed)
+			{
+				// TODOFŸr–ÅƒAƒjƒÄ¶
+
+				Destroy(slash.gameObject);
+			}
+		}
+
+		ClearSlashObjectList();
 	}
 
 	/// <summary>
