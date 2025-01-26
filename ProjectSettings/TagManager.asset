@@ -41,5 +41,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: StageObject
+    uniqueID: 794095901
+    locked: 0
+  - name: Enemy
+    uniqueID: 2405865505
+    locked: 0
+  - name: Player
+    uniqueID: 3127364383
+    locked: 0
+  - name: Effect
+    uniqueID: 928221191
+    locked: 0
   m_RenderingLayers:
   - Default
