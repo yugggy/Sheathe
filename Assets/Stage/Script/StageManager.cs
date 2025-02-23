@@ -25,7 +25,7 @@ public class StageManager : MonoBehaviour
 			{
 				Debug.Log("Å‰‚ÌUŒ‚‚©‚ç10•b");
 				firstAttackTimer = 0;
-				GameOver();
+				//GameOver();
 			}
 		}
 	}
