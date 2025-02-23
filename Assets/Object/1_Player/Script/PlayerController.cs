@@ -145,7 +145,6 @@ public class PlayerController : ObjectBase
 			// 納刀アニメ
 			_animator.SetBool("IsSheath", true);
 			yield return WaitAnimeFinish();
-			//yield return new WaitForSeconds(0.1f);
 
 			// 結果発表
 			StageManager.Current.Result();
