@@ -15,6 +15,16 @@ MonoBehaviour:
   m_GroupName: Stage
   m_GUID: 5bc09e5571ca64d4989f184cc51d165a
   m_SerializeEntries:
+  - m_GUID: 69c31bc5e62decb41a80cdd6cdb909d0
+    m_Address: Assets/Stage/Prefab/Stage_1_3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 924771dd2478218498eaf192b4912913
+    m_Address: Stage_1_2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f22796807357617498280809e867cc37
     m_Address: Stage_1_1
     m_ReadOnly: 0
