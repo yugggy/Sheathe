@@ -4,6 +4,7 @@ using UnityEngine;
 public class ObjectBase : MonoBehaviour
 {
 	[SerializeField] private Direnction direnction;
+	[SerializeField] private Landing landing;
 
 	protected Vector3 _scale;
 	protected Animator _animator;
@@ -16,8 +17,14 @@ public class ObjectBase : MonoBehaviour
         [InspectorName("âE")] Right,
 		[InspectorName("ç∂")] Left,
 	}
-    
-    protected virtual void Start()
+
+	public enum Landing
+	{
+		[InspectorName("ínè„")] Ground,
+		[InspectorName("ãÛíÜ")] Air,
+	}
+
+	protected virtual void Start()
     {
 		// Scale
 		var scale = transform.Find("Scale");
@@ -41,7 +48,12 @@ public class ObjectBase : MonoBehaviour
 		var a = _scale;
 		return Vector3.zero;
 	}
-	
+
+	public Landing GetLanding()
+	{
+		return landing;
+	}
+
 	private void OnValidate()
 	{
 		SetDirection();
