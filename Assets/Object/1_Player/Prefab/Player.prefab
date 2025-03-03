@@ -389,7 +389,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direnction: 0
-  moveSpd: 0.01
+  landing: 0
+  moveSpd: 1.5
   deboostSpd: 1
   jumpPower: 0.8
   gravity: 0.08

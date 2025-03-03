@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerController : ObjectBase
 {
-    [SerializeField, Label("移動速度")] float moveSpd;
+    [SerializeField, Label("移動速度倍率")] float moveSpd;
     [SerializeField, Label("減速速度")] float deboostSpd;
     [SerializeField, Label("ジャンプ力")] float jumpPower;
     [SerializeField, Label("重力")] float gravity;
@@ -39,32 +39,30 @@ public class PlayerController : ObjectBase
     /// </summary>
     private void Move()
     {
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            _velocity.x = moveSpd;
-			if (moveSpd == 0)
-			{
-				Debug.Log("移動速度0");
-			}
-		}
-		else if (Input.GetKey(KeyCode.LeftArrow))
+		if (moveSpd == 0)
 		{
-			_velocity.x = -moveSpd;
-			if (moveSpd == 0)
-			{
-				Debug.Log("移動速度0");
-			}
+			Debug.LogError("移動倍率0");
+		}
+
+		var leftStickValue = ControllerManager.Current.LeftStickValue / 100.0f * moveSpd;
+		if (ControllerManager.Current.GetState == ControllerManager.State.RightMove)
+		{
+			_velocity.x = leftStickValue;
+		}
+		else if (ControllerManager.Current.GetState == ControllerManager.State.LeftMove)
+		{
+			_velocity.x = leftStickValue;
 		}
 		else
 		{
 			_velocity.x = 0;
 		}
-    }
+	}
 
-    /// <summary>
-    /// ジャンプ
-    /// </summary>
-    private void Jump()
+	/// <summary>
+	/// ジャンプ
+	/// </summary>
+	private void Jump()
     {
 		_velocity.y = 0;
 
