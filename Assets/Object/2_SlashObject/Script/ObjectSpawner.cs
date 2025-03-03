@@ -42,11 +42,21 @@ public class ObjectSpawner : MonoBehaviour
 	{
 		//Debug.Log("OnValidate");
 
+		var folderName = "";
+		if(transform.name.StartsWith("SPN_EN"))
+		{
+			folderName = "Enemy";
+		}
+		else if (transform.name.StartsWith("SPN_SO"))
+		{
+			folderName = "StageObject";
+		}
+
 		var scale = transform.Find("Scale");
 		if (scale != null)
 		{
 			// ÉXÉPÅ[ÉãÇÃê›íË
-			Transform trans = AssetDatabase.LoadAssetAtPath<Transform>("Assets/Object/2_SlashObject/StageObject/Prefab/" + ObjectID + ".prefab");
+			Transform trans = AssetDatabase.LoadAssetAtPath<Transform>($"Assets/Object/2_SlashObject/{folderName}/Prefab/" + ObjectID + ".prefab");
 			if (trans != null)
 			{
 				scale.transform.localScale = trans.Find("Scale").transform.localScale;
