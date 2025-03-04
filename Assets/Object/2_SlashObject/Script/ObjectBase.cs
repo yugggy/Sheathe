@@ -77,6 +77,21 @@ public class ObjectBase : MonoBehaviour
 
 		transform.eulerAngles = eulerAngles;
 	}
+	public void SetDirection(bool isRight)
+	{
+		var eulerAngles = transform.eulerAngles;
+
+		if (isRight)
+		{
+			eulerAngles.y = 0;
+		}
+		else
+		{
+			eulerAngles.y = 180;
+		}
+
+		transform.eulerAngles = eulerAngles;
+	}
 
 	/// <summary>
 	/// アニメが終了するまで待機

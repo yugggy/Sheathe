@@ -48,10 +48,12 @@ public class PlayerController : ObjectBase
 		if (ControllerManager.Current.GetState == ControllerManager.State.RightMove)
 		{
 			_velocity.x = leftStickValue;
+			SetDirection(true);
 		}
 		else if (ControllerManager.Current.GetState == ControllerManager.State.LeftMove)
 		{
 			_velocity.x = leftStickValue;
+			SetDirection(false);
 		}
 		else
 		{
