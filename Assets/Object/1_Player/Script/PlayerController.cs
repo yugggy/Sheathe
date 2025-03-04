@@ -45,12 +45,12 @@ public class PlayerController : ObjectBase
 		}
 
 		var leftStickValue = ControllerManager.Current.LeftStickValue / 100.0f * moveSpd;
-		if (ControllerManager.Current.GetState == ControllerManager.State.RightMove)
+		if (ControllerManager.Current.GetMoveState == ControllerManager.MoveState.RightMove)
 		{
 			_velocity.x = leftStickValue;
 			SetDirection(true);
 		}
-		else if (ControllerManager.Current.GetState == ControllerManager.State.LeftMove)
+		else if (ControllerManager.Current.GetMoveState == ControllerManager.MoveState.LeftMove)
 		{
 			_velocity.x = leftStickValue;
 			SetDirection(false);
