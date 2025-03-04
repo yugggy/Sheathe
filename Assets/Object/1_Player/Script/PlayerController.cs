@@ -68,8 +68,8 @@ public class PlayerController : ObjectBase
     {
 		_velocity.y = 0;
 
-		if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
+		if (ControllerManager.Current.GetJumpState == ControllerManager.JumpState.Jump)
+		{
 			if (!_isJump)
 			{
 				_isJump = true;
@@ -100,7 +100,7 @@ public class PlayerController : ObjectBase
 	/// </summary>
 	private void Attack()
 	{
-		if (Input.GetKeyDown(KeyCode.X))
+		if (ControllerManager.Current.GetAttackState == ControllerManager.AttackState.Attack)
 		{
 			_attackCollider.gameObject.SetActive(true);
 			_attackTimer = AttackTimer;
@@ -131,7 +131,7 @@ public class PlayerController : ObjectBase
 		}
 
 		// 指定のボタン押下で納刀アクション
-		if (Input.GetKeyDown(KeyCode.A))
+		if (ControllerManager.Current.GetAttackState == ControllerManager.AttackState.Sheath)
 		{
 			StartCoroutine(Sheath());
 		}

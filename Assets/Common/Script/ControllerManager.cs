@@ -4,19 +4,38 @@ using UnityEngine.InputSystem;
 public class ControllerManager : MonoBehaviour
 {
 	private Gamepad _gamepad;
-	private MoveState _moveState = MoveState.None;
 	private float _leftStickValue = 0.0f;
+	private MoveState _moveState = MoveState.None;
+	private JumpState _jumpState = JumpState.None;
+	private AttackState _attackState = AttackState.None;
 
 	public static ControllerManager Current;
 
-	public MoveState GetMoveState => _moveState;
 	public float LeftStickValue => _leftStickValue;
+	public MoveState GetMoveState => _moveState;
+	public JumpState GetJumpState => _jumpState;
+
+	public AttackState GetAttackState => _attackState;
+
 
 	public enum MoveState
 	{
 		None,
 		RightMove,
 		LeftMove,
+	}
+
+	public enum JumpState
+	{
+		None,
+		Jump,
+	}
+
+	public enum AttackState
+	{
+		None,
+		Attack,
+		Sheath,
 	}
 
 	private void Awake()
@@ -68,6 +87,34 @@ public class ControllerManager : MonoBehaviour
 			_moveState = MoveState.LeftMove;
 			_leftStickValue = stickInput.x;
 		}
+		else
+		{
+			_moveState = MoveState.None;
+		}
+
+		// ジャンプ
+		if (_gamepad.aButton.IsPressed())
+		{
+			_jumpState = JumpState.Jump;
+		}
+		else
+		{
+			_jumpState = JumpState.None;
+		}
+
+		// 攻撃
+		if (_gamepad.xButton.IsPressed())
+		{
+			_attackState = AttackState.Attack;
+		}
+		else if (_gamepad.yButton.IsPressed())
+		{
+			_attackState = AttackState.Sheath;
+		}
+		else
+		{
+			_attackState = AttackState.None;
+		}
 	}
 
 	/// <summary>
@@ -87,11 +134,20 @@ public class ControllerManager : MonoBehaviour
 			_leftStickValue = -1.0f;
 		}
 
-		// TODO：ジャンプは基本同時操作なので並行で行う必要がある
+		// ジャンプ
 		if (Input.GetKey(KeyCode.UpArrow))
 		{
+			_jumpState = JumpState.Jump;
+		}
 
+		// 攻撃
+		if (Input.GetKeyDown(KeyCode.X))
+		{
+			_attackState = AttackState.Attack;
+		}
+		else if (Input.GetKeyDown(KeyCode.Z))
+		{
+			_attackState = AttackState.Sheath;
 		}
 	}
-
 }
