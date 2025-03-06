@@ -392,8 +392,8 @@ MonoBehaviour:
   landing: 0
   moveSpd: 1.5
   deboostSpd: 1
-  jumpPower: 0.8
-  gravity: 0.08
+  jumpPower: 0.03
+  gravity: 0.1
 --- !u!50 &97367655841816899
 Rigidbody2D:
   serializedVersion: 5

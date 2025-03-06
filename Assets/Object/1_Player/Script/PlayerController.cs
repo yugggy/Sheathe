@@ -66,7 +66,7 @@ public class PlayerController : ObjectBase
 	/// </summary>
 	private void Jump()
     {
-		_velocity.y = 0;
+		//_velocity.y = 0;
 
 		if (ControllerManager.Current.GetJumpState == ControllerManager.JumpState.Jump)
 		{
@@ -74,14 +74,15 @@ public class PlayerController : ObjectBase
 			{
 				_isJump = true;
 				_isGround = false;
-				//_velocity.y = jumpPower;
+				_velocity.y = jumpPower;
 			}
 		}
 
 		if (_isJump)
 		{
-			_velocity.y = jumpPower;
+			//_velocity.y = jumpPower;
 			//_velocity.y -= gravity * Time.deltaTime;
+			_velocity.y -= gravity * Time.deltaTime;
 		}
 		else
 		{
