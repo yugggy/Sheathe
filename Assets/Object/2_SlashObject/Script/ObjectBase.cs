@@ -14,14 +14,14 @@ public class ObjectBase : MonoBehaviour
 
 	enum Direnction
     {
-        [InspectorName("‰E")] Right,
-		[InspectorName("¶")] Left,
+        [InspectorName("å³")] Right,
+		[InspectorName("å·¦")] Left,
 	}
 
 	public enum Landing
 	{
-		[InspectorName("’nã")] Ground,
-		[InspectorName("‹ó’†")] Air,
+		[InspectorName("åœ°ä¸Š")] Ground,
+		[InspectorName("ç©ºä¸­")] Air,
 	}
 
 	protected virtual void Start()
@@ -94,14 +94,14 @@ public class ObjectBase : MonoBehaviour
 	}
 
 	/// <summary>
-	/// ƒAƒjƒ‚ªI—¹‚·‚é‚Ü‚Å‘Ò‹@
+	/// ã‚¢ãƒ‹ãƒ¡ãŒçµ‚äº†ã™ã‚‹ã¾ã§å¾…æ©Ÿ
 	/// </summary>
 	protected IEnumerator WaitAnimeFinish()
 	{
-		// ƒAƒjƒ‚ÌØ‚è‘Ö‚¦‚Ì‚½‚ß1ƒtƒŒ[ƒ€‘Ò‹@
+		// ã‚¢ãƒ‹ãƒ¡ã®åˆ‡ã‚Šæ›¿ãˆã®ãŸã‚1ãƒ•ãƒ¬ãƒ¼ãƒ å¾…æ©Ÿ
 		yield return null;
 
-		// ƒAƒjƒ‚ªI—¹‚·‚é‚Ü‚Å‘Ò‹@
+		// ã‚¢ãƒ‹ãƒ¡ãŒçµ‚äº†ã™ã‚‹ã¾ã§å¾…æ©Ÿ
 		while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
 		{
 			//Debug.Log("normalizedTime" + _animator.GetCurrentAnimatorStateInfo(0).normalizedTime);

@@ -16,7 +16,7 @@ public class ObjectManager : MonoBehaviour
 	}
 
 	/// <summary>
-	/// ¶¬
+	/// ç”Ÿæˆæ™‚
 	/// </summary>
 	public void SetSlashObjectList(SlashBase slashObj)
 	{
@@ -24,7 +24,7 @@ public class ObjectManager : MonoBehaviour
 	}
 
 	/// <summary>
-	/// ‘S–Å”»’è
+	/// å…¨æ»…åˆ¤å®š
 	/// </summary>
 	public bool GetDestroyCompletely()
 	{
@@ -32,7 +32,7 @@ public class ObjectManager : MonoBehaviour
 	}
 
 	/// <summary>
-	/// a‚Á‚½“GŸr–Å
+	/// æ–¬ã£ãŸæ•µæ®²æ»…
 	/// </summary>
 	public void DestroySlashObject()
 	{
@@ -40,7 +40,7 @@ public class ObjectManager : MonoBehaviour
 		{
 			if (slash.IsSlashed)
 			{
-				// TODOFŸr–ÅƒAƒjƒÄ¶
+				// TODOï¼šæ®²æ»…ã‚¢ãƒ‹ãƒ¡å†ç”Ÿ
 
 				Destroy(slash.gameObject);
 			}
@@ -50,7 +50,7 @@ public class ObjectManager : MonoBehaviour
 	}
 
 	/// <summary>
-	/// ƒŠƒXƒg‰Šú‰»
+	/// ãƒªã‚¹ãƒˆåˆæœŸåŒ–
 	/// </summary>
 	public void ClearSlashObjectList()
 	{

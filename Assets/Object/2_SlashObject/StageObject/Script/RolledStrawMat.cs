@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Šª‚«˜m
+/// å·»ãè—
 /// </summary>
 public class RolledStrawMat : StageObjectBase
 {

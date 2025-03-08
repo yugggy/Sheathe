@@ -23,7 +23,7 @@ public class StageManager : MonoBehaviour
 			firstAttackTimer += Time.deltaTime;
 			if (firstAttackTimer >= firstAttackTime)
 			{
-				Debug.Log("Å‰‚ÌUŒ‚‚©‚ç10•b");
+				Debug.Log("æœ€åˆã®æ”»æ’ƒã‹ã‚‰10ç§’");
 				firstAttackTimer = 0;
 				//GameOver();
 			}
@@ -31,25 +31,25 @@ public class StageManager : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Œ‹‰Ê”­•\
+	/// çµæœç™ºè¡¨
 	/// </summary>
 	public void Result()
 	{
-		// ‘S–Å”»’è
+		// å…¨æ»…åˆ¤å®š
 		if (ObjectManager.Current.GetDestroyCompletely())
 		{
 			isFirstAttack = false;
 
-			// a‚Á‚½“GŸr–Å
+			// æ–¬ã£ãŸæ•µæ®²æ»…
 			ObjectManager.Current.DestroySlashObject();
 
-			Debug.Log("ƒXƒe[ƒWƒNƒŠƒA");
+			Debug.Log("ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢");
 		}
 		else
 		{
 			isFirstAttack = false;
 
-			// a‚Á‚½“GŸr–Å
+			// æ–¬ã£ãŸæ•µæ®²æ»…
 			ObjectManager.Current.DestroySlashObject();
 
 			SceneGameManager.Current.ReloadStage();
@@ -62,7 +62,7 @@ public class StageManager : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Å‰‚ÌUŒ‚
+	/// æœ€åˆã®æ”»æ’ƒ
 	/// </summary>
 	public void StartFirstAttack()
 	{
@@ -72,7 +72,7 @@ public class StageManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("Å‰‚ÌUŒ‚");
+			Debug.Log("æœ€åˆã®æ”»æ’ƒ");
 			isFirstAttack = true;
 		}
 	}

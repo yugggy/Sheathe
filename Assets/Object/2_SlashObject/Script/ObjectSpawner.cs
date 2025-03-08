@@ -17,11 +17,11 @@ public class ObjectSpawner : MonoBehaviour
 
 		if (slashObj.GetLanding() == ObjectBase.Landing.Ground)
 		{
-			// ’n–Ê‚©‚çˆê’è‹——£‚Ì’n“_‚©‚ç—‰º
+			// åœ°é¢ã‹ã‚‰ä¸€å®šè·é›¢ã®åœ°ç‚¹ã‹ã‚‰è½ä¸‹
 			var hit = Physics2D.Raycast(transform.position, -transform.up * 10);
 			if (hit.collider != null)
 			{
-				// TODOFƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY‚©‚çZo
+				// TODOï¼šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚µã‚¤ã‚ºã‹ã‚‰ç®—å‡º
 				//var a = slashObj.GetFootPos();
 				var gorundPos = hit.point;
 				gorundPos.y += 1;
@@ -37,7 +37,7 @@ public class ObjectSpawner : MonoBehaviour
 		}
 	}
 
-	// ”ñÀs
+	// éå®Ÿè¡Œæ™‚
 	public void OnValidate()
 	{
 		//Debug.Log("OnValidate");
@@ -55,7 +55,7 @@ public class ObjectSpawner : MonoBehaviour
 		var scale = transform.Find("Scale");
 		if (scale != null)
 		{
-			// ƒXƒP[ƒ‹‚Ìİ’è
+			// ã‚¹ã‚±ãƒ¼ãƒ«ã®è¨­å®š
 			Transform trans = AssetDatabase.LoadAssetAtPath<Transform>($"Assets/Object/2_SlashObject/{folderName}/Prefab/" + ObjectID + ".prefab");
 			if (trans != null)
 			{
@@ -63,10 +63,10 @@ public class ObjectSpawner : MonoBehaviour
 			}
 			else
 			{
-				Debug.Log("Prefab‚ª‚ ‚è‚Ü‚¹‚ñ");
+				Debug.Log("PrefabãŒã‚ã‚Šã¾ã›ã‚“");
 			}
 
-			// ‰æ‘œ‚Ìİ’è
+			// ç”»åƒã®è¨­å®š
 			if (scale.Find("Image").TryGetComponent<SpriteRenderer>(out var icon))
 			{
 				Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Object/2_SlashObject/Sprite/Editor/" + ObjectID + ".png");
@@ -76,7 +76,7 @@ public class ObjectSpawner : MonoBehaviour
 				}
 				else
 				{
-					Debug.Log("‰æ‘œ‚ª‚ ‚è‚Ü‚¹‚ñ");
+					Debug.Log("ç”»åƒãŒã‚ã‚Šã¾ã›ã‚“");
 				}
 			}
 		}

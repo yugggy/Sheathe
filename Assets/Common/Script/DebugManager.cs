@@ -20,6 +20,6 @@ public class DebugManager : MonoBehaviour
 
     public void SetVelocityText(Vector3 velocity)
     {
-		velocityText.text = $"velocityÅF({velocity.x}, {velocity.y}, {velocity.z})";
+		velocityText.text = $"velocityÔºö({velocity.x}, {velocity.y}, {velocity.z})";
 	}
 }

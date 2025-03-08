@@ -50,22 +50,22 @@ public class ControllerManager : MonoBehaviour
 
 	private void Operate()
 	{
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		_moveState = MoveState.None;
 		_leftStickValue = 0;
 
-		// ƒQ[ƒ€ƒpƒbƒh‘€ì
+		// ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰æ“ä½œ
 		GamePadOperate();
 
-		// ƒL[ƒ{[ƒh‘€ì
+		// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æ“ä½œ
 		KeyboradOperate();
 
-		//Debug.Log($"‘€ìF{_state}");
-		//Debug.Log($"ˆÚ“®F{_leftStickValue}");
+		//Debug.Log($"æ“ä½œï¼š{_state}");
+		//Debug.Log($"ç§»å‹•ï¼š{_leftStickValue}");
 	}
 
 	/// <summary>
-	/// ƒQ[ƒ€ƒpƒbƒh‘€ì
+	/// ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰æ“ä½œ
 	/// </summary>
 	private void GamePadOperate()
 	{
@@ -75,7 +75,7 @@ public class ControllerManager : MonoBehaviour
 			return;
 		}
 
-		// ¶‰E‘€ì
+		// å·¦å³æ“ä½œ
 		var stickInput = _gamepad.leftStick.ReadValue();
 		if (stickInput.x > 0.2f)
 		{
@@ -92,7 +92,7 @@ public class ControllerManager : MonoBehaviour
 			_moveState = MoveState.None;
 		}
 
-		// ƒWƒƒƒ“ƒv
+		// ã‚¸ãƒ£ãƒ³ãƒ—
 		if (_gamepad.aButton.IsPressed())
 		{
 			_jumpState = JumpState.Jump;
@@ -102,7 +102,7 @@ public class ControllerManager : MonoBehaviour
 			_jumpState = JumpState.None;
 		}
 
-		// UŒ‚
+		// æ”»æ’ƒ
 		if (_gamepad.xButton.IsPressed())
 		{
 			_attackState = AttackState.Attack;
@@ -118,11 +118,11 @@ public class ControllerManager : MonoBehaviour
 	}
 
 	/// <summary>
-	/// ƒL[ƒ{[ƒh‘€ì
+	/// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æ“ä½œ
 	/// </summary>
 	private void KeyboradOperate()
 	{
-		// ¶‰E‘€ì
+		// å·¦å³æ“ä½œ
 		if (Input.GetKey(KeyCode.RightArrow))
 		{
 			_moveState = MoveState.RightMove;
@@ -134,13 +134,13 @@ public class ControllerManager : MonoBehaviour
 			_leftStickValue = -1.0f;
 		}
 
-		// ƒWƒƒƒ“ƒv
+		// ã‚¸ãƒ£ãƒ³ãƒ—
 		if (Input.GetKey(KeyCode.UpArrow))
 		{
 			_jumpState = JumpState.Jump;
 		}
 
-		// UŒ‚
+		// æ”»æ’ƒ
 		if (Input.GetKeyDown(KeyCode.X))
 		{
 			_attackState = AttackState.Attack;

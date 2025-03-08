@@ -3,9 +3,9 @@ using UnityEngine;
 public class SlashBase : ObjectBase
 {
 	[SerializeField] private GameObject slashAnime;
-	[SerializeField] private bool isCanSlash = true; // Ža‚ç‚ê‚éƒIƒuƒWƒFƒNƒg‚©‚Ç‚¤‚©
+	[SerializeField] private bool isCanSlash = true; // æ–¬ã‚‰ã‚Œã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã©ã†ã‹
 
-	private bool isSlashed = false; // Ža‚ç‚ê‚½ƒtƒ‰ƒO
+	private bool isSlashed = false; // æ–¬ã‚‰ã‚ŒãŸãƒ•ãƒ©ã‚°
 
 	public bool IsSlashed => isSlashed;
 	public bool IsCanSlash => isCanSlash;

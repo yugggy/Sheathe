@@ -18,10 +18,10 @@ public class DamageCheck : MonoBehaviour
         var isAttackCharaEnemy = attackChara.TryGetComponent<SlashBase>(out var temp);
 		var isDamageCharaEnemy = damageChara.TryGetComponent<SlashBase>(out slashObj);
 
-		// ƒXƒLƒbƒv”»’è
-		// E©•ª©g‚¾‚Á‚½ê‡
-		// E“G“¯m‚ÌƒtƒŒƒ“ƒhƒŠ[ƒtƒ@ƒCƒ„[
-		// EŠù‚Éƒ_ƒ[ƒW‚ğó‚¯‚Ä‚¢‚éê‡
+		// ã‚¹ã‚­ãƒƒãƒ—åˆ¤å®š
+		// ãƒ»è‡ªåˆ†è‡ªèº«ã ã£ãŸå ´åˆ
+		// ãƒ»æ•µåŒå£«ã®ãƒ•ãƒ¬ãƒ³ãƒ‰ãƒªãƒ¼ãƒ•ã‚¡ã‚¤ãƒ¤ãƒ¼
+		// ãƒ»æ—¢ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ã¦ã„ã‚‹å ´åˆ
 		if (attackChara == damageChara ||
 			(isAttackCharaEnemy && isDamageCharaEnemy) ||
 			slashObj.IsSlashed)
@@ -29,9 +29,9 @@ public class DamageCheck : MonoBehaviour
             return;
         }
 
-		// a‚ç‚ê‚½
+		// æ–¬ã‚‰ã‚ŒãŸ
 		slashObj.SetSlashed();
 
-		Debug.Log($"UŒ‚:{attackChara.name}, ”íƒ_ƒ[ƒW:{damageChara.name}");
+		Debug.Log($"æ”»æ’ƒ:{attackChara.name}, è¢«ãƒ€ãƒ¡ãƒ¼ã‚¸:{damageChara.name}");
 	}
 }

@@ -22,43 +22,43 @@ public class SceneGameManager : MonoBehaviour
 
 	private void Update()
 	{
-		// RƒL[‚ÅƒŠƒgƒ‰ƒC
+		// Rã‚­ãƒ¼ã§ãƒªãƒˆãƒ©ã‚¤
 		if (Input.GetKeyDown(KeyCode.R))
 		{
 			ReloadStage();
 		}
 	}
 
-	// ƒXƒe[ƒW¶¬
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ç”Ÿæˆ
 	private async void CreateStage()
 	{
-		// Stage¶¬
+		// Stageç”Ÿæˆ
 		Destroy(stageObj);
 		var stageHandle = Addressables.LoadAssetAsync<GameObject>("Stage_1_2");
 		var stage = await stageHandle.Task;
 		stageObj = Instantiate(stage, transform.position, transform.rotation, transform);
 		stageObj.transform.position = new Vector3(stageObj.transform.position.x, -4.0f, stageObj.transform.position.z);
 
-		// Player¶¬
+		// Playerç”Ÿæˆ
 		var playerHandle = Addressables.LoadAssetAsync<GameObject>("Player");
 		var player = await playerHandle.Task;
 		var playerPostion = new Vector3(-9, -5, 0);
 		playerObj = Instantiate(player, playerPostion, transform.rotation, transform);
 	}
 
-	// ƒXƒe[ƒWÄƒ[ƒh
+	// ã‚¹ãƒ†ãƒ¼ã‚¸å†ãƒ­ãƒ¼ãƒ‰
 	public async void ReloadStage()
 	{
-		Debug.Log("ƒXƒe[ƒWÄƒ[ƒh");
+		Debug.Log("ã‚¹ãƒ†ãƒ¼ã‚¸å†ãƒ­ãƒ¼ãƒ‰");
 
-		// ƒIƒuƒWƒFƒNƒgƒŠƒXƒg‰Šú‰»
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒªã‚¹ãƒˆåˆæœŸåŒ–
 		ObjectManager.Current.ClearSlashObjectList();
 
-		// ƒvƒŒƒCƒ„[íœ
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å‰Šé™¤
 		await Task.Delay(1000);
 		Destroy(playerObj);
 
-		// ƒXƒe[ƒW¶¬
+		// ã‚¹ãƒ†ãƒ¼ã‚¸ç”Ÿæˆ
 		await Task.Delay(300);
 		CreateStage();
 	}
