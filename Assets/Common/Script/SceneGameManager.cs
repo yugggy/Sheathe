@@ -42,7 +42,7 @@ public class SceneGameManager : MonoBehaviour
 		// Player生成
 		var playerHandle = Addressables.LoadAssetAsync<GameObject>("Player");
 		var player = await playerHandle.Task;
-		var playerPostion = new Vector3(-9, -5, 0);
+		var playerPostion = new Vector3(-13, -5, 0);
 		playerObj = Instantiate(player, playerPostion, transform.rotation, transform);
 	}
 
