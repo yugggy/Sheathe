@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Enemy
   m_GUID: 415e3653365c4594abf873942a54110a
   m_SerializeEntries:
+  - m_GUID: 57bca62c235a4bc42bbb59739f006437
+    m_Address: EN003
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 67a21f39be170614f8d8efbcc498af31
     m_Address: EN001
     m_ReadOnly: 0
