@@ -12,7 +12,7 @@ public class ObjectBase : MonoBehaviour
 	protected BoxCollider2D _attackCollider;
 	protected BoxCollider2D _damageCollider;
 
-	enum Direnction
+	public enum Direnction
     {
         [InspectorName("右")] Right,
 		[InspectorName("左")] Left,
@@ -57,6 +57,8 @@ public class ObjectBase : MonoBehaviour
 	private void OnValidate()
 	{
 		SetDirection();
+
+		SetGravityScale();
 	}
 
     private void SetDirection()
@@ -91,6 +93,23 @@ public class ObjectBase : MonoBehaviour
 		}
 
 		transform.eulerAngles = eulerAngles;
+	}
+
+	private void SetGravityScale()
+	{
+		var rigidbody2D = transform.GetComponent<Rigidbody2D>();
+
+		switch (landing)
+		{
+			case Landing.Ground:
+				rigidbody2D.gravityScale = 1;
+				break;
+			case Landing.Air:
+				rigidbody2D.gravityScale = 0;
+				break;
+			default:
+				break;
+		}
 	}
 
 	/// <summary>
