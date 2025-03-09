@@ -1,11 +1,12 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using static UnityEngine.GraphicsBuffer;
 
 public class ObjectSpawner : MonoBehaviour
 {
 	[SerializeField] private string ObjectID;
+	[SerializeField] private ObjectBase.Direnction direnction;
+
 
 	private async void Start()
     {
@@ -14,6 +15,7 @@ public class ObjectSpawner : MonoBehaviour
 
 		var lashObj = Instantiate(obj, transform.position, transform.rotation, transform.parent);
 		var slashObj = lashObj.GetComponent<SlashBase>();
+		slashObj.SetDirection(direnction == ObjectBase.Direnction.Right);
 
 		if (slashObj.GetLanding() == ObjectBase.Landing.Ground)
 		{
@@ -42,6 +44,10 @@ public class ObjectSpawner : MonoBehaviour
 	{
 		//Debug.Log("OnValidate");
 
+		// 向きの設定
+		SetDirection();
+
+		// フォルダ名
 		var folderName = "";
 		if(transform.name.StartsWith("SPN_EN"))
 		{
@@ -80,5 +86,24 @@ public class ObjectSpawner : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	private void SetDirection()
+	{
+		var eulerAngles = transform.eulerAngles;
+
+		switch (direnction)
+		{
+			case ObjectBase.Direnction.Right:
+				eulerAngles.y = 0;
+				break;
+			case ObjectBase.Direnction.Left:
+				eulerAngles.y = 180;
+				break;
+			default:
+				break;
+		}
+
+		transform.eulerAngles = eulerAngles;
 	}
 }
