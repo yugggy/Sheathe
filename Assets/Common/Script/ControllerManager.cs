@@ -54,14 +54,60 @@ public class ControllerManager : MonoBehaviour
 		_moveState = MoveState.None;
 		_leftStickValue = 0;
 
-		// ゲームパッド操作
-		GamePadOperate();
-
 		// キーボード操作
 		KeyboradOperate();
 
+		// ゲームパッド操作
+		GamePadOperate();
+
 		//Debug.Log($"操作：{_state}");
 		//Debug.Log($"移動：{_leftStickValue}");
+	}
+
+	/// <summary>
+	/// キーボード操作
+	/// </summary>
+	private void KeyboradOperate()
+	{
+		// 左右操作
+		if (Input.GetKey(KeyCode.RightArrow))
+		{
+			_moveState = MoveState.RightMove;
+			_leftStickValue = 1.0f;
+		}
+		else if (Input.GetKey(KeyCode.LeftArrow))
+		{
+			_moveState = MoveState.LeftMove;
+			_leftStickValue = -1.0f;
+		}
+		else
+		{
+			_moveState = MoveState.None;
+		}
+
+		// ジャンプ
+		if (Input.GetKey(KeyCode.UpArrow))
+		{
+			_jumpState = JumpState.Jump;
+		}
+		else
+		{
+			_jumpState = JumpState.None;
+		}
+
+		// 攻撃
+		if (Input.GetKeyDown(KeyCode.X))
+		{
+			_attackState = AttackState.Attack;
+		}
+		else if (Input.GetKeyDown(KeyCode.Z))
+		{
+			_attackState = AttackState.Sheath;
+		}
+		else
+		{
+			_attackState = AttackState.None;
+		}
 	}
 
 	/// <summary>
@@ -114,40 +160,6 @@ public class ControllerManager : MonoBehaviour
 		else
 		{
 			_attackState = AttackState.None;
-		}
-	}
-
-	/// <summary>
-	/// キーボード操作
-	/// </summary>
-	private void KeyboradOperate()
-	{
-		// 左右操作
-		if (Input.GetKey(KeyCode.RightArrow))
-		{
-			_moveState = MoveState.RightMove;
-			_leftStickValue = 1.0f;
-		}
-		else if (Input.GetKey(KeyCode.LeftArrow))
-		{
-			_moveState = MoveState.LeftMove;
-			_leftStickValue = -1.0f;
-		}
-
-		// ジャンプ
-		if (Input.GetKey(KeyCode.UpArrow))
-		{
-			_jumpState = JumpState.Jump;
-		}
-
-		// 攻撃
-		if (Input.GetKeyDown(KeyCode.X))
-		{
-			_attackState = AttackState.Attack;
-		}
-		else if (Input.GetKeyDown(KeyCode.Z))
-		{
-			_attackState = AttackState.Sheath;
 		}
 	}
 }
