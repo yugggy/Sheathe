@@ -17,19 +17,19 @@ public class ObjectSpawner : MonoBehaviour
 		var slashObj = lashObj.GetComponent<SlashBase>();
 		slashObj.SetDirection(direnction == ObjectBase.Direnction.Right);
 
-		if (slashObj.GetLanding() == ObjectBase.Landing.Ground)
-		{
-			// 地面から一定距離の地点から落下
-			var hit = Physics2D.Raycast(transform.position, -transform.up * 10);
-			if (hit.collider != null)
-			{
-				// TODO：オブジェクトのサイズから算出
-				//var a = slashObj.GetFootPos();
-				var gorundPos = hit.point;
-				gorundPos.y += 1;
-				slashObj.transform.position = gorundPos;
-			}
-		}
+		// 地面から一定距離の地点から落下
+		//if (slashObj.GetLanding() == ObjectBase.Landing.Ground)
+		//{
+		//	var hit = Physics2D.Raycast(transform.position, -transform.up * 10);
+		//	if (hit.collider != null)
+		//	{
+		//		// TODO：オブジェクトのサイズから算出
+		//		//var a = slashObj.GetFootPos();
+		//		var gorundPos = hit.point;
+		//		gorundPos.y += 1;
+		//		slashObj.transform.position = gorundPos;
+		//	}
+		//}
 
 		Destroy(this.gameObject);
 
