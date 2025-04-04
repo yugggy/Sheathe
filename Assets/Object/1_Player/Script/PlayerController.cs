@@ -39,6 +39,13 @@ public class PlayerController : ObjectBase
     /// </summary>
     private void Move()
     {
+		// 納刀中であれば行わない
+		//if (_isSheath)
+		//{
+		//	_velocity.x = 0;
+		//	return;
+		//}
+
 		if (moveSpd == 0)
 		{
 			Debug.LogError("移動倍率0");
@@ -66,6 +73,12 @@ public class PlayerController : ObjectBase
 	/// </summary>
 	private void Jump()
     {
+		// 納刀中であれば行わない
+		//if (_isSheath)
+		//{
+		//	return;
+		//}
+
 		//_velocity.y = 0;
 
 		if (ControllerManager.Current.GetJumpState == ControllerManager.JumpState.Jump)
@@ -101,6 +114,12 @@ public class PlayerController : ObjectBase
 	/// </summary>
 	private void Attack()
 	{
+		// 納刀中であれば行わない
+		//if (_isSheath)
+		//{
+		//	return;
+		//}
+
 		if (ControllerManager.Current.GetAttackState == ControllerManager.AttackState.Attack)
 		{
 			_attackCollider.gameObject.SetActive(true);
