@@ -76,4 +76,28 @@ public class StageManager : MonoBehaviour
 			isFirstAttack = true;
 		}
 	}
+
+	/// <summary>
+	/// Gateの取得
+	/// </summary>
+	public GateController GetGateController()
+	{
+		var gate = transform.Find("Gate").gameObject;
+		if (gate == null)
+		{
+			Debug.Log("このステージにはGateがありません");
+			return null;
+		}
+
+		if (gate.TryGetComponent<GateController>(out var gateController))
+		{
+			return gateController;
+		}
+		else
+		{
+			Debug.Log("このステージのGateにGateControllerコンポーネントが付与されていません。");
+			return null;
+		}
+	}
+
 }
