@@ -51,7 +51,7 @@ public class PlayerController : ObjectBase
 			Debug.LogError("移動倍率0");
 		}
 
-		var leftStickValue = ControllerManager.Current.LeftStickValue / 100.0f * moveSpd;
+		var leftStickValue = ControllerManager.Current.LeftStickValue * moveSpd * Time.deltaTime;
 		if (ControllerManager.Current.GetMoveState == ControllerManager.MoveState.RightMove)
 		{
 			_velocity.x = leftStickValue;
@@ -87,7 +87,7 @@ public class PlayerController : ObjectBase
 			{
 				_isJump = true;
 				_isGround = false;
-				_velocity.y = jumpPower;
+				_velocity.y = jumpPower * Time.deltaTime;
 			}
 		}
 
