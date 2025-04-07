@@ -62,7 +62,17 @@ public class SceneGameManager : MonoBehaviour
 			if (playerSpawnPoint != null)
 			{
 				playerObj.transform.position = playerSpawnPoint.position;
-				Debug.Log($"Stage_{stageName}に遷移");
+				//var hit = Physics2D.Raycast(playerSpawnPoint.position, Vector2.down * 10);
+				//if (hit.collider != null)
+				//{
+				//	// 地面に当たったところからプレイヤーの大きさ分上で生成する
+				//	var pos = hit.point + new Vector2(0, 0.9f);
+				//	playerObj.transform.position = pos;
+				//	Debug.Log($"Stage_{stageName}に遷移");
+				//}
+				//else{
+				//	Debug.Log($"レイが当たっていない");
+				//}
 			}
 		}
 	}
