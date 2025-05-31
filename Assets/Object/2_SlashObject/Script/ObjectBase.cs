@@ -31,7 +31,7 @@ public class ObjectBase : MonoBehaviour
 		_scale = scale.localScale;
 
 		// Animation
-		if (scale.Find("Animation").TryGetComponent<Animator>(out var animator))
+		if (scale.Find("Image").TryGetComponent<Animator>(out var animator))
 		{
 			_animator = animator;
 		}

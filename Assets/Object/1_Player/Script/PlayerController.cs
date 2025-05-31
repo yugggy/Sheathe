@@ -165,6 +165,7 @@ public class PlayerController : ObjectBase
 			// 納刀アニメ
 			_animator.SetBool("IsSheath", true);
 			yield return WaitAnimeFinish();
+			_animator.SetBool("IsSheath", false);
 
 			// 結果発表
 			StageManager.Current.Result();
