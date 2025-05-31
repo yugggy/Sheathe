@@ -19,7 +19,7 @@ public class SceneGameManager : MonoBehaviour
 	private void Start()
 	{
 		// TODO：セーブデータから読み込んだステージ名
-		_stageName = "2_1";
+		_stageName = "1_1";
 
 		MoveStage(_stageName, true, 4);
 	}
