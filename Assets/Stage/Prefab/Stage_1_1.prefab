@@ -739,7 +739,7 @@ MonoBehaviour:
   _startGate: {fileID: 7005333243508305023}
   _endGate: {fileID: 3448423809903757606}
   _frontStageName: 
-  _nextStageName: 2_1
+  _nextStageName: 1_2
 --- !u!1 &4797018400868777520
 GameObject:
   m_ObjectHideFlags: 0
