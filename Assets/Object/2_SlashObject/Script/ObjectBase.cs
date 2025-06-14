@@ -102,7 +102,7 @@ public class ObjectBase : MonoBehaviour
 		switch (landing)
 		{
 			case Landing.Ground:
-				rigidbody2D.gravityScale = 1;
+				// rigidbody2D.gravityScale = 1;
 				break;
 			case Landing.Air:
 				rigidbody2D.gravityScale = 0;

@@ -7,7 +7,8 @@ public class PlayerController : ObjectBase
     [SerializeField, Label("減速速度")] float deboostSpd;
     [SerializeField, Label("ジャンプ力")] float jumpPower;
     [SerializeField, Label("重力")] float gravity;
-    private Vector3 _velocity;
+	[SerializeField] Rigidbody2D rigidBody2d;
+	private Vector3 _velocity;
 	private bool _isJump = false;
 	private bool _isGround = false;
 	private float _attackTimer;
@@ -79,34 +80,13 @@ public class PlayerController : ObjectBase
 		//	return;
 		//}
 
-		//_velocity.y = 0;
-
 		if (ControllerManager.Current.GetJumpState == ControllerManager.JumpState.Jump)
 		{
-			if (!_isJump)
-			{
-				_isJump = true;
-				_isGround = false;
-				_velocity.y = jumpPower * Time.deltaTime;
-			}
+			Debug.Log("押下");
+			var velocity = rigidBody2d.linearVelocity;
+			velocity.y = jumpPower;
+			rigidBody2d.linearVelocity = velocity;
 		}
-
-		if (_isJump)
-		{
-			//_velocity.y = jumpPower;
-			//_velocity.y -= gravity * Time.deltaTime;
-			_velocity.y -= gravity * Time.deltaTime;
-		}
-		else
-		{
-			// 空中にいる
-			if (!_isGround)
-			{
-				//_velocity.y -= gravity;
-			}
-		}
-
-		//_velocity.y -= gravity;
 	}
 
 	/// <summary>
@@ -172,14 +152,14 @@ public class PlayerController : ObjectBase
 		}
 	}
 
-	private void OnCollisionStay2D(Collision2D collision)
-	{
-		var stageLayer = 8;
-		if (collision.gameObject.layer == stageLayer)
-		{
-			_isGround = true;
-			_isJump = false;
-			_velocity.y = 0;
-		}
-	}
+	//private void OnCollisionStay2D(Collision2D collision)
+	//{
+	//	var stageLayer = 8;
+	//	if (collision.gameObject.layer == stageLayer)
+	//	{
+	//		_isGround = true;
+	//		_isJump = false;
+	//		_velocity.y = 0;
+	//	}
+	//}
 }
