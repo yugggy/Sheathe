@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class StageManager : MonoBehaviour
@@ -35,7 +36,7 @@ public class StageManager : MonoBehaviour
 	/// <summary>
 	/// 結果発表
 	/// </summary>
-	public void Result()
+	public async void Result()
 	{
 		// 全滅判定
 		if (ObjectManager.Current.GetDestroyCompletely())
@@ -44,6 +45,8 @@ public class StageManager : MonoBehaviour
 
 			// 斬った敵殲滅
 			ObjectManager.Current.DestroySlashObject();
+			
+			await Task.Delay(500);
 			
 			// 扉開錠
 			_gateController.DoorOpen();
