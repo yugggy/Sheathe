@@ -58,13 +58,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1043738047353176047}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.2680792, w: 0.9633969}
+  m_LocalRotation: {x: 0, y: 0, z: -0.258819, w: 0.9659259}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2.400357, y: 0.14998567, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4975653421873413603}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 31.1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -30}
 --- !u!212 &6765692855761676634
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -581,6 +581,7 @@ MonoBehaviour:
   landing: 1
   slashAnime: {fileID: 1043738047353176047}
   isCanSlash: 1
+  isExplosion: 1
 --- !u!61 &2956529822489766233
 BoxCollider2D:
   m_ObjectHideFlags: 0
