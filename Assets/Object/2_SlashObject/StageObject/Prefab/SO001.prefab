@@ -172,6 +172,7 @@ MonoBehaviour:
   landing: 0
   slashAnime: {fileID: 7734474581278416999}
   isCanSlash: 1
+  isExplosion: 0
 --- !u!50 &4712000567255638227
 Rigidbody2D:
   serializedVersion: 5
