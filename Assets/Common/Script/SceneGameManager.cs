@@ -10,6 +10,7 @@ public class SceneGameManager : MonoBehaviour
 	private string _stageName = "";
 
 	public static SceneGameManager Current;
+	public GameObject Player => playerObj;
 
 	private void Awake()
 	{
