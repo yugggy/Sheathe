@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
+	[SerializeField] GateController _gateController;
+	
 	private float firstAttackTimer = 0;
 	private bool isFirstAttack = false;
 	private float firstAttackTime = 10;
@@ -42,6 +44,9 @@ public class StageManager : MonoBehaviour
 
 			// 斬った敵殲滅
 			ObjectManager.Current.DestroySlashObject();
+			
+			// 扉開錠
+			_gateController.DoorOpen();
 
 			Debug.Log("ステージクリア");
 		}

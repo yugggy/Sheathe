@@ -15,6 +15,11 @@ public class GateController : MonoBehaviour
 		_endGate.GetAction += nextStage;
 	}
 
+	public void DoorOpen()
+	{
+		_endGate.DoorOpen();
+	}
+
 	/// <summary>
 	/// 前のステージ遷移
 	/// </summary>
