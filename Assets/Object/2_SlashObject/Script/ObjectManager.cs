@@ -40,9 +40,7 @@ public class ObjectManager : MonoBehaviour
 		{
 			if (slash.IsSlashed)
 			{
-				// TODO：殲滅アニメ再生
-
-				Destroy(slash.gameObject);
+				slash.Destroy();
 			}
 		}
 
