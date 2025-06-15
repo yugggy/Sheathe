@@ -43,6 +43,11 @@ public class ObjectBase : MonoBehaviour
 		_damageCollider = collider.Find("Damage").GetComponent<BoxCollider2D>();
 	}
 
+	protected virtual void Update()
+	{
+		
+	}
+
 	public Vector3 GetFootPos()
 	{
 		var a = _scale;

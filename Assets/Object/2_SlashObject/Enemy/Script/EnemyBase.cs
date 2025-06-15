@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class EnemyBase : SlashBase
 {
-    protected float _chaseVelocity = 0.004f;
+    protected float _chaseVelocity = 0.002f;
     
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
+        
         // 攻撃されたらプレイヤーを追いかける
         if (IsSlashed)
         {
