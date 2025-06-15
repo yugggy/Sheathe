@@ -80,9 +80,10 @@ public class PlayerController : ObjectBase
 		//	return;
 		//}
 
-		if (ControllerManager.Current.GetJumpState == ControllerManager.JumpState.Jump)
+		if (!_isJump && ControllerManager.Current.GetJumpState == ControllerManager.JumpState.Jump)
 		{
 			Debug.Log("押下");
+			_isJump = true;
 			var velocity = rigidBody2d.linearVelocity;
 			velocity.y = jumpPower;
 			rigidBody2d.linearVelocity = velocity;
@@ -152,14 +153,12 @@ public class PlayerController : ObjectBase
 		}
 	}
 
-	//private void OnCollisionStay2D(Collision2D collision)
-	//{
-	//	var stageLayer = 8;
-	//	if (collision.gameObject.layer == stageLayer)
-	//	{
-	//		_isGround = true;
-	//		_isJump = false;
-	//		_velocity.y = 0;
-	//	}
-	//}
+	private void OnCollisionStay2D(Collision2D collision)
+	{
+		var stageLayer = 8;
+		if (collision.gameObject.layer == stageLayer)
+		{
+			_isJump = false;
+		}
+	}
 }
