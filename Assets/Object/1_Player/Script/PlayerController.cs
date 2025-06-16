@@ -51,7 +51,7 @@ public class PlayerController : ObjectBase
 		{
 			Debug.LogError("移動倍率0");
 		}
-
+		
 		var leftStickValue = ControllerManager.Current.LeftStickValue * moveSpd * Time.deltaTime;
 		if (ControllerManager.Current.GetMoveState == ControllerManager.MoveState.RightMove)
 		{
@@ -150,6 +150,8 @@ public class PlayerController : ObjectBase
 
 			// 結果発表
 			StageManager.Current.Result();
+			
+			_isSheath = false;
 		}
 	}
 
