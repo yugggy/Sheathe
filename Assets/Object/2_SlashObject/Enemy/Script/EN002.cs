@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EN002 : EnemyBase
 {
+    [SerializeField] private Animator _animator;
+    
     private float initY;
     
     private void Start()
@@ -23,5 +25,11 @@ public class EN002 : EnemyBase
     {
         float sin = Mathf.Sin(Time.time*2) * 0.2f;
         transform.position = new Vector3(transform.position.x,initY + sin,transform.position.z);
+    }
+    
+    public override void SetSlashed()
+    {
+        base.SetSlashed();
+        _animator.SetBool("IsFlash1", true);
     }
 }
