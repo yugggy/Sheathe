@@ -345,6 +345,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47db331e6aea4224398f1498733780a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _boxCollider2D: {fileID: 0}
+  _doorAnimator: {fileID: 0}
 --- !u!61 &3019260269368783922
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -552,7 +554,7 @@ Transform:
   m_GameObject: {fileID: 2744932515103455423}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.19, y: -2.51, z: 0}
+  m_LocalPosition: {x: 16.19, y: -2.5, z: 0}
   m_LocalScale: {x: 8, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1705,6 +1707,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47db331e6aea4224398f1498733780a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _boxCollider2D: {fileID: 0}
+  _doorAnimator: {fileID: 0}
 --- !u!61 &4733606409996035016
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1799,6 +1803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6c75994f0b54784abf14560dc215313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gateController: {fileID: 0}
 --- !u!1001 &1706878855847854133
 PrefabInstance:
   m_ObjectHideFlags: 0
