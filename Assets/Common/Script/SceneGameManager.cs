@@ -6,11 +6,11 @@ using UnityEngine.AddressableAssets;
 public class SceneGameManager : MonoBehaviour
 {
 	private GameObject stageObj = null;
-	private GameObject playerObj = null;
+	private PlayerController _player = null;
 	private string _stageName = "";
 
 	public static SceneGameManager Current;
-	public GameObject Player => playerObj;
+	public GameObject Player => _player.gameObject;
 
 	private void Awake()
 	{
@@ -47,7 +47,7 @@ public class SceneGameManager : MonoBehaviour
 		// プレイヤー削除
 		ObjectManager.Current.ClearPlayer();
 		await Task.Delay(1000);
-		Destroy(playerObj);
+		Destroy(_player.gameObject);
 
 		// ステージ生成
 		await Task.Delay(300);
@@ -71,13 +71,14 @@ public class SceneGameManager : MonoBehaviour
 		stageObj = Instantiate(stage, transform.position, transform.rotation, transform);
 
 		// Player生成
-		if (playerObj == null)
+		if (_player == null)
 		{
 			var playerHandle = Addressables.LoadAssetAsync<GameObject>("Player");
-			var player = await playerHandle.Task;
-			playerObj = Instantiate(player, Vector3.zero, transform.rotation, transform);
+			var playerOrigin = await playerHandle.Task;
+			var playerObj = Instantiate(playerOrigin, Vector3.zero, transform.rotation, transform);
 			if (playerObj.TryGetComponent<PlayerController>(out var playerController))
 			{
+				_player = playerController;
 				ObjectManager.Current.SetPlayer(playerController);	
 			}
 		}
@@ -88,14 +89,15 @@ public class SceneGameManager : MonoBehaviour
 			var playerSpawnPoint = isStart ? gateController.GetPlayerSpawnPoint(true) : gateController.GetPlayerSpawnPoint(false);
 			if (playerSpawnPoint != null)
 			{
-				playerObj.transform.position = playerSpawnPoint.position;
+				_player.transform.position = playerSpawnPoint.position;
 				var hit = Physics2D.Raycast(playerSpawnPoint.position, Vector2.down * 10);
 				if (hit.collider != null)
 				{
 					// TODO：地面に到達したところからプレイヤーの大きさ分上に生成する
 					var pos = hit.point + new Vector2(0, 0.6f);
 					pos = pos + (isStart ? 1 : -1) * new Vector2(playerPosX, 0);
-					playerObj.transform.position = pos;
+					_player.transform.position = pos;
+					_player.SetDirection(true);
 					Debug.Log($"Stage_{stageName}に遷移");
 				}
 				else
