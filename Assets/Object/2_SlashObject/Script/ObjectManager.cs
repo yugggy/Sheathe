@@ -6,6 +6,7 @@ using UnityEngine;
 public class ObjectManager : MonoBehaviour
 {
 	private List<SlashBase> _slashList = new List<SlashBase>(50);
+	private PlayerController _player;
 
 	public static ObjectManager Current;
 	public List<SlashBase> SlashList => _slashList;
@@ -14,9 +15,33 @@ public class ObjectManager : MonoBehaviour
 	{
 		Current = this;
 	}
+	
+	/// <summary>
+	/// プレイヤー生成時
+	/// </summary>
+	public void SetPlayer(PlayerController player)
+	{
+		_player = player;
+	}
 
 	/// <summary>
-	/// 生成時
+	/// プレイヤーダメージ判定
+	/// </summary>
+	public bool IsPlayerDamage()
+	{
+		return _player.IsDamage;
+	}
+	
+	/// <summary>
+	/// プレイヤークリア
+	/// </summary>
+	public void ClearPlayer()
+	{
+		_player = null;
+	}
+
+	/// <summary>
+	/// 敵生成時
 	/// </summary>
 	public void SetSlashObjectList(SlashBase slashObj)
 	{

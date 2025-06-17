@@ -10,11 +10,14 @@ public class PlayerController : ObjectBase
 	[SerializeField] Rigidbody2D rigidBody2d;
 	private Vector3 _velocity;
 	private bool _isJump = false;
+	private bool _isDamage = false;
 	private bool _isGround = false;
 	private float _attackTimer;
 	private float AttackTimer = 0.1f;
 	private float timer = 0f;
 	private bool _isSheath = false;
+	
+	public bool IsDamage => _isDamage;
 
 	void Update()
     {
@@ -161,6 +164,16 @@ public class PlayerController : ObjectBase
 		if (collision.gameObject.layer == stageLayer)
 		{
 			_isJump = false;
+		}
+	}
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		var explosionLayer = 10;
+		if (collision.gameObject.layer == explosionLayer)
+		{
+			_isDamage = true;
+			_animator.SetBool("IsDamage", true);
 		}
 	}
 }

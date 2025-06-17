@@ -38,16 +38,16 @@ public class StageManager : MonoBehaviour
 	/// </summary>
 	public async void Result()
 	{
-		// 全滅判定
-		if (ObjectManager.Current.GetDestroyCompletely())
-		{
-			isFirstAttack = false;
+		isFirstAttack = false;
 
-			// 斬った敵殲滅
-			ObjectManager.Current.DestroySlashObject();
-			
-			await Task.Delay(500);
-			
+		// 斬った敵殲滅
+		ObjectManager.Current.DestroySlashObject();
+		
+		await Task.Delay(500);
+		
+		// 全滅判定
+		if (ObjectManager.Current.GetDestroyCompletely() && !ObjectManager.Current.IsPlayerDamage())
+		{
 			// 扉開錠
 			_gateController.DoorOpen();
 
@@ -55,11 +55,6 @@ public class StageManager : MonoBehaviour
 		}
 		else
 		{
-			isFirstAttack = false;
-
-			// 斬った敵殲滅
-			ObjectManager.Current.DestroySlashObject();
-
 			SceneGameManager.Current.ReloadStage();
 		}
 	}

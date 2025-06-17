@@ -45,6 +45,7 @@ public class SceneGameManager : MonoBehaviour
 		ObjectManager.Current.ClearSlashObjectList();
 
 		// プレイヤー削除
+		ObjectManager.Current.ClearPlayer();
 		await Task.Delay(1000);
 		Destroy(playerObj);
 
@@ -75,6 +76,10 @@ public class SceneGameManager : MonoBehaviour
 			var playerHandle = Addressables.LoadAssetAsync<GameObject>("Player");
 			var player = await playerHandle.Task;
 			playerObj = Instantiate(player, Vector3.zero, transform.rotation, transform);
+			if (playerObj.TryGetComponent<PlayerController>(out var playerController))
+			{
+				ObjectManager.Current.SetPlayer(playerController);	
+			}
 		}
 		// ステージに設定されている生成ポイントを元に生成する
 		var gateController = stageObj.GetComponent<StageManager>().GetGateController();
