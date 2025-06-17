@@ -31,10 +31,10 @@ Unity 6000.0.32f1（C#）
 - 絵が描けないため、仮素材を用いたプロトタイプをもってデザイナーさんの協力を仰ぐ予定です。
 - 完成の目途が立てば、イベントへの出展やsteamでの販売も検討しています。
 
-## スクリーンショット
-![ゲーム画面1](images/ss1.png)
-![ゲーム画面2](images/ss2.png)
+## スクリーンショット（2025年6月時点）
+<img src="Images/Sheathe_Stage1.jpg" width="50%"/>
+<img src="Images/Sheathe_Stage2.jpg" width="50%"/>
 
-## 動画デモ
+## 動画デモ（2025年6月時点）
 [→ Googleドライブで視聴する](https://drive.google.com/...)
 
