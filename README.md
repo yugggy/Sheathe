@@ -37,6 +37,7 @@ JetBrains Rider
 <img src="Images/Sheathe_Stage2.jpg" width="50%"/>
 
 ## 動画デモ（2025年6月時点）
-https://github.com/user-attachments/assets/60efac03-28bb-4523-80ec-79dca2361a78
+https://github.com/user-attachments/assets/cc124e65-f1fc-438a-9e94-0c0bdc4d2cac
+
 
 
