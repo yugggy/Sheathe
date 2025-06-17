@@ -16,6 +16,7 @@ public class PlayerController : ObjectBase
 	private float AttackTimer = 0.1f;
 	private float timer = 0f;
 	private bool _isSheath = false;
+	private float _groundCheckRayLength = 0.8f;
 	
 	public bool IsDamage => _isDamage;
 
@@ -26,6 +27,9 @@ public class PlayerController : ObjectBase
 
         // ジャンプ
         Jump();
+        
+        // 着地判定
+        GroundCheck();
         
         // 攻撃
         Attack();
@@ -82,14 +86,31 @@ public class PlayerController : ObjectBase
 		{
 			return;
 		}
-
-		if (!_isJump && ControllerManager.Current.GetJumpState == ControllerManager.JumpState.Jump)
+		
+		if (_isGround && !_isJump && ControllerManager.Current.GetJumpState == ControllerManager.JumpState.Jump)
 		{
-			Debug.Log("押下");
+			Debug.Log("ジャンプ");
 			_isJump = true;
 			var velocity = rigidBody2d.linearVelocity;
 			velocity.y = jumpPower;
 			rigidBody2d.linearVelocity = velocity;
+		}
+	}
+
+	/// <summary>
+	/// 着地判定
+	/// </summary>
+	private void GroundCheck()
+	{
+		int stageLayer = 1 << LayerMask.NameToLayer("Stage");
+		if (Physics2D.Raycast(transform.position, -transform.up, _groundCheckRayLength, stageLayer))
+		{
+			_isGround = true;
+			_isJump = false;
+		}
+		else
+		{
+			_isGround = false;
 		}
 	}
 
@@ -158,15 +179,6 @@ public class PlayerController : ObjectBase
 		}
 	}
 
-	private void OnCollisionStay2D(Collision2D collision)
-	{
-		var stageLayer = 8;
-		if (collision.gameObject.layer == stageLayer)
-		{
-			_isJump = false;
-		}
-	}
-
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		var explosionLayer = 10;
@@ -175,5 +187,11 @@ public class PlayerController : ObjectBase
 			_isDamage = true;
 			_animator.SetBool("IsDamage", true);
 		}
+	}
+
+	private void OnDrawGizmos()
+	{
+		Gizmos.color = Color.red;
+		Gizmos.DrawRay(transform.position,-transform.up * _groundCheckRayLength);
 	}
 }

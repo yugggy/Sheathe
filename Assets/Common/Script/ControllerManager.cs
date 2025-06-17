@@ -86,7 +86,7 @@ public class ControllerManager : MonoBehaviour
 		}
 
 		// ジャンプ
-		if (Input.GetKey(KeyCode.UpArrow))
+		if (Input.GetKeyDown(KeyCode.UpArrow))
 		{
 			_jumpState = JumpState.Jump;
 		}
