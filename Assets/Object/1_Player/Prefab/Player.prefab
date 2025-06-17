@@ -273,7 +273,7 @@ MonoBehaviour:
   landing: 0
   moveSpd: 15
   deboostSpd: 1
-  jumpPower: 18
+  jumpPower: 20
   gravity: 0.1
   rigidBody2d: {fileID: 590567414598285415}
 --- !u!61 &6657239725133459958
