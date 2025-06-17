@@ -36,5 +36,6 @@ Unity 6000.0.32f1（C#）
 <img src="Images/Sheathe_Stage2.jpg" width="50%"/>
 
 ## 動画デモ（2025年6月時点）
-[→ Googleドライブで視聴する](https://drive.google.com/...)
+
+
 
