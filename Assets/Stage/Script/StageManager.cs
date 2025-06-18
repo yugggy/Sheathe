@@ -44,10 +44,10 @@ public class StageManager : MonoBehaviour
 	/// <summary>
 	/// ステージクリア判定
 	/// </summary>
-	public async void Result()
+	public async Task ResultAsync()
 	{
 		// 斬った敵殲滅
-		ObjectManager.Current.DestroySlashObject();
+		await ObjectManager.Current.DestroySlashObjectAsync();
 		
 		await Task.Delay(500);
 		
@@ -61,7 +61,7 @@ public class StageManager : MonoBehaviour
 		}
 		else
 		{
-			SceneGameManager.Current.ReloadStage();
+			SceneGameManager.Current.ReloadStageAsync();
 		}
 	}
 }

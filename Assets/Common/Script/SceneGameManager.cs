@@ -26,7 +26,7 @@ public class SceneGameManager : MonoBehaviour
 	{
 		// TODO：セーブデータから読み込んだステージ
 		_stageName = "2_1";
-		MoveStage(_stageName, true, 0);
+		MoveStageAsync(_stageName, true, 0);
 	}
 
 	private void Update()
@@ -34,7 +34,7 @@ public class SceneGameManager : MonoBehaviour
 		// Rキーでリトライ
 		if (Input.GetKeyDown(KeyCode.R))
 		{
-			ReloadStage();
+			ReloadStageAsync();
 		}
 	}
 
@@ -77,7 +77,7 @@ public class SceneGameManager : MonoBehaviour
 	/// <summary>
 	/// ステージ再ロード
 	/// </summary>
-	public async void ReloadStage()
+	public async Task ReloadStageAsync()
 	{
 		Debug.Log("ステージ再ロード");
 
@@ -88,15 +88,16 @@ public class SceneGameManager : MonoBehaviour
 		ObjectManager.Current.PlayerDestroy();
 
 		// ステージ生成
-		await Task.Delay(1000);
-		MoveStage(_stageName, true);
+		await MoveStageAsync(_stageName, true);
 	}
 
 	/// <summary>
 	/// ステージ遷移
 	/// </summary>
-	public async void MoveStage(string stageName, bool isStart, float playerPosX = 0)
+	public async Task MoveStageAsync(string stageName, bool isStart, float playerPosX = 0)
 	{
+		// await Task.Delay(1000);
+		
 		// オブジェクトリスト初期化
 		ObjectManager.Current.ClearSlashObjectList();
 		
@@ -128,7 +129,7 @@ public class SceneGameManager : MonoBehaviour
 		}
 		
 		// Player生成
-		await ObjectManager.Current.CreatePlayer(playerSpawnPoint.position);
+		await ObjectManager.Current.CreatePlayerAsync(playerSpawnPoint.position);
 		
 		Debug.Log($"Stage_{stageName}に遷移");
 	}

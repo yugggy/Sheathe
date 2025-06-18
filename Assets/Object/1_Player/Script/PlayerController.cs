@@ -27,7 +27,7 @@ public class PlayerController : ObjectBase
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	public async Task Init()
+	public async Task InitAsync()
 	{
 		_isUnSheath = true;
 		
@@ -178,7 +178,7 @@ public class PlayerController : ObjectBase
 			yield return WaitAnimeFinish();
 
 			// 結果発表
-			StageManager.Current.Result();
+			StageManager.Current.ResultAsync();
 			
 			_isSheath = false;
 		}

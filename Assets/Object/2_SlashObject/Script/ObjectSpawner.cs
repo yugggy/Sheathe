@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -10,24 +11,28 @@ public class ObjectSpawner : MonoBehaviour
 	[SerializeField] private string _objectID;
 	[SerializeField] private ObjectBase.Direction _direction;
 
-	private async void Start()
-    {
-	    var obj = await SceneGameManager.Current.LoadAsync(_objectID);
-		var slashObj = Instantiate(obj, transform.position, transform.rotation, transform.parent);
-		if (slashObj.TryGetComponent<SlashBase>(out var slash))
-		{
-			slash.SetDirection(_direction == ObjectBase.Direction.Right);
-			if (slash.IsCanSlash)
-			{
-				ObjectManager.Current.SetSlashObjectList(slash);
-			}
-		}
-		else
-		{
-			Debug.Log($"{_objectID}プレハブにSlashBaseが付いていません");
-		}
+	private void Start()
+	{
+		SpawnAsync();
+	    async Task SpawnAsync()
+	    {
+		    var obj = await SceneGameManager.Current.LoadAsync(_objectID);
+		    var slashObj = Instantiate(obj, transform.position, transform.rotation, transform.parent);
+		    if (slashObj.TryGetComponent<SlashBase>(out var slash))
+		    {
+			    slash.SetDirection(_direction == ObjectBase.Direction.Right);
+			    if (slash.IsCanSlash)
+			    {
+				    ObjectManager.Current.SetSlashObjectList(slash);
+			    }
+		    }
+		    else
+		    {
+			    Debug.Log($"{_objectID}プレハブにSlashBaseが付いていません");
+		    }
 		
-		Destroy(this.gameObject);
+		    Destroy(this.gameObject);
+	    }
 	}
 
 	/// <summary>

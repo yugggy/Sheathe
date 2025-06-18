@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -43,7 +44,7 @@ public class SlashBase : ObjectBase
 	/// <summary>
 	/// 撃破
 	/// </summary>
-	public async void Destroy()
+	public async Task DestroyAsync()
 	{
 		// 爆発
 		if (_isExplosion)

@@ -28,7 +28,7 @@ public class GateController : MonoBehaviour
 			return;
 		}
 
-		SceneGameManager.Current.MoveStage(_frontStageName, false);
+		SceneGameManager.Current.MoveStageAsync(_frontStageName, false);
 	}
 
 	/// <summary>
@@ -43,7 +43,7 @@ public class GateController : MonoBehaviour
 		}
 
 		Debug.Log($"{_nextStageName}");
-		SceneGameManager.Current.MoveStage(_nextStageName, true);
+		SceneGameManager.Current.MoveStageAsync(_nextStageName, true);
 	}
 
 	/// <summary>
