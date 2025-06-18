@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 public class ObjectManager : MonoBehaviour
 {
@@ -23,15 +22,11 @@ public class ObjectManager : MonoBehaviour
 	/// </summary>
 	public async Task CreatePlayer(Vector3 position)
 	{
-		if (_playerOrigin == null)
-		{
-			var playerHandle = Addressables.LoadAssetAsync<GameObject>("Player");
-			_playerOrigin = await playerHandle.Task;
-		}
-
+		var obj = await SceneGameManager.Current.LoadAsync("Player");
+		
 		if (_player == null)
 		{
-			var playerObj = Instantiate(_playerOrigin, position, transform.rotation, transform);
+			var playerObj = Instantiate(obj, position, transform.rotation, transform);
 			if (playerObj.TryGetComponent<PlayerController>(out var playerController))
 			{
 				_player = playerController;

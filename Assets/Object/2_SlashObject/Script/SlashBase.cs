@@ -48,13 +48,8 @@ public class SlashBase : ObjectBase
 		// 爆発
 		if (_isExplosion)
 		{
-			var explosionHandle = Addressables.LoadAssetAsync<GameObject>($"Explosion");
-			var explosion = await explosionHandle.Task;
-			if (explosion == null)
-			{
-				Debug.Log($"{name}プレハブに爆発のエフェクトがありません");
-			}
-			Instantiate(explosion, transform.position, transform.rotation, transform.parent);
+			var obj = await SceneGameManager.Current.LoadAsync("Explosion");
+			Instantiate(obj, transform.position, transform.rotation, transform.parent);
 		}
 		
 		Destroy(gameObject);

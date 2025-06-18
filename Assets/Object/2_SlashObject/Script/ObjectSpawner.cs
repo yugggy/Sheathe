@@ -12,13 +12,8 @@ public class ObjectSpawner : MonoBehaviour
 
 	private async void Start()
     {
-		var objHandle = Addressables.LoadAssetAsync<GameObject>(_objectID);
-		var objOrigin = await objHandle.Task;
-		if (objOrigin == null)
-		{
-			Debug.Log($"{_objectID}プレハブは存在しません");
-		}
-		var slashObj = Instantiate(objOrigin, transform.position, transform.rotation, transform.parent);
+	    var obj = await SceneGameManager.Current.LoadAsync(_objectID);
+		var slashObj = Instantiate(obj, transform.position, transform.rotation, transform.parent);
 		if (slashObj.TryGetComponent<SlashBase>(out var slash))
 		{
 			slash.SetDirection(_direction == ObjectBase.Direction.Right);

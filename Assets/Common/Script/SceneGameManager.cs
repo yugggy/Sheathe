@@ -1,14 +1,22 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class SceneGameManager : MonoBehaviour
 {
 	private GameObject _stageObj;
 	private string _stageName = "";
+	
+	// Addressableのキャッシュ
+	// TODO：今後別のクラスに移行する
+	private Dictionary<string, AsyncOperationHandle<GameObject>> _cache = new();
+
+	public Dictionary<string, AsyncOperationHandle<GameObject>> AddressableCache => _cache;
 
 	public static SceneGameManager Current;
-
+	
 	private void Awake()
 	{
 		Current = this;
@@ -27,6 +35,42 @@ public class SceneGameManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.R))
 		{
 			ReloadStage();
+		}
+	}
+
+	/// <summary>
+	/// Addressableロード
+	/// TODO：今後別のクラスに移行する
+	/// </summary>
+	public async Task<GameObject> LoadAsync(string key)
+	{
+		if (AddressableCache.TryGetValue(key, out var cachedHandle))
+		{
+			// 既にロードしていたら返す
+			if (cachedHandle.Status == AsyncOperationStatus.Succeeded)
+			{
+				// Debug.Log($"{key}:既にロード済み");
+				return cachedHandle.Result;
+			}
+			
+			// 失敗していた場合破棄
+			Addressables.Release(cachedHandle);
+			AddressableCache.Remove(key);
+		}
+		
+		// ロード
+		var handle = Addressables.LoadAssetAsync<GameObject>(key);
+		await handle.Task;
+		
+		if (handle.Status == AsyncOperationStatus.Succeeded)
+		{
+			AddressableCache[key] = handle;
+			return handle.Result;
+		}
+		else
+		{
+			Debug.LogError($"{key}がロード出来ませんでした。");
+			return null;
 		}
 	}
 
@@ -57,15 +101,10 @@ public class SceneGameManager : MonoBehaviour
 		ObjectManager.Current.ClearSlashObjectList();
 		
 		// Stage生成
-		var stageHandle = Addressables.LoadAssetAsync<GameObject>($"Stage_{stageName}");
-		var stage = await stageHandle.Task;
-		if (stage == null)
-		{
-			Debug.Log($"指定のステージ：Stage_{stageName}が存在しないため遷移できません。");
-		}
-		_stageName = stageName;
 		Destroy(_stageObj);
-		_stageObj = Instantiate(stage, transform.position, transform.rotation, transform);
+		_stageName = stageName;
+		var obj = await LoadAsync($"Stage_{stageName}");
+		_stageObj = Instantiate(obj, transform.position, transform.rotation, transform);
 		
 		// ステージに設定されている生成ポイント取得
 		if (!_stageObj.TryGetComponent<StageManager>(out var stageManager))
