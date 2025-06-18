@@ -16,7 +16,7 @@ MonoBehaviour:
   m_GUID: 3bdcd3f6b9310ba4989a1c2d84661c6f
   m_SerializeEntries:
   - m_GUID: 3f26dc77bbeaca7428a0e193b5a887ad
-    m_Address: RolledStrawMat
+    m_Address: SO001
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
