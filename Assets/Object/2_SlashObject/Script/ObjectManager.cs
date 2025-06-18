@@ -35,14 +35,14 @@ public class ObjectManager : MonoBehaviour
 			if (playerObj.TryGetComponent<PlayerController>(out var playerController))
 			{
 				_player = playerController;
-				_player.SetDirection(true);
 			}
 		}
 		else
 		{
 			_player.transform.position = position;
-			_player.SetDirection(true);
 		}
+		
+		await _player.Init();
 	}
 
 	/// <summary>

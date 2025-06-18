@@ -9,6 +9,7 @@ public class ObjectBase : MonoBehaviour
 	[SerializeField] private Direction _direction;
 	[SerializeField] private Landing _landing;
 
+	protected bool IsInit;
 	protected Rigidbody2D ObjRigidBody;
 	protected BoxCollider2D ObjBodyCollider;
 	protected Transform ScaleTrans;
@@ -119,7 +120,9 @@ public class ObjectBase : MonoBehaviour
 			    Debug.Log($"{name}プレハブのScale > Collider > DamageにBoxCollider2Dがありません");
 		    }
 	    }
-	}
+
+	    IsInit = true;
+    }
 
 	protected virtual void Update()
 	{

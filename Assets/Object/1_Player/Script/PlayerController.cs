@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -20,6 +21,23 @@ public class PlayerController : ObjectBase
 	private readonly float _groundCheckRayLength = 0.8f;
 	
 	public bool IsDamage => _isDamage;
+
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	public async Task Init()
+	{
+		while (!IsInit)
+		{
+			await Task.Delay(100);
+		}
+		
+		_isSheath = false;
+		_isDamage = false;
+		ObjAnimator.SetBool("IsSheath", false);
+		SetDirection(true);
+	}
 
 	protected override void Update()
     {
@@ -139,7 +157,6 @@ public class PlayerController : ObjectBase
 			// 納刀アニメ
 			ObjAnimator.SetBool("IsSheath", true);
 			yield return WaitAnimeFinish();
-			ObjAnimator.SetBool("IsSheath", false);
 
 			// 結果発表
 			StageManager.Current.Result();
