@@ -35,7 +35,8 @@ public class PlayerController : ObjectBase
 		
 		_isSheath = false;
 		_isDamage = false;
-		ObjAnimator.SetBool("IsSheath", false);
+		var isSheathHash = Animator.StringToHash("IsSheath");
+		ObjAnimator.SetBool(isSheathHash, false);
 		SetDirection(true);
 	}
 
@@ -155,7 +156,8 @@ public class PlayerController : ObjectBase
 			_isSheath = true;
 
 			// 納刀アニメ
-			ObjAnimator.SetBool("IsSheath", true);
+			var isSheathHash = Animator.StringToHash("IsSheath");
+			ObjAnimator.SetBool(isSheathHash, true);
 			yield return WaitAnimeFinish();
 
 			// 結果発表
@@ -192,7 +194,8 @@ public class PlayerController : ObjectBase
 			if (collision.gameObject.layer == explosionLayer)
 			{
 				_isDamage = true;
-				ObjAnimator.SetBool("IsDamage", true);
+				var isDamageHash = Animator.StringToHash("IsDamage");
+				ObjAnimator.SetBool(isDamageHash, true);
 			}	
 		}
 	}

@@ -37,6 +37,7 @@ public class EN002 : EnemyBase
     public override void SetSlashed()
     {
         base.SetSlashed();
-        ObjAnimator.SetBool("IsFlash1", true);
+        var isFlash1Hash = Animator.StringToHash("IsFlash1");
+        ObjAnimator.SetBool(isFlash1Hash, true);
     }
 }

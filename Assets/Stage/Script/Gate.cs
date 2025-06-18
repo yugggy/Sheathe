@@ -31,7 +31,8 @@ public class Gate : MonoBehaviour
 	/// </summary>
 	public void ExitOpen()
 	{
-		_doorAnimator.SetBool("IsOpen", true);
+		var isOpenHash = Animator.StringToHash("IsOpen");
+		_doorAnimator.SetBool(isOpenHash, true);
 		_boxCollider2D.enabled = true;
 	}
 }
