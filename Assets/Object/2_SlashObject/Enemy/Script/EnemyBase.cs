@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public class EnemyBase : SlashBase
 {
-    protected float ChaseVelocity = 0.002f;
+    protected float ChaseVelocity = 1.0f;
     
     protected override void Update()
     {
@@ -18,12 +18,11 @@ public class EnemyBase : SlashBase
     /// </summary>
     private void PlayerChase()
     {
-        if (IsSlashed)
-        {
-            var vec = ObjectManager.Current.Player.transform.position - transform.position;
-            vec.z = 0;
-            vec.Normalize();
-            transform.position += vec * ChaseVelocity;
-        }
+        if (!IsSlashed) return;
+        
+        var vec = ObjectManager.Current.Player.transform.position - transform.position;
+        vec.z = 0;
+        vec.Normalize();
+        transform.position += vec * (ChaseVelocity * Time.deltaTime);
     }
 }

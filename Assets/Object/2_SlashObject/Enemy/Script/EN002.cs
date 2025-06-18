@@ -11,6 +11,7 @@ public class EN002 : EnemyBase
     {
         base.Start();
         _initY = transform.position.y;
+        ChaseVelocity = 2.0f;
     }
 
     protected override void Update()

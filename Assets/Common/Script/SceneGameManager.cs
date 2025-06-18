@@ -88,6 +88,7 @@ public class SceneGameManager : MonoBehaviour
 		ObjectManager.Current.PlayerDestroy();
 
 		// ステージ生成
+		await Task.Delay(1000);
 		await MoveStageAsync(_stageName, true);
 	}
 
@@ -96,8 +97,6 @@ public class SceneGameManager : MonoBehaviour
 	/// </summary>
 	public async Task MoveStageAsync(string stageName, bool isStart, float playerPosX = 0)
 	{
-		// await Task.Delay(1000);
-		
 		// オブジェクトリスト初期化
 		ObjectManager.Current.ClearSlashObjectList();
 		
