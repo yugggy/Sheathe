@@ -10,13 +10,14 @@ public class PlayerController : ObjectBase
     [SerializeField, Label("移動速度倍率")] float _moveSpd;
     [SerializeField, Label("減速速度")] float _deboostSpd;
     [SerializeField, Label("ジャンプ力")] float _jumpPower;
-    
+
 	private Vector3 _velocity;
 	private bool _isGround;
 	private bool _isJump;
 	private float _attackTimer;
 	private readonly float _attackTime = 0.1f;
 	private bool _isSheath;
+    private bool _isUnSheath;
 	private bool _isDamage;
 	private readonly float _groundCheckRayLength = 0.8f;
 	
@@ -28,6 +29,9 @@ public class PlayerController : ObjectBase
 	/// </summary>
 	public async Task Init()
 	{
+		_isUnSheath = true;
+		
+		// 基底クラスの初期化処理が終わるまで待機
 		while (!IsInit)
 		{
 			await Task.Delay(100);
@@ -35,17 +39,30 @@ public class PlayerController : ObjectBase
 		
 		_isSheath = false;
 		_isDamage = false;
-		var isSheathHash = Animator.StringToHash("IsSheath");
-		ObjAnimator.SetBool(isSheathHash, false);
 		SetDirection(true);
+		
+		// 抜刀アニメ
+		var isSheathHash = Animator.StringToHash("IsSheath");
+		if (ObjAnimator.GetBool(isSheathHash))
+		{
+			ObjAnimator.SetBool(isSheathHash, false);
+			
+			// 抜刀終了後、動作可能
+			await Task.Delay(1000);
+			_isUnSheath = false;
+		}
+		else
+		{
+			_isUnSheath = false;
+		}
 	}
 
 	protected override void Update()
     {
 	    base.Update();
 	    
-	    // 納刀中であれば行わない
-	    if (_isSheath)
+	    // 抜刀もしくは納刀中であれば行わない
+	    if (_isUnSheath || _isSheath)
 	    {
 		    _velocity.x = 0;
 		    return;
