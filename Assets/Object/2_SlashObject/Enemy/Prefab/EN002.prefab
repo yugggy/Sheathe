@@ -605,7 +605,6 @@ MonoBehaviour:
   slashAnime: {fileID: 1043738047353176047}
   isCanSlash: 1
   isExplosion: 1
-  _animator: {fileID: 4319651467004938832}
 --- !u!61 &2956529822489766233
 BoxCollider2D:
   m_ObjectHideFlags: 0

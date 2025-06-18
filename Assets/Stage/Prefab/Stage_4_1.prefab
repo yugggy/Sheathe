@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47db331e6aea4224398f1498733780a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _boxCollider2D: {fileID: 4539527326888993732}
+  _doorAnimator: {fileID: 0}
+  _playerSpawnPoint: {fileID: 5687952400663333640}
 --- !u!61 &4539527326888993732
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -552,6 +555,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47db331e6aea4224398f1498733780a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _boxCollider2D: {fileID: 1301803557925811682}
+  _doorAnimator: {fileID: 0}
+  _playerSpawnPoint: {fileID: 5857932987989446186}
 --- !u!61 &1301803557925811682
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1386,6 +1392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6c75994f0b54784abf14560dc215313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gateController: {fileID: 1292098058325262590}
 --- !u!1 &8752482369744995840
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,18 +1,24 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// オブジェクト基底クラス
+/// </summary>
 public class ObjectBase : MonoBehaviour
 {
-	[SerializeField] private Direnction direnction;
-	[SerializeField] private Landing landing;
+	[SerializeField] private Direction _direction;
+	[SerializeField] private Landing _landing;
 
-	protected Vector3 _scale;
-	protected Animator _animator;
-	protected BoxCollider2D _bodyCollider;
-	protected BoxCollider2D _attackCollider;
-	protected BoxCollider2D _damageCollider;
-
-	public enum Direnction
+	protected Rigidbody2D ObjRigidBody;
+	protected BoxCollider2D ObjBodyCollider;
+	protected Transform ScaleTrans;
+	protected Vector3 ObjScale;
+	protected Transform ImageTrans;
+	protected Animator ObjAnimator;
+	protected BoxCollider2D ObjAttackCollider;
+	protected BoxCollider2D ObjDamageCollider;
+	
+	public enum Direction
     {
         [InspectorName("右")] Right,
 		[InspectorName("左")] Left,
@@ -26,21 +32,93 @@ public class ObjectBase : MonoBehaviour
 
 	protected virtual void Start()
     {
-		// Scale
-		var scale = transform.Find("Scale");
-		_scale = scale.localScale;
-
-		// Animation
-		if (scale.Find("Image").TryGetComponent<Animator>(out var animator))
-		{
-			_animator = animator;
-		}
-
-		// Collider
-		_bodyCollider = GetComponent<BoxCollider2D>();
-		var collider = scale.transform.Find("Collider");
-		_attackCollider = collider.Find("Attack").GetComponent<BoxCollider2D>();
-		_damageCollider = collider.Find("Damage").GetComponent<BoxCollider2D>();
+	    // RigidBody2D
+	    if (TryGetComponent<Rigidbody2D>(out var rb))
+	    {
+		    ObjRigidBody = rb;
+	    }
+	    else
+	    {
+		    Debug.Log($"{name}プレハブにRigidbody2Dがありません");
+	    }
+	    
+	    // BoxCollider2D
+	    if (TryGetComponent<BoxCollider2D>(out var body))
+	    {
+		    ObjBodyCollider = body;
+	    }
+	    else
+	    {
+		    Debug.Log($"{name}プレハブにBoxCollider2Dがありません");
+	    }
+	    
+	    // Scale
+	    ScaleTrans = transform.Find("Scale");
+	    if (ScaleTrans == null)
+	    {
+		    Debug.Log($"{name}プレハブにScaleがありません");
+		    return;
+	    }
+	    ObjScale = ScaleTrans.localScale;
+	    
+	    // Image
+	    ImageTrans = ScaleTrans.Find("Image");
+	    if (ImageTrans == null)
+	    {
+		    Debug.Log($"{name}プレハブにScale > Imageがありません");
+		    return;
+	    }
+		
+	    // Animator
+	    if (ImageTrans.TryGetComponent<Animator>(out var animator))
+	    {
+		    ObjAnimator = animator;
+	    }
+	    else
+	    {
+		    Debug.Log($"{name}プレハブのScale > ImageにAnimatorが付いていません");
+	    }
+	    
+	    // Collider
+	    var objCollider = ScaleTrans.transform.Find("Collider");
+	    if (objCollider  == null)
+	    {
+		    Debug.Log($"{name}プレハブにScale > Colliderがありません");
+	    }
+	    
+	    var attackTrans = objCollider.Find("Attack");
+	    if (attackTrans == null)
+	    {
+		    Debug.Log($"{name}プレハブにScale > Collider > Attackがありません");
+	    }
+	    else
+	    {
+		    if (attackTrans.TryGetComponent<BoxCollider2D>(out var attack))
+		    {
+			    ObjAttackCollider =  attack;
+		    }
+		    else
+		    {
+			    Debug.Log($"{name}プレハブのScale > Collider > AttackにBoxCollider2Dがありません");
+		    }
+	    }
+	    
+	    var damageTrans = objCollider.Find("Damage");
+	    if (damageTrans == null)
+	    {
+		    Debug.Log($"{name}プレハブにScale > Collider > Damageがありません");
+	    }
+	    else
+	    {
+		    if (damageTrans.TryGetComponent<BoxCollider2D>(out var damage))
+		    {
+			    ObjDamageCollider = damage;
+		    }
+		    else
+		    {
+			    Debug.Log($"{name}プレハブのScale > Collider > DamageにBoxCollider2Dがありません");
+		    }
+	    }
 	}
 
 	protected virtual void Update()
@@ -48,69 +126,40 @@ public class ObjectBase : MonoBehaviour
 		
 	}
 
-	public Vector3 GetFootPos()
-	{
-		var a = _scale;
-		return Vector3.zero;
-	}
-
-	public Landing GetLanding()
-	{
-		return landing;
-	}
-
 	private void OnValidate()
 	{
 		SetDirection();
-
 		SetGravityScale();
 	}
 
     private void SetDirection()
     {
 		var eulerAngles = transform.eulerAngles;
-
-		switch (direnction)
-		{
-			case Direnction.Right:
-				eulerAngles.y = 0;
-				break;
-			case Direnction.Left:
-				eulerAngles.y = 180;
-				break;
-			default:
-				break;
-		}
-
+		eulerAngles.y = (_direction == Direction.Right) ? 0 : 180;
 		transform.eulerAngles = eulerAngles;
 	}
+    
 	public void SetDirection(bool isRight)
 	{
 		var eulerAngles = transform.eulerAngles;
-
-		if (isRight)
-		{
-			eulerAngles.y = 0;
-		}
-		else
-		{
-			eulerAngles.y = 180;
-		}
-
+		eulerAngles.y = isRight ? 0 : 180;
 		transform.eulerAngles = eulerAngles;
 	}
 
+	/// <summary>
+	/// タイプによって重力変更
+	/// </summary>
 	private void SetGravityScale()
 	{
-		var rigidbody2D = transform.GetComponent<Rigidbody2D>();
+		var rb = transform.GetComponent<Rigidbody2D>();
 
-		switch (landing)
+		switch (_landing)
 		{
 			case Landing.Ground:
-				// rigidbody2D.gravityScale = 1;
+				// rb.gravityScale = 1;
 				break;
 			case Landing.Air:
-				rigidbody2D.gravityScale = 0;
+				rb.gravityScale = 0;
 				break;
 			default:
 				break;
@@ -126,11 +175,10 @@ public class ObjectBase : MonoBehaviour
 		yield return null;
 
 		// アニメが終了するまで待機
-		while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
+		while (ObjAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
 		{
 			//Debug.Log("normalizedTime" + _animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 			yield return null;
 		}
 	}
-
 }

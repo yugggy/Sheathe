@@ -830,8 +830,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47db331e6aea4224398f1498733780a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _boxCollider2D: {fileID: 0}
+  _boxCollider2D: {fileID: 1127720231893817848}
   _doorAnimator: {fileID: 0}
+  _playerSpawnPoint: {fileID: 4918792025746136224}
 --- !u!61 &1127720231893817848
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1280,7 +1281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2446930681400899539, guid: f5060bcbb983e9e4ba15f831243abdb4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.00000004371139
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2446930681400899539, guid: f5060bcbb983e9e4ba15f831243abdb4, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1288,7 +1289,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2446930681400899539, guid: f5060bcbb983e9e4ba15f831243abdb4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2446930681400899539, guid: f5060bcbb983e9e4ba15f831243abdb4, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1336,6 +1337,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door
       objectReference: {fileID: 0}
+    - target: {fileID: 792423030368653981, guid: eccac90aa7e307d4c9556bc3c6e53058, type: 3}
+      propertyPath: _playerSpawnPoint
+      value: 
+      objectReference: {fileID: 2536342584892874989}
     - target: {fileID: 1010317782247547589, guid: eccac90aa7e307d4c9556bc3c6e53058, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.47
@@ -1381,6 +1386,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eccac90aa7e307d4c9556bc3c6e53058, type: 3}
+--- !u!4 &2536342584892874989 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5647296273768483663, guid: eccac90aa7e307d4c9556bc3c6e53058, type: 3}
+  m_PrefabInstance: {fileID: 7885200615983803298}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7163118716338030951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1010317782247547589, guid: eccac90aa7e307d4c9556bc3c6e53058, type: 3}

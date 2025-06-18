@@ -1,16 +1,13 @@
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 public class SceneGameManager : MonoBehaviour
 {
-	private GameObject stageObj = null;
-	private PlayerController _player = null;
+	private GameObject _stageObj;
 	private string _stageName = "";
 
 	public static SceneGameManager Current;
-	public GameObject Player => _player.gameObject;
 
 	private void Awake()
 	{
@@ -19,10 +16,9 @@ public class SceneGameManager : MonoBehaviour
 
 	private void Start()
 	{
-		// TODO：セーブデータから読み込んだステージ名
+		// TODO：セーブデータから読み込んだステージ
 		_stageName = "2_1";
-
-		MoveStage(_stageName, true, 4);
+		MoveStage(_stageName, true, 0);
 	}
 
 	private void Update()
@@ -45,12 +41,10 @@ public class SceneGameManager : MonoBehaviour
 		ObjectManager.Current.ClearSlashObjectList();
 
 		// プレイヤー削除
-		ObjectManager.Current.ClearPlayer();
-		await Task.Delay(1000);
-		Destroy(_player.gameObject);
+		ObjectManager.Current.PlayerDestroy();
 
 		// ステージ生成
-		await Task.Delay(300);
+		await Task.Delay(1000);
 		MoveStage(_stageName, true);
 	}
 
@@ -59,6 +53,9 @@ public class SceneGameManager : MonoBehaviour
 	/// </summary>
 	public async void MoveStage(string stageName, bool isStart, float playerPosX = 0)
 	{
+		// オブジェクトリスト初期化
+		ObjectManager.Current.ClearSlashObjectList();
+		
 		// Stage生成
 		var stageHandle = Addressables.LoadAssetAsync<GameObject>($"Stage_{stageName}");
 		var stage = await stageHandle.Task;
@@ -67,44 +64,33 @@ public class SceneGameManager : MonoBehaviour
 			Debug.Log($"指定のステージ：Stage_{stageName}が存在しないため遷移できません。");
 		}
 		_stageName = stageName;
-		Destroy(stageObj);
-		stageObj = Instantiate(stage, transform.position, transform.rotation, transform);
+		Destroy(_stageObj);
+		_stageObj = Instantiate(stage, transform.position, transform.rotation, transform);
+		
+		// ステージに設定されている生成ポイント取得
+		if (!_stageObj.TryGetComponent<StageManager>(out var stageManager))
+		{
+			Debug.Log($"Stage_{stageName}にStageManagerが付いていません");
+			return;
+		}
 
+		var gateController = stageManager.GateController;
+		if (gateController == null)
+		{
+			Debug.Log($"Stage_{stageName}のGateにGateControllerが付いていません");
+			return;
+		}
+		
+		var playerSpawnPoint = gateController.GetPlayerSpawnPoint(isStart);
+		if (playerSpawnPoint == null)
+		{
+			Debug.Log($"Stage_{stageName}の{(isStart ? "Start" : "End")}GateのplayerSpawnPointがありません");
+			return;
+		}
+		
 		// Player生成
-		if (_player == null)
-		{
-			var playerHandle = Addressables.LoadAssetAsync<GameObject>("Player");
-			var playerOrigin = await playerHandle.Task;
-			var playerObj = Instantiate(playerOrigin, Vector3.zero, transform.rotation, transform);
-			if (playerObj.TryGetComponent<PlayerController>(out var playerController))
-			{
-				_player = playerController;
-				ObjectManager.Current.SetPlayer(playerController);	
-			}
-		}
-		// ステージに設定されている生成ポイントを元に生成する
-		var gateController = stageObj.GetComponent<StageManager>().GetGateController();
-		if (gateController != null)
-		{
-			var playerSpawnPoint = isStart ? gateController.GetPlayerSpawnPoint(true) : gateController.GetPlayerSpawnPoint(false);
-			if (playerSpawnPoint != null)
-			{
-				_player.transform.position = playerSpawnPoint.position;
-				var hit = Physics2D.Raycast(playerSpawnPoint.position, Vector2.down * 10);
-				if (hit.collider != null)
-				{
-					// TODO：地面に到達したところからプレイヤーの大きさ分上に生成する
-					var pos = hit.point + new Vector2(0, 0.6f);
-					pos = pos + (isStart ? 1 : -1) * new Vector2(playerPosX, 0);
-					_player.transform.position = pos;
-					_player.SetDirection(true);
-					Debug.Log($"Stage_{stageName}に遷移");
-				}
-				else
-				{
-					Debug.Log($"レイが当たっていない");
-				}
-			}
-		}
+		await ObjectManager.Current.CreatePlayer(playerSpawnPoint.position);
+		
+		Debug.Log($"Stage_{stageName}に遷移");
 	}
 }

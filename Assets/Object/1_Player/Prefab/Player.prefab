@@ -269,11 +269,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa936cde2358da64180bc9e573308d8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direnction: 0
-  landing: 0
-  moveSpd: 15
-  deboostSpd: 1
-  jumpPower: 20
+  _direction: 0
+  _landing: 0
+  _moveSpd: 15
+  _deboostSpd: 1
+  _jumpPower: 20
   gravity: 0.1
   rigidBody2d: {fileID: 590567414598285415}
 --- !u!50 &590567414598285415

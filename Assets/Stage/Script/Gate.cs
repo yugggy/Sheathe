@@ -1,21 +1,23 @@
-using System.Collections.Generic;
 using System;
 using UnityEngine;
 
+/// <summary>
+/// ステージ内の各ゲート
+/// </summary>
 public class Gate : MonoBehaviour
 {
 	[SerializeField] private BoxCollider2D _boxCollider2D;
 	[SerializeField] private Animator _doorAnimator;
+	[SerializeField] private Transform _playerSpawnPoint;
 	
-	public Action _action;
-
+	private Action _action;
 	public Action GetAction { get { return _action; } set { _action = value; } }
-
-
-	private void OnTriggerEnter2D(Collider2D collider)
+	public Transform PlayerSpawnPoint => _playerSpawnPoint;
+	
+	private void OnTriggerEnter2D(Collider2D col)
 	{
-		var playerLayer = 6;
-		if (collider.gameObject.layer == playerLayer)
+		// プレイヤーがゲートに触れたらアクション
+		if (col.gameObject.layer == LayerMask.NameToLayer("Player"))
 		{
 			if (_action != null)
 			{
@@ -23,10 +25,12 @@ public class Gate : MonoBehaviour
 			}
 		}
 	}
-	
-	public void DoorOpen()
+
+	/// <summary>
+	/// 出口開錠
+	/// </summary>
+	public void ExitOpen()
 	{
-		// ドア開錠
 		_doorAnimator.SetBool("IsOpen", true);
 		_boxCollider2D.enabled = true;
 	}

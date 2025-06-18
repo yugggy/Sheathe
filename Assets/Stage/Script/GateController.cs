@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// ステージ内のゲート
+/// </summary>
 public class GateController : MonoBehaviour
 {
 	[SerializeField] private Gate _startGate;
@@ -7,23 +10,17 @@ public class GateController : MonoBehaviour
 
 	[SerializeField] private string _frontStageName;
 	[SerializeField] private string _nextStageName;
-
-
+	
 	private void Start()
 	{
-		_startGate.GetAction += frontStage;
-		_endGate.GetAction += nextStage;
+		_startGate.GetAction += FrontStage;
+		_endGate.GetAction += NextStage;
 	}
-
-	public void DoorOpen()
-	{
-		_endGate.DoorOpen();
-	}
-
+	
 	/// <summary>
 	/// 前のステージ遷移
 	/// </summary>
-	private void frontStage()
+	private void FrontStage()
 	{
 		if(_frontStageName == "")
 		{
@@ -37,7 +34,7 @@ public class GateController : MonoBehaviour
 	/// <summary>
 	/// 次のステージ遷移
 	/// </summary>
-	private void nextStage()
+	private void NextStage()
 	{
 		if (_nextStageName == "")
 		{
@@ -45,22 +42,23 @@ public class GateController : MonoBehaviour
 			return;
 		}
 
+		Debug.Log($"{_nextStageName}");
 		SceneGameManager.Current.MoveStage(_nextStageName, true);
 	}
 
 	/// <summary>
-	/// プレイヤー生成座標取得
+	/// 出口開錠
+	/// </summary>
+	public void ExitOpen()
+	{
+		_endGate.ExitOpen();
+	}
+
+	/// <summary>
+	/// ステージ上のプレイヤー生成座標取得
 	/// </summary>
 	public Transform GetPlayerSpawnPoint(bool isStart)
 	{
-		var gate = isStart ? _startGate : _endGate;
-		var playerSpawnPoint = gate.transform.Find("PlayerSpawnPoint");
-		if (playerSpawnPoint == null)
-		{
-			Debug.Log("プレイヤーが生成される座標であるPlayerSpawnPointオブジェクトがありません。");
-			return null;
-		}
-
-		return playerSpawnPoint;
+		return isStart ? _startGate.PlayerSpawnPoint :  _endGate.PlayerSpawnPoint;
 	}
 }

@@ -1,45 +1,51 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
+/// <summary>
+/// ステージ
+/// </summary>
 public class StageManager : MonoBehaviour
 {
-	[SerializeField] GateController _gateController;
-	
-	private float firstAttackTimer = 0;
-	private bool isFirstAttack = false;
-	private float firstAttackTime = 10;
-
+	[SerializeField] private GateController _gateController;
 	public static StageManager Current;
-
+	public GateController GateController => _gateController; 
 
 	private void Awake()
 	{
 		Current = this;
 	}
 
-	private void Update()
+	private void Start()
 	{
-		if (isFirstAttack)
-		{
-			firstAttackTimer += Time.deltaTime;
-			if (firstAttackTimer >= firstAttackTime)
-			{
-				Debug.Log("最初の攻撃から10秒");
-				firstAttackTimer = 0;
-				//GameOver();
-			}
-		}
+		// SetGateController();
+		//
+		// // ステージ内のGate取得
+		// void SetGateController()
+		// {
+		// 	var gateTrans = transform.Find("Gate");
+		// 	if (gateTrans == null)
+		// 	{
+		// 		Debug.Log($"{name}プレハブ内にGateがありません");
+		// 	}
+		// 	else
+		// 	{
+		// 		if (gateTrans.TryGetComponent<GateController>(out var gateController))
+		// 		{
+		// 			_gateController = gateController;
+		// 		}
+		// 		else
+		// 		{
+		// 			Debug.Log($"{name}プレハブのGateにGateControllerが付いていません");
+		// 		}
+		// 	}
+		// }
 	}
 
 	/// <summary>
-	/// 結果発表
+	/// ステージクリア判定
 	/// </summary>
 	public async void Result()
 	{
-		isFirstAttack = false;
-
 		// 斬った敵殲滅
 		ObjectManager.Current.DestroySlashObject();
 		
@@ -49,7 +55,7 @@ public class StageManager : MonoBehaviour
 		if (ObjectManager.Current.GetDestroyCompletely() && !ObjectManager.Current.IsPlayerDamage())
 		{
 			// 扉開錠
-			_gateController.DoorOpen();
+			_gateController.ExitOpen();
 
 			Debug.Log("ステージクリア");
 		}
@@ -58,49 +64,4 @@ public class StageManager : MonoBehaviour
 			SceneGameManager.Current.ReloadStage();
 		}
 	}
-
-	public void GameOver()
-	{
-		SceneGameManager.Current.ReloadStage();
-	}
-
-	/// <summary>
-	/// 最初の攻撃
-	/// </summary>
-	public void StartFirstAttack()
-	{
-		if (isFirstAttack)
-		{
-			return;
-		}
-		else
-		{
-			Debug.Log("最初の攻撃");
-			isFirstAttack = true;
-		}
-	}
-
-	/// <summary>
-	/// Gateの取得
-	/// </summary>
-	public GateController GetGateController()
-	{
-		var gate = transform.Find("Gate").gameObject;
-		if (gate == null)
-		{
-			Debug.Log("このステージにはGateがありません");
-			return null;
-		}
-
-		if (gate.TryGetComponent<GateController>(out var gateController))
-		{
-			return gateController;
-		}
-		else
-		{
-			Debug.Log("このステージのGateにGateControllerコンポーネントが付与されていません。");
-			return null;
-		}
-	}
-
 }

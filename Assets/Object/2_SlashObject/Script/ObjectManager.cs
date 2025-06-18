@@ -1,27 +1,48 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class ObjectManager : MonoBehaviour
 {
-	private List<SlashBase> _slashList = new List<SlashBase>(50);
 	private PlayerController _player;
+	private GameObject _playerOrigin;
+	private List<SlashBase> _slashList = new List<SlashBase>(50);
 
 	public static ObjectManager Current;
-	public List<SlashBase> SlashList => _slashList;
+	public PlayerController Player => _player;
 
 	private void Awake()
 	{
 		Current = this;
 	}
-	
+
 	/// <summary>
-	/// プレイヤー生成時
+	/// プレイヤー生成
 	/// </summary>
-	public void SetPlayer(PlayerController player)
+	public async Task CreatePlayer(Vector3 position)
 	{
-		_player = player;
+		if (_playerOrigin == null)
+		{
+			var playerHandle = Addressables.LoadAssetAsync<GameObject>("Player");
+			_playerOrigin = await playerHandle.Task;
+		}
+
+		if (_player == null)
+		{
+			var playerObj = Instantiate(_playerOrigin, position, transform.rotation, transform);
+			if (playerObj.TryGetComponent<PlayerController>(out var playerController))
+			{
+				_player = playerController;
+				_player.SetDirection(true);
+			}
+		}
+		else
+		{
+			_player.transform.position = position;
+			_player.SetDirection(true);
+		}
 	}
 
 	/// <summary>
@@ -33,10 +54,11 @@ public class ObjectManager : MonoBehaviour
 	}
 	
 	/// <summary>
-	/// プレイヤークリア
+	/// プレイヤー削除
 	/// </summary>
-	public void ClearPlayer()
+	public void PlayerDestroy()
 	{
+		Destroy(_player.gameObject);
 		_player = null;
 	}
 
@@ -61,15 +83,13 @@ public class ObjectManager : MonoBehaviour
 	/// </summary>
 	public void DestroySlashObject()
 	{
-		foreach (var slash in SlashList)
+		foreach (var slash in _slashList)
 		{
 			if (slash.IsSlashed)
 			{
 				slash.Destroy();
 			}
 		}
-
-		ClearSlashObjectList();
 	}
 
 	/// <summary>

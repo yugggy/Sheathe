@@ -345,8 +345,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47db331e6aea4224398f1498733780a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _boxCollider2D: {fileID: 0}
+  _boxCollider2D: {fileID: 8962604492862487381}
   _doorAnimator: {fileID: 0}
+  _playerSpawnPoint: {fileID: 1662101821571829928}
 --- !u!61 &8962604492862487381
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1806,6 +1807,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door
       objectReference: {fileID: 0}
+    - target: {fileID: 792423030368653981, guid: eccac90aa7e307d4c9556bc3c6e53058, type: 3}
+      propertyPath: _playerSpawnPoint
+      value: 
+      objectReference: {fileID: 7008917947274792604}
     - target: {fileID: 1010317782247547589, guid: eccac90aa7e307d4c9556bc3c6e53058, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10.64
@@ -1871,6 +1876,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47db331e6aea4224398f1498733780a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &7008917947274792604 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5647296273768483663, guid: eccac90aa7e307d4c9556bc3c6e53058, type: 3}
+  m_PrefabInstance: {fileID: 3394473554920015315}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6105037807913904686
 PrefabInstance:
   m_ObjectHideFlags: 0
