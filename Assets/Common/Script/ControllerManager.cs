@@ -9,14 +9,19 @@ public class ControllerManager : MonoBehaviour
 	private JumpState _jumpState = JumpState.None;
 	private AttackState _attackState = AttackState.None;
 
+	private int _leadKeyTimer;
+	[SerializeField, Label("先行入力保存フレーム")] private int _leadKeyTime;
+	private bool _isLeadJumpKey;
+
 	public static ControllerManager Current;
 
 	public float LeftStickValue => _leftStickValue;
 	public MoveState GetMoveState => _moveState;
 	public JumpState GetJumpState => _jumpState;
-
 	public AttackState GetAttackState => _attackState;
-
+	
+	public bool IsLeadJumpKey => _isLeadJumpKey;
+	
 
 	public enum MoveState
 	{
@@ -46,6 +51,8 @@ public class ControllerManager : MonoBehaviour
 	private void Update()
 	{
 		Operate();
+		
+		LeadKey();
 	}
 
 	private void Operate()
@@ -160,6 +167,30 @@ public class ControllerManager : MonoBehaviour
 		else
 		{
 			_attackState = AttackState.None;
+		}
+	}
+	
+	/// <summary>
+	/// 先行キー保存
+	/// 必要に応じてジャンプ以外も対応
+	/// </summary>
+	private void LeadKey()
+	{
+		// キー入力
+		if (_jumpState == JumpState.Jump)
+		{
+			_isLeadJumpKey = true;
+			_leadKeyTimer = _leadKeyTime;
+		}
+
+		// 一定時間経ったら先行キー削除
+		if (_isLeadJumpKey)
+		{
+			_leadKeyTimer--;
+			if (_leadKeyTimer <= 0)
+			{
+				_isLeadJumpKey = false;
+			}			
 		}
 	}
 }

@@ -170,7 +170,8 @@ public class PlayerController : ObjectBase
 	/// </summary>
 	private void Jump()
     {
-		if (_isGround && !_isJump && ControllerManager.Current.GetJumpState == ControllerManager.JumpState.Jump)
+		if (_isGround && !_isJump && 
+		    (ControllerManager.Current.GetJumpState == ControllerManager.JumpState.Jump || ControllerManager.Current.IsLeadJumpKey))
 		{
 			_isJump = true;
 			var velocity = ObjRigidBody.linearVelocity;
