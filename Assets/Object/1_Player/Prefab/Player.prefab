@@ -273,6 +273,7 @@ MonoBehaviour:
   _landing: 0
   _moveSpd: 15
   _deboostSpd: 0.28
+  _brakeDeboostSpd: 0.4
   _jumpPower: 20
 --- !u!50 &590567414598285415
 Rigidbody2D:

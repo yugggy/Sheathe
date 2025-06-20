@@ -10,6 +10,7 @@ public class PlayerController : ObjectBase
 {
     [SerializeField, Label("移動速度倍率")] float _moveSpd;
     [SerializeField, Label("減速度")] float _deboostSpd;
+    [SerializeField, Label("ブレーキ減速度")] float _brakeDeboostSpd;
     [SerializeField, Label("ジャンプ力")] float _jumpPower;
 
 	private Vector3 _velocity;
@@ -102,6 +103,16 @@ public class PlayerController : ObjectBase
 		}
 		
 		var leftStickValue = ControllerManager.Current.LeftStickValue * _moveSpd * Time.deltaTime;
+		
+		// ブレーキ
+		// // TODO；操作性が微妙なので一旦保留
+		// if (IsBrake(leftStickValue))
+		// {
+		// 	Brake();
+		// 	return;
+		// }
+		
+		// 移動
 		if (ControllerManager.Current.GetMoveState == ControllerManager.MoveState.RightMove)
 		{
 			_velocity.x = leftStickValue;
@@ -115,17 +126,42 @@ public class PlayerController : ObjectBase
 		else
 		{
 			// 慣性
-			_velocity.x -= _velocity.x * _deboostSpd;
+			Inertia();
+		}
+
+		// ブレーキ判定
+		bool IsBrake(float value)
+		{
+			if (Math.Abs(_velocity.x) > 0 && Math.Abs(value) > 0)
+			{
+				if (Math.Sign(_velocity.x) != Math.Sign(value))
+				{
+					Debug.Log("ブレーキ");
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		// ブレーキ
+		void Brake()
+		{
+			_velocity.x -= _velocity.x * _brakeDeboostSpd;
 			if (Math.Abs(_velocity.x) < 0.001f)
 			{
 				_velocity.x = 0;
 			}
+			SetDirection(leftStickValue >= 0);
 		}
-
-		// ブレーキ判定
-		void IsBrake()
+		
+		// 慣性
+		void Inertia()
 		{
-			
+			_velocity.x -= _velocity.x * _deboostSpd;
+			if (Math.Abs(_velocity.x) < 0.001f)
+			{
+				_velocity.x = 0;
+			}			
 		}
 	}
 
