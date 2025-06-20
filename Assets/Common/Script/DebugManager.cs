@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,7 @@ public class DebugManager : MonoBehaviour
 
     public void SetVelocityText(Vector3 velocity)
     {
-		_velocityText.text = $"velocity：({velocity.x}, {velocity.y}, {velocity.z})";
-	}
+	    _velocityText.text = $"velocity.x：{Math.Round(velocity.x, 4)}{Environment.NewLine}" +
+	                         $"velocity.y：{Math.Round(velocity.y, 4)}";
+    }
 }

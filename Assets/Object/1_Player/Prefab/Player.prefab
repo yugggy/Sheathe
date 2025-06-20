@@ -272,10 +272,8 @@ MonoBehaviour:
   _direction: 0
   _landing: 0
   _moveSpd: 15
-  _deboostSpd: 1
+  _deboostSpd: 0.28
   _jumpPower: 20
-  gravity: 0.1
-  rigidBody2d: {fileID: 590567414598285415}
 --- !u!50 &590567414598285415
 Rigidbody2D:
   serializedVersion: 5

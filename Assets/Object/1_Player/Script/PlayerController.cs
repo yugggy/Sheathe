@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -8,7 +9,7 @@ using UnityEngine;
 public class PlayerController : ObjectBase
 {
     [SerializeField, Label("移動速度倍率")] float _moveSpd;
-    [SerializeField, Label("減速速度")] float _deboostSpd;
+    [SerializeField, Label("減速度")] float _deboostSpd;
     [SerializeField, Label("ジャンプ力")] float _jumpPower;
 
 	private Vector3 _velocity;
@@ -113,7 +114,18 @@ public class PlayerController : ObjectBase
 		}
 		else
 		{
-			_velocity.x = 0;
+			// 慣性
+			_velocity.x -= _velocity.x * _deboostSpd;
+			if (Math.Abs(_velocity.x) < 0.001f)
+			{
+				_velocity.x = 0;
+			}
+		}
+
+		// ブレーキ判定
+		void IsBrake()
+		{
+			
 		}
 	}
 

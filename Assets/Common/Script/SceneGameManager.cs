@@ -27,6 +27,7 @@ public class SceneGameManager : MonoBehaviour
 		// TODO：セーブデータから読み込んだステージ
 		_stageName = "2_1";
 		MoveStageAsync(_stageName, true, 0);
+		Application.targetFrameRate = 60;
 	}
 
 	private void Update()
