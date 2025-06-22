@@ -44,7 +44,7 @@ public class PlayerController : ObjectBase
 		SetDirection(true);
 		
 		// TODO：抜刀終了後、動作可能
-		await Task.Delay(1000);
+		await Task.Delay(700);
 		_isUnSheath = false;
 	}
 
