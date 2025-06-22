@@ -51,8 +51,19 @@ public class SlashBase : ObjectBase
 		{
 			var obj = await SceneGameManager.Current.LoadAsync("Explosion");
 			Instantiate(obj, transform.position, transform.rotation, transform.parent);
+			Destroy(gameObject);
 		}
-		
-		Destroy(gameObject);
+		// 撃破アニメ
+		else
+		{
+			var isSlashedHash = Animator.StringToHash("IsSlashed");
+			ObjAnimator.SetBool(isSlashedHash, true);
+			
+			// TODO：アニメ終了待機
+			// await WaitAnimeFinish();
+			await Task.Delay(1000);
+			
+			Destroy(gameObject);
+		}
 	}
 }
