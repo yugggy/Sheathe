@@ -14,8 +14,10 @@ public class DamageCheck : MonoBehaviour
 		{
 			return;
 		}
+		
+		SlashBase attackObj;
 		SlashBase slashObj;
-        var isAttackCharaEnemy = attackChara.TryGetComponent<SlashBase>(out var temp);
+        var isAttackCharaEnemy = attackChara.TryGetComponent<SlashBase>(out attackObj);
 		var isDamageCharaEnemy = damageChara.TryGetComponent<SlashBase>(out slashObj);
 
 		// スキップ判定
@@ -31,6 +33,13 @@ public class DamageCheck : MonoBehaviour
 
 		// 斬られた
 		slashObj.SetSlashed();
+		
+		// ヒットストップ
+		if (attackChara.TryGetComponent<PlayerController>(out var player))
+		{
+			player.SetHitStop();
+			slashObj.SetHitStop();
+		}
 
 		Debug.Log($"攻撃:{attackChara.name}, 被ダメージ:{damageChara.name}");
 	}

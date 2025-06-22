@@ -19,6 +19,9 @@ public class ObjectBase : MonoBehaviour
 	protected BoxCollider2D ObjAttackCollider;
 	protected BoxCollider2D ObjDamageCollider;
 	
+	int _hitStopTimer;
+
+	
 	public enum Direction
     {
         [InspectorName("右")] Right,
@@ -29,6 +32,11 @@ public class ObjectBase : MonoBehaviour
 	{
 		[InspectorName("地上")] Ground,
 		[InspectorName("空中")] Air,
+	}
+
+	public void SetHitStop()
+	{
+		_hitStopTimer = SceneGameManager.Current.HitStopTime;
 	}
 
 	protected virtual void Start()
@@ -124,7 +132,19 @@ public class ObjectBase : MonoBehaviour
 	    IsInit = true;
     }
 
-	protected virtual void Update()
+	private void Update()
+	{
+		if (_hitStopTimer > 0)
+		{
+			_hitStopTimer--;	
+		}
+		else
+		{
+			ObjectUpdate();
+		}
+	}
+	
+	protected virtual void ObjectUpdate()
 	{
 		
 	}

@@ -59,9 +59,9 @@ public class PlayerController : ObjectBase
 		}
 	}
 
-	protected override void Update()
+	protected override void ObjectUpdate()
     {
-	    base.Update();
+	    base.ObjectUpdate();
 	    
 	    // 抜刀もしくは納刀中であれば行わない
 	    if (_isUnSheath || _isSheath)

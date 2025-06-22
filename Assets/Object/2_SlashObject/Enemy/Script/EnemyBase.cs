@@ -7,9 +7,9 @@ public class EnemyBase : SlashBase
 {
     protected float ChaseVelocity = 1.0f;
     
-    protected override void Update()
+    protected override void ObjectUpdate()
     {
-        base.Update();
+        base.ObjectUpdate();
         PlayerChase();
     }
 

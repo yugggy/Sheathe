@@ -14,9 +14,9 @@ public class EN002 : EnemyBase
         ChaseVelocity = 2.0f;
     }
 
-    protected override void Update()
+    protected override void ObjectUpdate()
     {
-        base.Update();
+        base.ObjectUpdate();
         if (!IsSlashed)
         {
             SinMove();

@@ -16,6 +16,9 @@ public class SceneGameManager : MonoBehaviour
 	public Dictionary<string, AsyncOperationHandle<GameObject>> AddressableCache => _cache;
 
 	public static SceneGameManager Current;
+
+	// TODO：今後別のクラスに移行する
+	[SerializeField] public int HitStopTime;
 	
 	private void Awake()
 	{
