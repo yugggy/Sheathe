@@ -61,7 +61,8 @@ public class StageManager : MonoBehaviour
 		}
 		else
 		{
-			SceneGameManager.Current.ReloadStageAsync();
+			// TODO：納刀一回制限、無制限で決めかねている
+			// SceneGameManager.Current.ReloadStageAsync();
 		}
 	}
 }
