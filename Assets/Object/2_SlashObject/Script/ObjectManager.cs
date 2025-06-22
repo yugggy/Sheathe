@@ -82,7 +82,7 @@ public class ObjectManager : MonoBehaviour
 		{
 			if (slash.IsSlashed)
 			{
-				await slash.DestroyAsync();
+				slash.DestroyAsync();
 			}
 		}
 	}
