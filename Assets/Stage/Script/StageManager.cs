@@ -59,6 +59,12 @@ public class StageManager : MonoBehaviour
 
 			Debug.Log("ステージクリア");
 		}
+		// ダメージ受けていたら再ロード
+		else if(ObjectManager.Current.IsPlayerDamage())
+		{
+			SceneGameManager.Current.ReloadStageAsync();
+		}
+		// 全滅できなかったら
 		else
 		{
 			// TODO：納刀一回制限、無制限で決めかねている
