@@ -19,6 +19,7 @@ public class EnemyBase : SlashBase
     private void PlayerChase()
     {
         if (!IsSlashed) return;
+        if (ObjectManager.Current.Player == null) return;
         
         var vec = ObjectManager.Current.Player.transform.position - transform.position;
         vec.z = 0;
