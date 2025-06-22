@@ -14,6 +14,7 @@ public class ObjectSpawner : MonoBehaviour
 	private void Start()
 	{
 		SpawnAsync();
+		
 	    async Task SpawnAsync()
 	    {
 		    var obj = await SceneGameManager.Current.LoadAsync(_objectID);
@@ -30,8 +31,36 @@ public class ObjectSpawner : MonoBehaviour
 		    {
 			    Debug.Log($"{_objectID}プレハブにSlashBaseが付いていません");
 		    }
-		
-		    Destroy(this.gameObject);
+		    
+			// スポナーの削除
+		    if (!slash.IsRespawn)
+		    {
+				Destroy(this.gameObject);
+		    }
+		    else
+		    {
+			    InActive();
+		    }
+	    }
+	    
+	    // Imageの非表示
+	    void InActive()
+	    {
+		    var scaleTrans = transform.Find("Scale");
+		    if (scaleTrans == null)
+		    {
+			    Debug.Log($"{name}スポナーにScaleがありません");
+			    return;
+		    }
+			
+		    var scaleImage = scaleTrans.Find("Image");
+		    if (scaleImage == null)
+		    {
+			    Debug.Log($"{name}スポナーにImageがありません");
+			    return;
+		    }
+			
+		    scaleImage.gameObject.SetActive(false);
 	    }
 	}
 

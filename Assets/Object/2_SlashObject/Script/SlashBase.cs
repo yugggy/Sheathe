@@ -9,6 +9,7 @@ public class SlashBase : ObjectBase
 {
 	[SerializeField, Label("斬られるオブジェクトかどうか")] private bool _isCanSlash = true;
 	[SerializeField,Label("爆発するかどうか")] private bool _isExplosion = true;
+	[SerializeField,Label("復活するかどうか")] private bool _isRespawn = false;
 	
 	private GameObject _slashAnime;
 	private bool _isSlashed = false; // 斬られたフラグ
@@ -17,6 +18,7 @@ public class SlashBase : ObjectBase
 
 	public bool IsSlashed => _isSlashed;
 	public bool IsCanSlash => _isCanSlash;
+	public bool IsRespawn => _isRespawn;
 
 	protected override void Start()
 	{
