@@ -43,20 +43,9 @@ public class PlayerController : ObjectBase
 		_isDamage = false;
 		SetDirection(true);
 		
-		// 抜刀アニメ
-		var isSheathHash = Animator.StringToHash("IsSheath");
-		if (ObjAnimator.GetBool(isSheathHash))
-		{
-			ObjAnimator.SetBool(isSheathHash, false);
-			
-			// 抜刀終了後、動作可能
-			await Task.Delay(1000);
-			_isUnSheath = false;
-		}
-		else
-		{
-			_isUnSheath = false;
-		}
+		// TODO：抜刀終了後、動作可能
+		await Task.Delay(1000);
+		_isUnSheath = false;
 	}
 
 	protected override void ObjectUpdate()
@@ -250,19 +239,29 @@ public class PlayerController : ObjectBase
 	    }
     }
     
+    
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		ExplosionDamage();
 
+		// ダメージ判定
 		void ExplosionDamage()
 		{
 			var explosionLayer = 10;
-			if (collision.gameObject.layer == explosionLayer)
+			if (collision.gameObject.layer == explosionLayer && !_isDamage)
+			{
+				StartCoroutine(Damage());
+			}
+
+			IEnumerator Damage()
 			{
 				_isDamage = true;
 				var isDamageHash = Animator.StringToHash("IsDamage");
 				ObjAnimator.SetBool(isDamageHash, true);
-			}	
+				yield return WaitAnimeFinish();
+				
+				SceneGameManager.Current.ReloadStageAsync();
+			}
 		}
 	}
 

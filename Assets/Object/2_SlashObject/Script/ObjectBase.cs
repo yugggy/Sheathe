@@ -194,6 +194,9 @@ public class ObjectBase : MonoBehaviour
 	/// </summary>
 	protected IEnumerator WaitAnimeFinish()
 	{
+		// TODO：アニメ待機がうまくいかないので下記対応
+		yield return new WaitForSeconds(1);
+		
 		// アニメの切り替えのため1フレーム待機
 		yield return null;
 
