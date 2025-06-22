@@ -7,11 +7,13 @@ using UnityEngine.AddressableAssets;
 /// </summary>
 public class SlashBase : ObjectBase
 {
-	[SerializeField] private bool _isCanSlash = true; // 斬られるオブジェクトかどうか
-	[SerializeField] private bool _isExplosion = true; // 爆発するかどうか
+	[SerializeField, Label("斬られるオブジェクトかどうか")] private bool _isCanSlash = true;
+	[SerializeField,Label("爆発するかどうか")] private bool _isExplosion = true;
 	
 	private GameObject _slashAnime;
 	private bool _isSlashed = false; // 斬られたフラグ
+	private float _explosiontimer;
+	protected float ExplosionTime = 5;
 
 	public bool IsSlashed => _isSlashed;
 	public bool IsCanSlash => _isCanSlash;
@@ -39,7 +41,31 @@ public class SlashBase : ObjectBase
 	{
 		_isSlashed = true;
 		_slashAnime.SetActive(true);
+		_explosiontimer = ExplosionTime;
 	}
+
+	protected override void ObjectUpdate()
+	{
+		base.ObjectUpdate();
+		OverTime();
+	}
+
+	/// <summary>
+	/// 斬られてから一定時間で撃破
+	/// </summary>
+	private void OverTime()
+	{
+		if (_isSlashed)
+		{
+			_explosiontimer -= Time.deltaTime;
+			if (_explosiontimer <= 0)
+			{
+				_isSlashed = false;
+				DestroyAsync();
+			}	
+		}
+	}
+
 
 	/// <summary>
 	/// 撃破

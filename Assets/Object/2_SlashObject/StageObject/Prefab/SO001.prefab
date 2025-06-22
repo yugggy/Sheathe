@@ -140,6 +140,7 @@ MonoBehaviour:
   _landing: 0
   _isCanSlash: 1
   _isExplosion: 0
+  _explosionTime: 5
 --- !u!61 &2365265163365158000
 BoxCollider2D:
   m_ObjectHideFlags: 0
