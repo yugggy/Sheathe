@@ -42,6 +42,10 @@ public class PlayerController : ObjectBase
 		_isSheath = false;
 		_isDamage = false;
 		SetDirection(true);
+
+		// 納刀後、ステージ遷移した際に抜刀アニメに戻す
+		var isSheathHash = Animator.StringToHash("IsSheath");
+		ObjAnimator.SetBool(isSheathHash, false);
 		
 		// TODO：抜刀終了後、動作可能
 		await Task.Delay(700);
