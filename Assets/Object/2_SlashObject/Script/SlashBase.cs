@@ -1,6 +1,6 @@
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 /// <summary>
 /// 斬られるオブジェクト基底クラス
@@ -13,12 +13,13 @@ public class SlashBase : ObjectBase
 	
 	private GameObject _slashAnime;
 	private bool _isSlashed = false; // 斬られたフラグ
-	private float _explosiontimer;
+	private float _explosionTimer;
 	protected float ExplosionTime = 5;
 
 	public bool IsSlashed => _isSlashed;
 	public bool IsCanSlash => _isCanSlash;
 	public bool IsRespawn => _isRespawn;
+	public Action DestroyAction;
 
 	protected override void Start()
 	{
@@ -43,7 +44,7 @@ public class SlashBase : ObjectBase
 	{
 		_isSlashed = true;
 		_slashAnime.SetActive(true);
-		_explosiontimer = ExplosionTime;
+		_explosionTimer = ExplosionTime;
 	}
 
 	protected override void ObjectUpdate()
@@ -59,8 +60,8 @@ public class SlashBase : ObjectBase
 	{
 		if (_isSlashed)
 		{
-			_explosiontimer -= Time.deltaTime;
-			if (_explosiontimer <= 0)
+			_explosionTimer -= Time.deltaTime;
+			if (_explosionTimer <= 0)
 			{
 				_isSlashed = false;
 				DestroyAsync();
@@ -90,6 +91,12 @@ public class SlashBase : ObjectBase
 			// TODO：アニメ終了待機
 			// await WaitAnimeFinish();
 			await Task.Delay(1000);
+
+			// 死亡時にスポナーに通知
+			if (DestroyAction != null)
+			{
+				DestroyAction();
+			}
 			
 			Destroy(gameObject);
 		}

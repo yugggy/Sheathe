@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 /// <summary>
 /// オブジェクトのスポナー
@@ -39,12 +38,16 @@ public class ObjectSpawner : MonoBehaviour
 		    }
 		    else
 		    {
-			    InActive();
+			    // 削除しないスポナーはImageの非表示だけ行う
+			    ImageInActive();
+			    
+			    // 生成したオブジェクトが撃破されたときのアクション設定
+			    slash.DestroyAction = () => RespawnAsync();
 		    }
 	    }
 	    
-	    // Imageの非表示
-	    void InActive()
+	    // 削除しないスポナーのImageの非表示
+	    void ImageInActive()
 	    {
 		    var scaleTrans = transform.Find("Scale");
 		    if (scaleTrans == null)
@@ -61,6 +64,15 @@ public class ObjectSpawner : MonoBehaviour
 		    }
 			
 		    scaleImage.gameObject.SetActive(false);
+	    }
+
+	    // 一定時間後、再生成
+	    async Task RespawnAsync()
+	    {
+		    // 2秒待つ
+		    await Task.Delay(2000);
+		    
+		    await SpawnAsync();
 	    }
 	}
 
