@@ -19,6 +19,9 @@ public class ObjectBase : MonoBehaviour
 	protected BoxCollider2D ObjAttackCollider;
 	protected BoxCollider2D ObjDamageCollider;
 	
+	int _hitStopTimer;
+
+	
 	public enum Direction
     {
         [InspectorName("右")] Right,
@@ -31,6 +34,11 @@ public class ObjectBase : MonoBehaviour
 		[InspectorName("空中")] Air,
 	}
 
+	public void SetHitStop()
+	{
+		_hitStopTimer = SceneGameManager.Current.HitStopTime;
+	}
+
 	protected virtual void Start()
     {
 	    // RigidBody2D
@@ -40,7 +48,7 @@ public class ObjectBase : MonoBehaviour
 	    }
 	    else
 	    {
-		    Debug.Log($"{name}プレハブにRigidbody2Dがありません");
+		    DebugLogger.Log($"{name}プレハブにRigidbody2Dがありません");
 	    }
 	    
 	    // BoxCollider2D
@@ -50,14 +58,14 @@ public class ObjectBase : MonoBehaviour
 	    }
 	    else
 	    {
-		    Debug.Log($"{name}プレハブにBoxCollider2Dがありません");
+		    DebugLogger.Log($"{name}プレハブにBoxCollider2Dがありません");
 	    }
 	    
 	    // Scale
 	    ScaleTrans = transform.Find("Scale");
 	    if (ScaleTrans == null)
 	    {
-		    Debug.Log($"{name}プレハブにScaleがありません");
+		    DebugLogger.Log($"{name}プレハブにScaleがありません");
 		    return;
 	    }
 	    ObjScale = ScaleTrans.localScale;
@@ -66,7 +74,7 @@ public class ObjectBase : MonoBehaviour
 	    ImageTrans = ScaleTrans.Find("Image");
 	    if (ImageTrans == null)
 	    {
-		    Debug.Log($"{name}プレハブにScale > Imageがありません");
+		    DebugLogger.Log($"{name}プレハブにScale > Imageがありません");
 		    return;
 	    }
 		
@@ -77,20 +85,20 @@ public class ObjectBase : MonoBehaviour
 	    }
 	    else
 	    {
-		    Debug.Log($"{name}プレハブのScale > ImageにAnimatorが付いていません");
+		    DebugLogger.Log($"{name}プレハブのScale > ImageにAnimatorが付いていません");
 	    }
 	    
 	    // Collider
 	    var objCollider = ScaleTrans.transform.Find("Collider");
 	    if (objCollider  == null)
 	    {
-		    Debug.Log($"{name}プレハブにScale > Colliderがありません");
+		    DebugLogger.Log($"{name}プレハブにScale > Colliderがありません");
 	    }
 	    
 	    var attackTrans = objCollider.Find("Attack");
 	    if (attackTrans == null)
 	    {
-		    Debug.Log($"{name}プレハブにScale > Collider > Attackがありません");
+		    DebugLogger.Log($"{name}プレハブにScale > Collider > Attackがありません");
 	    }
 	    else
 	    {
@@ -100,14 +108,14 @@ public class ObjectBase : MonoBehaviour
 		    }
 		    else
 		    {
-			    Debug.Log($"{name}プレハブのScale > Collider > AttackにBoxCollider2Dがありません");
+			    DebugLogger.Log($"{name}プレハブのScale > Collider > AttackにBoxCollider2Dがありません");
 		    }
 	    }
 	    
 	    var damageTrans = objCollider.Find("Damage");
 	    if (damageTrans == null)
 	    {
-		    Debug.Log($"{name}プレハブにScale > Collider > Damageがありません");
+		    DebugLogger.Log($"{name}プレハブにScale > Collider > Damageがありません");
 	    }
 	    else
 	    {
@@ -117,14 +125,26 @@ public class ObjectBase : MonoBehaviour
 		    }
 		    else
 		    {
-			    Debug.Log($"{name}プレハブのScale > Collider > DamageにBoxCollider2Dがありません");
+			    DebugLogger.Log($"{name}プレハブのScale > Collider > DamageにBoxCollider2Dがありません");
 		    }
 	    }
 
 	    IsInit = true;
     }
 
-	protected virtual void Update()
+	private void Update()
+	{
+		if (_hitStopTimer > 0)
+		{
+			_hitStopTimer--;	
+		}
+		else
+		{
+			ObjectUpdate();
+		}
+	}
+	
+	protected virtual void ObjectUpdate()
 	{
 		
 	}
@@ -174,13 +194,16 @@ public class ObjectBase : MonoBehaviour
 	/// </summary>
 	protected IEnumerator WaitAnimeFinish()
 	{
+		// TODO：アニメ待機がうまくいかないので下記対応
+		yield return new WaitForSeconds(1);
+		
 		// アニメの切り替えのため1フレーム待機
 		yield return null;
 
 		// アニメが終了するまで待機
 		while (ObjAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
 		{
-			//Debug.Log("normalizedTime" + _animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+			//DebugLogger.Log("normalizedTime" + _animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 			yield return null;
 		}
 	}

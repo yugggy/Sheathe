@@ -9,6 +9,9 @@ public class SceneGameManager : MonoBehaviour
 	private GameObject _stageObj;
 	private string _stageName = "";
 	
+	private bool _isMoveStage;
+	private bool _isReloadStage;
+	
 	// Addressableのキャッシュ
 	// TODO：今後別のクラスに移行する
 	private Dictionary<string, AsyncOperationHandle<GameObject>> _cache = new();
@@ -16,6 +19,9 @@ public class SceneGameManager : MonoBehaviour
 	public Dictionary<string, AsyncOperationHandle<GameObject>> AddressableCache => _cache;
 
 	public static SceneGameManager Current;
+
+	// TODO：今後別のクラスに移行する
+	[SerializeField] public int HitStopTime;
 	
 	private void Awake()
 	{
@@ -24,17 +30,19 @@ public class SceneGameManager : MonoBehaviour
 
 	private void Start()
 	{
-		// TODO：セーブデータから読み込んだステージ
-		_stageName = "2_1";
-		MoveStageAsync(_stageName, true, 0);
+		Application.targetFrameRate = 60;
+		
+		// TODO：ステージ名をセーブデータから読み込む
+		_stageName = "1_1";
+		TaskUtility.FireAndForget(MoveStageAsync(_stageName, true), "MoveStageAsync");
 	}
 
 	private void Update()
 	{
 		// Rキーでリトライ
-		if (Input.GetKeyDown(KeyCode.R))
+		if (Input.GetKeyDown(KeyCode.R) && !_isReloadStage && !_isMoveStage)
 		{
-			ReloadStageAsync();
+			TaskUtility.FireAndForget(ReloadStageAsync(), "ReloadStageAsync");
 		}
 	}
 
@@ -49,7 +57,7 @@ public class SceneGameManager : MonoBehaviour
 			// 既にロードしていたら返す
 			if (cachedHandle.Status == AsyncOperationStatus.Succeeded)
 			{
-				// Debug.Log($"{key}:既にロード済み");
+				// DebugLogger.Log($"{key}:既にロード済み");
 				return cachedHandle.Result;
 			}
 			
@@ -69,67 +77,94 @@ public class SceneGameManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.LogError($"{key}がロード出来ませんでした。");
+			DebugLogger.LogError($"{key}がロード出来ませんでした。");
 			return null;
 		}
 	}
 
 	/// <summary>
-	/// ステージ再ロード
+	/// ステージ再生成
 	/// </summary>
 	public async Task ReloadStageAsync()
 	{
-		Debug.Log("ステージ再ロード");
+		if (_isReloadStage)
+		{
+			DebugLogger.Log("ステージ再ロード キャンセル");	
+		}
+		
+		_isReloadStage = true;
+		
+		DebugLogger.Log("ステージ再ロード");
 
 		// オブジェクトリスト初期化
 		ObjectManager.Current.ClearSlashObjectList();
-
+	
 		// プレイヤー削除
 		ObjectManager.Current.PlayerDestroy();
 
 		// ステージ生成
-		await Task.Delay(1000);
-		await MoveStageAsync(_stageName, true);
+		await MoveStageAsync(_stageName, true, true);
+		
+		_isReloadStage = false;
 	}
 
 	/// <summary>
 	/// ステージ遷移
 	/// </summary>
-	public async Task MoveStageAsync(string stageName, bool isStart, float playerPosX = 0)
+	public async Task MoveStageAsync(string stageName, bool isStartPoint, bool isReloadStage = false)
 	{
+		if (_isMoveStage)
+		{
+			DebugLogger.Log("ステージ遷移 キャンセル");	
+		}
+		
+		_isMoveStage = true;
+		
+		if (isReloadStage)
+		{
+			// TODO：プレイヤー削除してから一定時間後ステージ再ロード
+			await Task.Delay(1000);			
+		}
+		
 		// オブジェクトリスト初期化
 		ObjectManager.Current.ClearSlashObjectList();
 		
 		// Stage生成
 		Destroy(_stageObj);
 		_stageName = stageName;
+		
 		var obj = await LoadAsync($"Stage_{stageName}");
+		if (obj == null)
+		{
+			return;
+		}
 		_stageObj = Instantiate(obj, transform.position, transform.rotation, transform);
 		
 		// ステージに設定されている生成ポイント取得
 		if (!_stageObj.TryGetComponent<StageManager>(out var stageManager))
 		{
-			Debug.Log($"Stage_{stageName}にStageManagerが付いていません");
+			DebugLogger.Log($"Stage_{stageName}にStageManagerが付いていません");
 			return;
 		}
+		DebugLogger.Log($"Stage_{stageName}に遷移");
 
 		var gateController = stageManager.GateController;
 		if (gateController == null)
 		{
-			Debug.Log($"Stage_{stageName}のGateにGateControllerが付いていません");
+			DebugLogger.Log($"Stage_{stageName}のGateにGateControllerが付いていません");
 			return;
 		}
 		
-		var playerSpawnPoint = gateController.GetPlayerSpawnPoint(isStart);
+		var playerSpawnPoint = gateController.GetPlayerSpawnPoint(isStartPoint);
 		if (playerSpawnPoint == null)
 		{
-			Debug.Log($"Stage_{stageName}の{(isStart ? "Start" : "End")}GateのplayerSpawnPointがありません");
+			DebugLogger.Log($"Stage_{stageName}の{(isStartPoint ? "Start" : "End")}GateのplayerSpawnPointがありません");
 			return;
 		}
 		
 		// Player生成
 		await ObjectManager.Current.CreatePlayerAsync(playerSpawnPoint.position);
 		
-		Debug.Log($"Stage_{stageName}に遷移");
+		_isMoveStage = false;
 	}
 }

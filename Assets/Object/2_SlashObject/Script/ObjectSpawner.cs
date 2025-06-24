@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 /// <summary>
 /// オブジェクトのスポナー
@@ -13,10 +12,15 @@ public class ObjectSpawner : MonoBehaviour
 
 	private void Start()
 	{
-		SpawnAsync();
+		TaskUtility.FireAndForget(SpawnAsync(),"SpawnAsync");
+		
 	    async Task SpawnAsync()
 	    {
 		    var obj = await SceneGameManager.Current.LoadAsync(_objectID);
+		    if (obj == null)
+		    {
+			    return;
+		    }
 		    var slashObj = Instantiate(obj, transform.position, transform.rotation, transform.parent);
 		    if (slashObj.TryGetComponent<SlashBase>(out var slash))
 		    {
@@ -28,10 +32,51 @@ public class ObjectSpawner : MonoBehaviour
 		    }
 		    else
 		    {
-			    Debug.Log($"{_objectID}プレハブにSlashBaseが付いていません");
+			    DebugLogger.Log($"{_objectID}プレハブにSlashBaseが付いていません");
 		    }
-		
-		    Destroy(this.gameObject);
+		    
+			// スポナーの削除
+		    if (!slash.IsRespawn)
+		    {
+				Destroy(this.gameObject);
+		    }
+		    else
+		    {
+			    // 削除しないスポナーはImageの非表示だけ行う
+			    ImageInActive();
+			    
+			    // 生成したオブジェクトが撃破されたときのアクション設定
+			    slash.DestroyAction = () => TaskUtility.FireAndForget(RespawnAsync(),"RespawnAsync");
+		    }
+	    }
+	    
+	    // 削除しないスポナーのImageの非表示
+	    void ImageInActive()
+	    {
+		    var scaleTrans = transform.Find("Scale");
+		    if (scaleTrans == null)
+		    {
+			    DebugLogger.Log($"{name}スポナーにScaleがありません");
+			    return;
+		    }
+			
+		    var scaleImage = scaleTrans.Find("Image");
+		    if (scaleImage == null)
+		    {
+			    DebugLogger.Log($"{name}スポナーにImageがありません");
+			    return;
+		    }
+			
+		    scaleImage.gameObject.SetActive(false);
+	    }
+
+	    // 一定時間後、再生成
+	    async Task RespawnAsync()
+	    {
+		    // 2秒待つ
+		    await Task.Delay(2000);
+		    
+		    await SpawnAsync();
 	    }
 	}
 
@@ -65,7 +110,7 @@ public class ObjectSpawner : MonoBehaviour
 			}
 			else
 			{
-				Debug.Log("Scaleの同期が出来ません");
+				DebugLogger.Log("Scaleの同期が出来ません");
 			}
 		}
 	}

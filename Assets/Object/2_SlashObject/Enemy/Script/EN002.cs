@@ -6,17 +6,21 @@ using UnityEngine;
 public class EN002 : EnemyBase
 {
     private float _initY;
+    [SerializeField, Label("斬られてから撃破までの時間")] private float _explosionTime;
     
     protected override void Start()
     {
         base.Start();
         _initY = transform.position.y;
         ChaseVelocity = 2.0f;
+                
+        // 撃破時間設定
+        ExplosionTime = _explosionTime;
     }
 
-    protected override void Update()
+    protected override void ObjectUpdate()
     {
-        base.Update();
+        base.ObjectUpdate();
         if (!IsSlashed)
         {
             SinMove();

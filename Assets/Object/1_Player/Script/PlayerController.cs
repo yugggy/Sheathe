@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -8,7 +9,8 @@ using UnityEngine;
 public class PlayerController : ObjectBase
 {
     [SerializeField, Label("移動速度倍率")] float _moveSpd;
-    [SerializeField, Label("減速速度")] float _deboostSpd;
+    [SerializeField, Label("減速度")] float _deboostSpd;
+    [SerializeField, Label("ブレーキ減速度")] float _brakeDeboostSpd;
     [SerializeField, Label("ジャンプ力")] float _jumpPower;
 
 	private Vector3 _velocity;
@@ -40,26 +42,19 @@ public class PlayerController : ObjectBase
 		_isSheath = false;
 		_isDamage = false;
 		SetDirection(true);
-		
-		// 抜刀アニメ
+
+		// 納刀後、ステージ遷移した際に抜刀アニメに戻す
 		var isSheathHash = Animator.StringToHash("IsSheath");
-		if (ObjAnimator.GetBool(isSheathHash))
-		{
-			ObjAnimator.SetBool(isSheathHash, false);
-			
-			// 抜刀終了後、動作可能
-			await Task.Delay(1000);
-			_isUnSheath = false;
-		}
-		else
-		{
-			_isUnSheath = false;
-		}
+		ObjAnimator.SetBool(isSheathHash, false);
+		
+		// TODO：抜刀終了後、動作可能
+		await Task.Delay(700);
+		_isUnSheath = false;
 	}
 
-	protected override void Update()
+	protected override void ObjectUpdate()
     {
-	    base.Update();
+	    base.ObjectUpdate();
 	    
 	    // 抜刀もしくは納刀中であれば行わない
 	    if (_isUnSheath || _isSheath)
@@ -97,10 +92,20 @@ public class PlayerController : ObjectBase
     {
 		if (_moveSpd == 0)
 		{
-			Debug.LogError("移動倍率0");
+			DebugLogger.LogError("移動倍率0");
 		}
 		
 		var leftStickValue = ControllerManager.Current.LeftStickValue * _moveSpd * Time.deltaTime;
+		
+		// ブレーキ
+		// // TODO；操作性が微妙なので一旦保留
+		// if (IsBrake(leftStickValue))
+		// {
+		// 	Brake();
+		// 	return;
+		// }
+		
+		// 移動
 		if (ControllerManager.Current.GetMoveState == ControllerManager.MoveState.RightMove)
 		{
 			_velocity.x = leftStickValue;
@@ -113,7 +118,43 @@ public class PlayerController : ObjectBase
 		}
 		else
 		{
-			_velocity.x = 0;
+			// 慣性
+			Inertia();
+		}
+
+		// ブレーキ判定
+		bool IsBrake(float value)
+		{
+			if (Math.Abs(_velocity.x) > 0 && Math.Abs(value) > 0)
+			{
+				if (Math.Sign(_velocity.x) != Math.Sign(value))
+				{
+					DebugLogger.Log("ブレーキ");
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		// ブレーキ
+		void Brake()
+		{
+			_velocity.x -= _velocity.x * _brakeDeboostSpd;
+			if (Math.Abs(_velocity.x) < 0.001f)
+			{
+				_velocity.x = 0;
+			}
+			SetDirection(leftStickValue >= 0);
+		}
+		
+		// 慣性
+		void Inertia()
+		{
+			_velocity.x -= _velocity.x * _deboostSpd;
+			if (Math.Abs(_velocity.x) < 0.001f)
+			{
+				_velocity.x = 0;
+			}			
 		}
 	}
 
@@ -122,7 +163,8 @@ public class PlayerController : ObjectBase
 	/// </summary>
 	private void Jump()
     {
-		if (_isGround && !_isJump && ControllerManager.Current.GetJumpState == ControllerManager.JumpState.Jump)
+		if (_isGround && !_isJump && 
+		    (ControllerManager.Current.GetJumpState == ControllerManager.JumpState.Jump || ControllerManager.Current.IsLeadJumpKey))
 		{
 			_isJump = true;
 			var velocity = ObjRigidBody.linearVelocity;
@@ -168,7 +210,18 @@ public class PlayerController : ObjectBase
 
 		IEnumerator SheathToResult()
 		{
-			Debug.Log("納刀");
+			// TODO：全敵斬った判定
+			if (!ObjectManager.Current.GetDestroyCompletely())
+			{
+				DebugLogger.Log("納刀失敗");
+				var isFailureSheathe = Animator.StringToHash("IsFailureSheathe");
+				ObjAnimator.SetBool(isFailureSheathe, true);
+				yield return null;
+				ObjAnimator.SetBool(isFailureSheathe, false);
+				yield break;
+			}
+			
+			DebugLogger.Log("納刀");
 
 			_isSheath = true;
 
@@ -178,7 +231,7 @@ public class PlayerController : ObjectBase
 			yield return WaitAnimeFinish();
 
 			// 結果発表
-			StageManager.Current.ResultAsync();
+			TaskUtility.FireAndForget(StageManager.Current.ResultAsync(), "ResultAsync");
 			
 			_isSheath = false;
 		}
@@ -201,19 +254,29 @@ public class PlayerController : ObjectBase
 	    }
     }
     
+    
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		ExplosionDamage();
 
+		// ダメージ判定
 		void ExplosionDamage()
 		{
 			var explosionLayer = 10;
-			if (collision.gameObject.layer == explosionLayer)
+			if (collision.gameObject.layer == explosionLayer && !_isDamage)
+			{
+				StartCoroutine(Damage());
+			}
+
+			IEnumerator Damage()
 			{
 				_isDamage = true;
 				var isDamageHash = Animator.StringToHash("IsDamage");
 				ObjAnimator.SetBool(isDamageHash, true);
-			}	
+				yield return WaitAnimeFinish();
+				
+				TaskUtility.FireAndForget(SceneGameManager.Current.ReloadStageAsync(), "ReloadStageAsync");
+			}
 		}
 	}
 

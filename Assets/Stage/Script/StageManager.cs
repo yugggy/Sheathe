@@ -25,7 +25,7 @@ public class StageManager : MonoBehaviour
 		// 	var gateTrans = transform.Find("Gate");
 		// 	if (gateTrans == null)
 		// 	{
-		// 		Debug.Log($"{name}プレハブ内にGateがありません");
+		// 		DebugLogger.Log($"{name}プレハブ内にGateがありません");
 		// 	}
 		// 	else
 		// 	{
@@ -35,7 +35,7 @@ public class StageManager : MonoBehaviour
 		// 		}
 		// 		else
 		// 		{
-		// 			Debug.Log($"{name}プレハブのGateにGateControllerが付いていません");
+		// 			DebugLogger.Log($"{name}プレハブのGateにGateControllerが付いていません");
 		// 		}
 		// 	}
 		// }
@@ -47,7 +47,7 @@ public class StageManager : MonoBehaviour
 	public async Task ResultAsync()
 	{
 		// 斬った敵殲滅
-		await ObjectManager.Current.DestroySlashObjectAsync();
+		ObjectManager.Current.DestroySlashObject();
 		
 		await Task.Delay(500);
 		
@@ -56,12 +56,19 @@ public class StageManager : MonoBehaviour
 		{
 			// 扉開錠
 			_gateController.ExitOpen();
-
-			Debug.Log("ステージクリア");
+			
+			DebugLogger.Log("ステージクリア");
 		}
+		// ダメージ受けていたら再ロード
+		else if(ObjectManager.Current.IsPlayerDamage())
+		{
+			await SceneGameManager.Current.ReloadStageAsync();
+		}
+		// 全滅できなかったら
 		else
 		{
-			SceneGameManager.Current.ReloadStageAsync();
+			// TODO：納刀一回制限、無制限で決めかねている
+			// await SceneGameManager.Current.ReloadStageAsync();
 		}
 	}
 }
