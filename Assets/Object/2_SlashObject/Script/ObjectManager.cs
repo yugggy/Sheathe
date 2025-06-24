@@ -23,6 +23,10 @@ public class ObjectManager : MonoBehaviour
 	public async Task CreatePlayerAsync(Vector3 position)
 	{
 		var obj = await SceneGameManager.Current.LoadAsync("Player");
+		if (obj == null)
+		{
+			return;
+		}
 		
 		if (_player == null)
 		{
@@ -76,13 +80,13 @@ public class ObjectManager : MonoBehaviour
 	/// <summary>
 	/// 斬った敵殲滅
 	/// </summary>
-	public async Task DestroySlashObjectAsync()
+	public void DestroySlashObject()
 	{
 		foreach (var slash in _slashList)
 		{
 			if (slash.IsSlashed)
 			{
-				slash.DestroyAsync();
+				TaskUtility.FireAndForget(slash.DestroyAsync(), "slash.DestroyAsync");
 			}
 		}
 	}

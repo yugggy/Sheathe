@@ -47,7 +47,7 @@ public class StageManager : MonoBehaviour
 	public async Task ResultAsync()
 	{
 		// 斬った敵殲滅
-		await ObjectManager.Current.DestroySlashObjectAsync();
+		ObjectManager.Current.DestroySlashObject();
 		
 		await Task.Delay(500);
 		
@@ -62,13 +62,13 @@ public class StageManager : MonoBehaviour
 		// ダメージ受けていたら再ロード
 		else if(ObjectManager.Current.IsPlayerDamage())
 		{
-			SceneGameManager.Current.ReloadStageAsync();
+			await SceneGameManager.Current.ReloadStageAsync();
 		}
 		// 全滅できなかったら
 		else
 		{
 			// TODO：納刀一回制限、無制限で決めかねている
-			// SceneGameManager.Current.ReloadStageAsync();
+			// await SceneGameManager.Current.ReloadStageAsync();
 		}
 	}
 }

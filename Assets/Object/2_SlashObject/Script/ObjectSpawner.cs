@@ -12,11 +12,15 @@ public class ObjectSpawner : MonoBehaviour
 
 	private void Start()
 	{
-		SpawnAsync();
+		TaskUtility.FireAndForget(SpawnAsync(),"SpawnAsync");
 		
 	    async Task SpawnAsync()
 	    {
 		    var obj = await SceneGameManager.Current.LoadAsync(_objectID);
+		    if (obj == null)
+		    {
+			    return;
+		    }
 		    var slashObj = Instantiate(obj, transform.position, transform.rotation, transform.parent);
 		    if (slashObj.TryGetComponent<SlashBase>(out var slash))
 		    {
@@ -42,7 +46,7 @@ public class ObjectSpawner : MonoBehaviour
 			    ImageInActive();
 			    
 			    // 生成したオブジェクトが撃破されたときのアクション設定
-			    slash.DestroyAction = () => RespawnAsync();
+			    slash.DestroyAction = () => TaskUtility.FireAndForget(RespawnAsync(),"RespawnAsync");
 		    }
 	    }
 	    

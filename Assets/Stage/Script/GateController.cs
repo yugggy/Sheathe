@@ -27,8 +27,8 @@ public class GateController : MonoBehaviour
 			DebugLogger.Log("遷移する前のステージ名が入力されていません。");
 			return;
 		}
-
-		SceneGameManager.Current.MoveStageAsync(_frontStageName, false);
+		
+		TaskUtility.FireAndForget(SceneGameManager.Current.MoveStageAsync(_frontStageName, false), "MoveStageAsync");
 	}
 
 	/// <summary>
@@ -41,9 +41,8 @@ public class GateController : MonoBehaviour
 			DebugLogger.Log("遷移する次のステージ名が入力されていません。");
 			return;
 		}
-
-		DebugLogger.Log($"{_nextStageName}");
-		SceneGameManager.Current.MoveStageAsync(_nextStageName, true);
+		
+		TaskUtility.FireAndForget(SceneGameManager.Current.MoveStageAsync(_nextStageName, true), "MoveStageAsync");
 	}
 
 	/// <summary>

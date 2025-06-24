@@ -64,7 +64,7 @@ public class SlashBase : ObjectBase
 			if (_explosionTimer <= 0)
 			{
 				_isSlashed = false;
-				DestroyAsync();
+				TaskUtility.FireAndForget(DestroyAsync(), "DestroyAsync");
 			}	
 		}
 	}
@@ -79,6 +79,10 @@ public class SlashBase : ObjectBase
 		if (_isExplosion)
 		{
 			var obj = await SceneGameManager.Current.LoadAsync("Explosion");
+			if (obj == null)
+			{
+				return;
+			}
 			Instantiate(obj, transform.position, transform.rotation, transform.parent);
 			Destroy(gameObject);
 		}

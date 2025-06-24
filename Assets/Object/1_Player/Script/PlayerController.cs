@@ -231,7 +231,7 @@ public class PlayerController : ObjectBase
 			yield return WaitAnimeFinish();
 
 			// 結果発表
-			StageManager.Current.ResultAsync();
+			TaskUtility.FireAndForget(StageManager.Current.ResultAsync(), "ResultAsync");
 			
 			_isSheath = false;
 		}
@@ -275,7 +275,7 @@ public class PlayerController : ObjectBase
 				ObjAnimator.SetBool(isDamageHash, true);
 				yield return WaitAnimeFinish();
 				
-				SceneGameManager.Current.ReloadStageAsync();
+				TaskUtility.FireAndForget(SceneGameManager.Current.ReloadStageAsync(), "ReloadStageAsync");
 			}
 		}
 	}
