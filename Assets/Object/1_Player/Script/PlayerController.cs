@@ -210,6 +210,17 @@ public class PlayerController : ObjectBase
 
 		IEnumerator SheathToResult()
 		{
+			// TODO：全敵斬った判定
+			if (!ObjectManager.Current.GetDestroyCompletely())
+			{
+				Debug.Log("納刀失敗");
+				var isFailureSheathe = Animator.StringToHash("IsFailureSheathe");
+				ObjAnimator.SetBool(isFailureSheathe, true);
+				yield return null;
+				ObjAnimator.SetBool(isFailureSheathe, false);
+				yield break;
+			}
+			
 			Debug.Log("納刀");
 
 			_isSheath = true;
