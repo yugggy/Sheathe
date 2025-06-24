@@ -24,7 +24,7 @@ public class GateController : MonoBehaviour
 	{
 		if(_frontStageName == "")
 		{
-			Debug.Log("遷移する前のステージ名が入力されていません。");
+			DebugLogger.Log("遷移する前のステージ名が入力されていません。");
 			return;
 		}
 
@@ -38,11 +38,11 @@ public class GateController : MonoBehaviour
 	{
 		if (_nextStageName == "")
 		{
-			Debug.Log("遷移する次のステージ名が入力されていません。");
+			DebugLogger.Log("遷移する次のステージ名が入力されていません。");
 			return;
 		}
 
-		Debug.Log($"{_nextStageName}");
+		DebugLogger.Log($"{_nextStageName}");
 		SceneGameManager.Current.MoveStageAsync(_nextStageName, true);
 	}
 

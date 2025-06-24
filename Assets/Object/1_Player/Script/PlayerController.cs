@@ -92,7 +92,7 @@ public class PlayerController : ObjectBase
     {
 		if (_moveSpd == 0)
 		{
-			Debug.LogError("移動倍率0");
+			DebugLogger.LogError("移動倍率0");
 		}
 		
 		var leftStickValue = ControllerManager.Current.LeftStickValue * _moveSpd * Time.deltaTime;
@@ -129,7 +129,7 @@ public class PlayerController : ObjectBase
 			{
 				if (Math.Sign(_velocity.x) != Math.Sign(value))
 				{
-					Debug.Log("ブレーキ");
+					DebugLogger.Log("ブレーキ");
 					return true;
 				}
 			}
@@ -213,7 +213,7 @@ public class PlayerController : ObjectBase
 			// TODO：全敵斬った判定
 			if (!ObjectManager.Current.GetDestroyCompletely())
 			{
-				Debug.Log("納刀失敗");
+				DebugLogger.Log("納刀失敗");
 				var isFailureSheathe = Animator.StringToHash("IsFailureSheathe");
 				ObjAnimator.SetBool(isFailureSheathe, true);
 				yield return null;
@@ -221,7 +221,7 @@ public class PlayerController : ObjectBase
 				yield break;
 			}
 			
-			Debug.Log("納刀");
+			DebugLogger.Log("納刀");
 
 			_isSheath = true;
 

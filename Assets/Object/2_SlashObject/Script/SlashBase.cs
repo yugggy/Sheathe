@@ -29,7 +29,7 @@ public class SlashBase : ObjectBase
 		var slashAnimeTrans = ImageTrans.Find("SlashAnime");
 		if (slashAnimeTrans  == null)
 		{
-			Debug.Log($"{name}プレハブにslashAnimeがありません");
+			DebugLogger.Log($"{name}プレハブにslashAnimeがありません");
 		}
 		else
 		{

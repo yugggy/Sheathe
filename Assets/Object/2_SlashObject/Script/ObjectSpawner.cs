@@ -28,7 +28,7 @@ public class ObjectSpawner : MonoBehaviour
 		    }
 		    else
 		    {
-			    Debug.Log($"{_objectID}プレハブにSlashBaseが付いていません");
+			    DebugLogger.Log($"{_objectID}プレハブにSlashBaseが付いていません");
 		    }
 		    
 			// スポナーの削除
@@ -52,14 +52,14 @@ public class ObjectSpawner : MonoBehaviour
 		    var scaleTrans = transform.Find("Scale");
 		    if (scaleTrans == null)
 		    {
-			    Debug.Log($"{name}スポナーにScaleがありません");
+			    DebugLogger.Log($"{name}スポナーにScaleがありません");
 			    return;
 		    }
 			
 		    var scaleImage = scaleTrans.Find("Image");
 		    if (scaleImage == null)
 		    {
-			    Debug.Log($"{name}スポナーにImageがありません");
+			    DebugLogger.Log($"{name}スポナーにImageがありません");
 			    return;
 		    }
 			
@@ -106,7 +106,7 @@ public class ObjectSpawner : MonoBehaviour
 			}
 			else
 			{
-				Debug.Log("Scaleの同期が出来ません");
+				DebugLogger.Log("Scaleの同期が出来ません");
 			}
 		}
 	}

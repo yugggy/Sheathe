@@ -41,6 +41,6 @@ public class DamageCheck : MonoBehaviour
 			slashObj.SetHitStop();
 		}
 
-		Debug.Log($"攻撃:{attackChara.name}, 被ダメージ:{damageChara.name}");
+		DebugLogger.Log($"攻撃:{attackChara.name}, 被ダメージ:{damageChara.name}");
 	}
 }

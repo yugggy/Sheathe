@@ -53,7 +53,7 @@ public class SceneGameManager : MonoBehaviour
 			// 既にロードしていたら返す
 			if (cachedHandle.Status == AsyncOperationStatus.Succeeded)
 			{
-				// Debug.Log($"{key}:既にロード済み");
+				// DebugLogger.Log($"{key}:既にロード済み");
 				return cachedHandle.Result;
 			}
 			
@@ -73,7 +73,7 @@ public class SceneGameManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.LogError($"{key}がロード出来ませんでした。");
+			DebugLogger.LogError($"{key}がロード出来ませんでした。");
 			return null;
 		}
 	}
@@ -83,7 +83,7 @@ public class SceneGameManager : MonoBehaviour
 	/// </summary>
 	public async Task ReloadStageAsync()
 	{
-		Debug.Log("ステージ再ロード");
+		DebugLogger.Log("ステージ再ロード");
 
 		// オブジェクトリスト初期化
 		ObjectManager.Current.ClearSlashObjectList();
@@ -113,27 +113,27 @@ public class SceneGameManager : MonoBehaviour
 		// ステージに設定されている生成ポイント取得
 		if (!_stageObj.TryGetComponent<StageManager>(out var stageManager))
 		{
-			Debug.Log($"Stage_{stageName}にStageManagerが付いていません");
+			DebugLogger.Log($"Stage_{stageName}にStageManagerが付いていません");
 			return;
 		}
 
 		var gateController = stageManager.GateController;
 		if (gateController == null)
 		{
-			Debug.Log($"Stage_{stageName}のGateにGateControllerが付いていません");
+			DebugLogger.Log($"Stage_{stageName}のGateにGateControllerが付いていません");
 			return;
 		}
 		
 		var playerSpawnPoint = gateController.GetPlayerSpawnPoint(isStart);
 		if (playerSpawnPoint == null)
 		{
-			Debug.Log($"Stage_{stageName}の{(isStart ? "Start" : "End")}GateのplayerSpawnPointがありません");
+			DebugLogger.Log($"Stage_{stageName}の{(isStart ? "Start" : "End")}GateのplayerSpawnPointがありません");
 			return;
 		}
 		
 		// Player生成
 		await ObjectManager.Current.CreatePlayerAsync(playerSpawnPoint.position);
 		
-		Debug.Log($"Stage_{stageName}に遷移");
+		DebugLogger.Log($"Stage_{stageName}に遷移");
 	}
 }

@@ -67,8 +67,8 @@ public class ControllerManager : MonoBehaviour
 		// ゲームパッド操作
 		GamePadOperate();
 
-		//Debug.Log($"操作：{_state}");
-		//Debug.Log($"移動：{_leftStickValue}");
+		//DebugLogger.Log($"操作：{_state}");
+		//DebugLogger.Log($"移動：{_leftStickValue}");
 	}
 
 	/// <summary>
