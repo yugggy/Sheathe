@@ -275,7 +275,9 @@ public class PlayerController : ObjectBase
 				ObjAnimator.SetBool(isDamageHash, true);
 				yield return WaitAnimeFinish();
 				
-				TaskUtility.FireAndForget(SceneGameManager.Current.ReloadStageAsync(), "ReloadStageAsync");
+				// TODO：納刀せずにダメージを受けることがあれば復活
+				// 納刀時の結果発表と被らないよう対応必須
+				// TaskUtility.FireAndForget(SceneGameManager.Current.ReloadStageAsync(), "ReloadStageAsync");
 			}
 		}
 	}
