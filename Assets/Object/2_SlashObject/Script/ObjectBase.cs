@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -194,9 +195,6 @@ public class ObjectBase : MonoBehaviour
 	/// </summary>
 	protected IEnumerator WaitAnimeFinish()
 	{
-		// TODO：アニメ待機がうまくいかないので下記対応
-		yield return new WaitForSeconds(1);
-		
 		// アニメの切り替えのため1フレーム待機
 		yield return null;
 
@@ -205,6 +203,19 @@ public class ObjectBase : MonoBehaviour
 		{
 			//DebugLogger.Log("normalizedTime" + _animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 			yield return null;
+		}
+	}
+	
+	protected async Task WaitAnimeFinishAsync()
+	{
+		// アニメの切り替えのため1フレーム待機
+		await Task.Yield();
+
+		// アニメが終了するまで待機
+		while (ObjAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
+		{
+			//DebugLogger.Log("normalizedTime" + _animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+			await Task.Yield();
 		}
 	}
 }

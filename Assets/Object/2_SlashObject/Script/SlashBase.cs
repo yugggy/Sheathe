@@ -92,9 +92,7 @@ public class SlashBase : ObjectBase
 			var isSlashedHash = Animator.StringToHash("IsSlashed");
 			ObjAnimator.SetBool(isSlashedHash, true);
 			
-			// TODO：アニメ終了待機
-			// await WaitAnimeFinish();
-			await Task.Delay(1000);
+			await WaitAnimeFinishAsync();
 
 			// 死亡時にスポナーに通知
 			if (DestroyAction != null)
