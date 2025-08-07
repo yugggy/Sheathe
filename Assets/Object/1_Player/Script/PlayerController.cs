@@ -18,8 +18,9 @@ public class PlayerController : ObjectBase
 	private bool _isJump;
 	private float _attackTimer;
 	private readonly float _attackTime = 0.1f;
-	private bool _isSheath;
-    private bool _isUnSheath;
+	private bool _isSheathing; // 納刀中
+    private bool _isUnSheathing; //抜刀中
+    private bool _isAttackable; //攻撃可能（抜刀完了状態）
 	private bool _isDamage;
 	private readonly float _groundCheckRayLength = 0.8f;
 	
@@ -31,50 +32,50 @@ public class PlayerController : ObjectBase
 	/// </summary>
 	public async Task InitAsync()
 	{
-		_isUnSheath = true;
-		
-		// 基底クラスの初期化処理が終わるまで待機
+		// TODO：基底クラスの初期化処理が終わるまで待機
 		while (!IsInit)
 		{
 			await Task.Delay(100);
 		}
 		
-		_isSheath = false;
+		// ステージ遷移した際にNeutralアニメに戻す
+		Utility.SetAnimationFlg(ObjAnimator, "IsSheath", false);
+		Utility.SetAnimationFlg(ObjAnimator, "IsUnSheath", false);
+		ObjAnimator.Play("Neutral");
+		
+		_isAttackable = false;
 		_isDamage = false;
 		SetDirection(true);
-
-		// 納刀後、ステージ遷移した際に抜刀アニメに戻す
-		var isSheathHash = Animator.StringToHash("IsSheath");
-		ObjAnimator.SetBool(isSheathHash, false);
-		
-		// TODO：抜刀終了後、動作可能
-		await Task.Delay(700);
-		_isUnSheath = false;
 	}
 
 	protected override void ObjectUpdate()
     {
 	    base.ObjectUpdate();
 	    
-	    // 抜刀もしくは納刀中であれば行わない
-	    if (_isUnSheath || _isSheath)
+	    // 納刀中であれば行わない
+	    if (_isSheathing)
 	    {
 		    _velocity.x = 0;
 		    return;
 	    }
-	    else
-	    {
-		    // 移動
-		    Move();
+	    
+	    // 移動
+	    Move();
 
-		    // ジャンプ
-		    Jump();
+	    // ジャンプ
+	    Jump();
 		    
-		    // 攻撃
-		    Attack();
+	    // 攻撃
+	    Attack();
+
+	    // ステージをクリアしていないときに行える
+	    if (!StageManager.Current.IsStageClear)
+	    {
+		    // 抜刀
+		    UnSheath();
 
 		    // 納刀
-		    Sheath();
+		    Sheath();    
 	    }
         
         // 着地判定
@@ -172,13 +173,13 @@ public class PlayerController : ObjectBase
 			ObjRigidBody.linearVelocity = velocity;
 		}
 	}
-
+	
 	/// <summary>
 	/// 攻撃
 	/// </summary>
 	private void Attack()
 	{
-		if (ControllerManager.Current.GetAttackState == ControllerManager.AttackState.Attack)
+		if (_isAttackable && ControllerManager.Current.GetAttackState == ControllerManager.AttackState.Attack)
 		{
 			ObjAttackCollider.gameObject.SetActive(true);
 			_attackTimer = _attackTime;
@@ -196,6 +197,42 @@ public class PlayerController : ObjectBase
 			}
 		}
 	}
+	
+	/// <summary>
+	/// 抜刀
+	/// </summary>
+	private void UnSheath()
+	{
+		if (!_isAttackable && ControllerManager.Current.GetAttackState == ControllerManager.AttackState.SheathOrUnSheath)
+		{
+			if (_isUnSheathing)
+			{
+				DebugLogger.Log("抜刀中");
+				return;				
+			}
+			
+			TaskUtility.FireAndForget(UnSheathAsync(), "UnSheathAsync");
+		}
+		
+		// 抜刀アニメーション
+		async Task UnSheathAsync()
+		{
+			DebugLogger.Log("抜刀");
+			_isUnSheathing = true;
+			
+			// 抜刀アニメ
+			Utility.SetAnimationFlg(ObjAnimator, "IsUnSheath");
+			
+			// TODO：抜刀終了後、動作可能
+			await Task.Delay(700);
+			// await WaitAnimeFinishAsync();
+			
+			_isUnSheathing = false;
+			_isAttackable = true;
+			
+			DebugLogger.Log("抜刀終了");
+		}
+	}
 
     /// <summary>
     /// 納刀
@@ -203,8 +240,14 @@ public class PlayerController : ObjectBase
     private void Sheath()
     {
 		// 指定のボタン押下で納刀アクション
-		if (ControllerManager.Current.GetAttackState == ControllerManager.AttackState.Sheath)
+		if (_isAttackable && !_isSheathing && ControllerManager.Current.GetAttackState == ControllerManager.AttackState.SheathOrUnSheath)
 		{
+			if (_isSheathing)
+			{
+				DebugLogger.Log("納刀中");
+				return;				
+			}
+			
 			StartCoroutine(SheathToResult());
 		}
 
@@ -214,26 +257,29 @@ public class PlayerController : ObjectBase
 			if (!ObjectManager.Current.GetDestroyCompletely())
 			{
 				DebugLogger.Log("納刀失敗");
-				var isFailureSheathe = Animator.StringToHash("IsFailureSheathe");
-				ObjAnimator.SetBool(isFailureSheathe, true);
+				Utility.SetAnimationFlg(ObjAnimator, "IsFailureSheathe");
 				yield return null;
-				ObjAnimator.SetBool(isFailureSheathe, false);
+				Utility.SetAnimationFlg(ObjAnimator, "IsFailureSheathe",false);
 				yield break;
 			}
 			
 			DebugLogger.Log("納刀");
-
-			_isSheath = true;
+			_isSheathing = true;
 
 			// 納刀アニメ
-			var isSheathHash = Animator.StringToHash("IsSheath");
-			ObjAnimator.SetBool(isSheathHash, true);
+			Utility.SetAnimationFlg(ObjAnimator, "IsSheath");
 			yield return WaitAnimeFinish();
 
 			// 結果発表
 			TaskUtility.FireAndForget(StageManager.Current.ResultAsync(), "ResultAsync");
 			
-			_isSheath = false;
+			_isAttackable = false;
+			_isSheathing = false;
+			DebugLogger.Log("納刀終了");
+			
+			Utility.SetAnimationFlg(ObjAnimator, "IsSheath", false);
+			Utility.SetAnimationFlg(ObjAnimator, "IsUnSheath", false);
+			ObjAnimator.Play("Neutral");
 		}
 	}
 
@@ -271,8 +317,7 @@ public class PlayerController : ObjectBase
 			IEnumerator Damage()
 			{
 				_isDamage = true;
-				var isDamageHash = Animator.StringToHash("IsDamage");
-				ObjAnimator.SetBool(isDamageHash, true);
+				Utility.SetAnimationFlg(ObjAnimator, "IsDamage");
 				yield return WaitAnimeFinish();
 				
 				// TODO：納刀せずにダメージを受けることがあれば復活

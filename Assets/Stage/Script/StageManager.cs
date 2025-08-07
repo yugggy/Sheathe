@@ -8,8 +8,11 @@ public class StageManager : MonoBehaviour
 {
 	[SerializeField] private GateController _gateController;
 	public static StageManager Current;
-	public GateController GateController => _gateController; 
-
+	public GateController GateController => _gateController;
+	private bool _isStageClear; // ステージクリアフラグ(次のステージやリトライでフラグリセット)
+	public bool IsStageClear => _isStageClear;
+	
+	
 	private void Awake()
 	{
 		Current = this;
@@ -57,6 +60,8 @@ public class StageManager : MonoBehaviour
 			// 扉開錠
 			_gateController.ExitOpen();
 			
+			_isStageClear = true;
+			
 			DebugLogger.Log("ステージクリア");
 		}
 		// ダメージ受けていたら再ロード
@@ -70,5 +75,13 @@ public class StageManager : MonoBehaviour
 			// TODO：納刀一回制限、無制限で決めかねている
 			// await SceneGameManager.Current.ReloadStageAsync();
 		}
+	}
+
+	/// <summary>
+	/// ステージクリアフラグのリセット
+	/// </summary>
+	public void ResetStageClearFlg()
+	{
+		_isStageClear = false;
 	}
 }

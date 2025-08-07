@@ -39,8 +39,8 @@ public class ControllerManager : MonoBehaviour
 	public enum AttackState
 	{
 		None,
+		SheathOrUnSheath,
 		Attack,
-		Sheath,
 	}
 
 	private void Awake()
@@ -103,13 +103,15 @@ public class ControllerManager : MonoBehaviour
 		}
 
 		// 攻撃
-		if (Input.GetKeyDown(KeyCode.X))
+		// Zキーで納刀/抜刀
+		// Xキーで攻撃
+		if (Input.GetKeyDown(KeyCode.Z))
+		{
+			_attackState = AttackState.SheathOrUnSheath;
+		}
+		else if (Input.GetKeyDown(KeyCode.X))
 		{
 			_attackState = AttackState.Attack;
-		}
-		else if (Input.GetKeyDown(KeyCode.Z))
-		{
-			_attackState = AttackState.Sheath;
 		}
 		else
 		{
@@ -162,7 +164,7 @@ public class ControllerManager : MonoBehaviour
 		}
 		else if (_gamepad.yButton.IsPressed())
 		{
-			_attackState = AttackState.Sheath;
+			_attackState = AttackState.SheathOrUnSheath;
 		}
 		else
 		{

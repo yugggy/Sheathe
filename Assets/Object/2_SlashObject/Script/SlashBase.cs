@@ -89,8 +89,7 @@ public class SlashBase : ObjectBase
 		// 撃破アニメ
 		else
 		{
-			var isSlashedHash = Animator.StringToHash("IsSlashed");
-			ObjAnimator.SetBool(isSlashedHash, true);
+			Utility.SetAnimationFlg(ObjAnimator, "IsSlashed");
 			
 			await WaitAnimeFinishAsync();
 

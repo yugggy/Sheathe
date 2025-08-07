@@ -74,7 +74,7 @@ public class ObjectManager : MonoBehaviour
 	/// </summary>
 	public bool GetDestroyCompletely()
 	{
-		return !_slashList.Any(x => !x.IsSlashed);
+		return _slashList.All(x => x.IsSlashed);
 	}
 
 	/// <summary>
@@ -89,6 +89,8 @@ public class ObjectManager : MonoBehaviour
 				TaskUtility.FireAndForget(slash.DestroyAsync(), "slash.DestroyAsync");
 			}
 		}
+
+		ClearSlashObjectList();
 	}
 
 	/// <summary>
