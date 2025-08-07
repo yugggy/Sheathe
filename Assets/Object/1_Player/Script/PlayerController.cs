@@ -69,7 +69,7 @@ public class PlayerController : ObjectBase
 	    Attack();
 
 	    // ステージをクリアしていないときに行える
-	    if (!StageManager.Current.IsStageClear)
+	    if (!StageController.Current.IsStageClear)
 	    {
 		    // 抜刀
 		    UnSheath();
@@ -271,7 +271,7 @@ public class PlayerController : ObjectBase
 			yield return WaitAnimeFinish();
 
 			// 結果発表
-			TaskUtility.FireAndForget(StageManager.Current.ResultAsync(), "ResultAsync");
+			TaskUtility.FireAndForget(StageController.Current.ResultAsync(), "ResultAsync");
 			
 			_isAttackable = false;
 			_isSheathing = false;

@@ -4,12 +4,12 @@ using UnityEngine;
 /// <summary>
 /// ステージ
 /// </summary>
-public class StageManager : MonoBehaviour
+public class StageController : MonoBehaviour
 {
 	[SerializeField] private GateController _gateController;
-	public static StageManager Current;
+	public static StageController Current;
 	public GateController GateController => _gateController;
-	private bool _isStageClear; // ステージクリアフラグ(次のステージやリトライでフラグリセット)
+	private bool _isStageClear; // ステージクリアフラグ
 	public bool IsStageClear => _isStageClear;
 	
 	

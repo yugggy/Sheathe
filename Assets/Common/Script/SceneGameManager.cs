@@ -33,7 +33,7 @@ public class SceneGameManager : MonoBehaviour
 		Application.targetFrameRate = 60;
 		
 		// TODO：ステージ名をセーブデータから読み込む
-		_stageName = "1_1";
+		_stageName = "2_1";
 		TaskUtility.FireAndForget(MoveStageAsync(_stageName, true), "MoveStageAsync");
 	}
 
@@ -141,7 +141,7 @@ public class SceneGameManager : MonoBehaviour
 		_stageObj = Instantiate(obj, transform.position, transform.rotation, transform);
 		
 		// ステージに設定されている生成ポイント取得
-		if (!_stageObj.TryGetComponent<StageManager>(out var stageManager))
+		if (!_stageObj.TryGetComponent<StageController>(out var stageManager))
 		{
 			DebugLogger.Log($"Stage_{stageName}にStageManagerが付いていません");
 			return;
