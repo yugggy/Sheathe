@@ -2,23 +2,26 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// デバッグ用表示
-/// </summary>
-public class DebugManager : MonoBehaviour
+namespace Common.Script
 {
-    [SerializeField] private Text _velocityText;
+	/// <summary>
+	/// デバッグ用表示
+	/// </summary>
+	public class DebugManager : MonoBehaviour
+	{
+		[SerializeField] private Text _velocityText;
 
-    public static DebugManager Current;
+		public static DebugManager Current;
 	
-    void Start()
-    {
-		Current = this;
-	}
+		void Start()
+		{
+			Current = this;
+		}
 
-    public void SetVelocityText(Vector3 velocity)
-    {
-	    _velocityText.text = $"velocity.x：{Math.Round(velocity.x, 4)}{Environment.NewLine}" +
-	                         $"velocity.y：{Math.Round(velocity.y, 4)}";
-    }
+		public void SetVelocityText(Vector3 velocity)
+		{
+			_velocityText.text = $"velocity.x：{Math.Round(velocity.x, 4)}{Environment.NewLine}" +
+			                     $"velocity.y：{Math.Round(velocity.y, 4)}";
+		}
+	}
 }

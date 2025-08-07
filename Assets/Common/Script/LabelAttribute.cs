@@ -1,14 +1,17 @@
 
-public class LabelAttribute : UnityEngine.PropertyAttribute
+namespace Common.Script
 {
-#if (UNITY_EDITOR) && (!_NODEBUG)
-	public readonly string Value;
-#endif
-
-	public LabelAttribute(string value)
+	public class LabelAttribute : UnityEngine.PropertyAttribute
 	{
 #if (UNITY_EDITOR) && (!_NODEBUG)
-		Value = value;
+		public readonly string Value;
 #endif
+
+		public LabelAttribute(string value)
+		{
+#if (UNITY_EDITOR) && (!_NODEBUG)
+			Value = value;
+#endif
+		}
 	}
 }

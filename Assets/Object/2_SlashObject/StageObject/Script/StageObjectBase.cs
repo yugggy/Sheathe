@@ -1,6 +1,9 @@
-using UnityEngine;
+using Object._2_SlashObject.Script;
 
-public class StageObjectBase : SlashBase
+namespace Object._2_SlashObject.StageObject.Script
 {
+    public class StageObjectBase : SlashBase
+    {
 
+    }
 }

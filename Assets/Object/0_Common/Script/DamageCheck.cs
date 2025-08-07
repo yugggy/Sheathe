@@ -1,46 +1,52 @@
+using Common.Script;
+using Object._1_Player.Script;
+using Object._2_SlashObject.Script;
 using UnityEngine;
 
-public class DamageCheck : MonoBehaviour
+namespace Object._0_Common.Script
 {
-	private void OnTriggerEnter2D(Collider2D collision)
+	public class DamageCheck : MonoBehaviour
 	{
-		if (collision.name != "Attack")
+		private void OnTriggerEnter2D(Collider2D collision)
 		{
-			return;
-		}
-        var attackChara = collision.transform.parent.parent.parent;
-		var damageChara = transform.parent.parent.parent;
-		if (attackChara == null || damageChara == null)
-		{
-			return;
-		}
+			if (collision.name != "Attack")
+			{
+				return;
+			}
+			var attackChara = collision.transform.parent.parent.parent;
+			var damageChara = transform.parent.parent.parent;
+			if (attackChara == null || damageChara == null)
+			{
+				return;
+			}
 		
-		SlashBase attackObj;
-		SlashBase slashObj;
-        var isAttackCharaEnemy = attackChara.TryGetComponent<SlashBase>(out attackObj);
-		var isDamageCharaEnemy = damageChara.TryGetComponent<SlashBase>(out slashObj);
+			SlashBase attackObj;
+			SlashBase slashObj;
+			var isAttackCharaEnemy = attackChara.TryGetComponent<SlashBase>(out attackObj);
+			var isDamageCharaEnemy = damageChara.TryGetComponent<SlashBase>(out slashObj);
 
-		// スキップ判定
-		// ・自分自身だった場合
-		// ・敵同士のフレンドリーファイヤー
-		// ・既にダメージを受けている場合
-		if (attackChara == damageChara ||
-			(isAttackCharaEnemy && isDamageCharaEnemy) ||
-			slashObj.IsSlashed)
-		{
-            return;
-        }
+			// スキップ判定
+			// ・自分自身だった場合
+			// ・敵同士のフレンドリーファイヤー
+			// ・既にダメージを受けている場合
+			if (attackChara == damageChara ||
+			    (isAttackCharaEnemy && isDamageCharaEnemy) ||
+			    slashObj.IsSlashed)
+			{
+				return;
+			}
 
-		// 斬られた
-		slashObj.SetSlashed();
+			// 斬られた
+			slashObj.SetSlashed();
 		
-		// ヒットストップ
-		if (attackChara.TryGetComponent<PlayerController>(out var player))
-		{
-			player.SetHitStop();
-			slashObj.SetHitStop();
-		}
+			// ヒットストップ
+			if (attackChara.TryGetComponent<PlayerController>(out var player))
+			{
+				player.SetHitStop();
+				slashObj.SetHitStop();
+			}
 
-		DebugLogger.Log($"攻撃:{attackChara.name}, 被ダメージ:{damageChara.name}");
+			DebugLogger.Log($"攻撃:{attackChara.name}, 被ダメージ:{damageChara.name}");
+		}
 	}
 }

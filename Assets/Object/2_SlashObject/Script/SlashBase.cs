@@ -1,105 +1,109 @@
 using System;
 using System.Threading.Tasks;
+using Common.Script;
 using UnityEngine;
 
-/// <summary>
-/// 斬られるオブジェクト基底クラス
-/// </summary>
-public class SlashBase : ObjectBase
+namespace Object._2_SlashObject.Script
 {
-	[SerializeField, Label("斬られるオブジェクトかどうか")] private bool _isCanSlash = true;
-	[SerializeField,Label("爆発するかどうか")] private bool _isExplosion = true;
-	[SerializeField,Label("復活するかどうか")] private bool _isRespawn = false;
-	
-	private GameObject _slashAnime;
-	private bool _isSlashed = false; // 斬られたフラグ
-	private float _explosionTimer;
-	protected float ExplosionTime = 5;
-
-	public bool IsSlashed => _isSlashed;
-	public bool IsCanSlash => _isCanSlash;
-	public bool IsRespawn => _isRespawn;
-	public Action DestroyAction;
-
-	protected override void Start()
+	/// <summary>
+	/// 斬られるオブジェクト基底クラス
+	/// </summary>
+	public class SlashBase : ObjectBase
 	{
-		base.Start();
+		[SerializeField, Label("斬られるオブジェクトかどうか")] private bool _isCanSlash = true;
+		[SerializeField,Label("爆発するかどうか")] private bool _isExplosion = true;
+		[SerializeField,Label("復活するかどうか")] private bool _isRespawn = false;
+	
+		private GameObject _slashAnime;
+		private bool _isSlashed = false; // 斬られたフラグ
+		private float _explosionTimer;
+		protected float ExplosionTime = 5;
+
+		public bool IsSlashed => _isSlashed;
+		public bool IsCanSlash => _isCanSlash;
+		public bool IsRespawn => _isRespawn;
+		public Action DestroyAction;
+
+		protected override void Start()
+		{
+			base.Start();
 		
-		// SlashAnime
-		var slashAnimeTrans = ImageTrans.Find("SlashAnime");
-		if (slashAnimeTrans  == null)
-		{
-			DebugLogger.Log($"{name}プレハブにslashAnimeがありません");
+			// SlashAnime
+			var slashAnimeTrans = ImageTrans.Find("SlashAnime");
+			if (slashAnimeTrans  == null)
+			{
+				DebugLogger.Log($"{name}プレハブにslashAnimeがありません");
+			}
+			else
+			{
+				_slashAnime = slashAnimeTrans.gameObject;
+			}
 		}
-		else
-		{
-			_slashAnime = slashAnimeTrans.gameObject;
-		}
-	}
 	
-	/// <summary>
-	/// 斬られた
-	/// </summary>
-	public virtual void SetSlashed()
-	{
-		_isSlashed = true;
-		_slashAnime.SetActive(true);
-		_explosionTimer = ExplosionTime;
-	}
-
-	protected override void ObjectUpdate()
-	{
-		base.ObjectUpdate();
-		OverTime();
-	}
-
-	/// <summary>
-	/// 斬られてから一定時間で撃破
-	/// </summary>
-	private void OverTime()
-	{
-		if (_isSlashed)
+		/// <summary>
+		/// 斬られた
+		/// </summary>
+		public virtual void SetSlashed()
 		{
-			_explosionTimer -= Time.deltaTime;
-			if (_explosionTimer <= 0)
-			{
-				_isSlashed = false;
-				TaskUtility.FireAndForget(DestroyAsync(), "DestroyAsync");
-			}	
+			_isSlashed = true;
+			_slashAnime.SetActive(true);
+			_explosionTimer = ExplosionTime;
 		}
-	}
 
-
-	/// <summary>
-	/// 撃破
-	/// </summary>
-	public async Task DestroyAsync()
-	{
-		// 爆発
-		if (_isExplosion)
+		protected override void ObjectUpdate()
 		{
-			var obj = await SceneGameManager.Current.LoadAsync("Explosion");
-			if (obj == null)
-			{
-				return;
-			}
-			Instantiate(obj, transform.position, transform.rotation, transform.parent);
-			Destroy(gameObject);
+			base.ObjectUpdate();
+			OverTime();
 		}
-		// 撃破アニメ
-		else
-		{
-			Utility.SetAnimationFlg(ObjAnimator, "IsSlashed");
-			
-			await WaitAnimeFinishAsync();
 
-			// 死亡時にスポナーに通知
-			if (DestroyAction != null)
+		/// <summary>
+		/// 斬られてから一定時間で撃破
+		/// </summary>
+		private void OverTime()
+		{
+			if (_isSlashed)
 			{
-				DestroyAction();
+				_explosionTimer -= Time.deltaTime;
+				if (_explosionTimer <= 0)
+				{
+					_isSlashed = false;
+					TaskUtility.FireAndForget(DestroyAsync(), "DestroyAsync");
+				}	
 			}
+		}
+
+
+		/// <summary>
+		/// 撃破
+		/// </summary>
+		public async Task DestroyAsync()
+		{
+			// 爆発
+			if (_isExplosion)
+			{
+				var obj = await SceneGameManager.Current.LoadAsync("Explosion");
+				if (obj == null)
+				{
+					return;
+				}
+				Instantiate(obj, transform.position, transform.rotation, transform.parent);
+				Destroy(gameObject);
+			}
+			// 撃破アニメ
+			else
+			{
+				Utility.SetAnimationFlg(ObjAnimator, "IsSlashed");
 			
-			Destroy(gameObject);
+				await WaitAnimeFinishAsync();
+
+				// 死亡時にスポナーに通知
+				if (DestroyAction != null)
+				{
+					DestroyAction();
+				}
+			
+				Destroy(gameObject);
+			}
 		}
 	}
 }

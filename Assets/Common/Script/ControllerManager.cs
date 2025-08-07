@@ -1,198 +1,201 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ControllerManager : MonoBehaviour
+namespace Common.Script
 {
-	private Gamepad _gamepad;
-	private float _leftStickValue = 0.0f;
-	private MoveState _moveState = MoveState.None;
-	private JumpState _jumpState = JumpState.None;
-	private AttackState _attackState = AttackState.None;
+	public class ControllerManager : MonoBehaviour
+	{
+		private Gamepad _gamepad;
+		private float _leftStickValue = 0.0f;
+		private MoveState _moveState = MoveState.None;
+		private JumpState _jumpState = JumpState.None;
+		private AttackState _attackState = AttackState.None;
 
-	private int _leadKeyTimer;
-	[SerializeField, Label("先行入力保存フレーム")] private int _leadKeyTime;
-	private bool _isLeadJumpKey;
+		private int _leadKeyTimer;
+		[SerializeField, Label("先行入力保存フレーム")] private int _leadKeyTime;
+		private bool _isLeadJumpKey;
 
-	public static ControllerManager Current;
+		public static ControllerManager Current;
 
-	public float LeftStickValue => _leftStickValue;
-	public MoveState GetMoveState => _moveState;
-	public JumpState GetJumpState => _jumpState;
-	public AttackState GetAttackState => _attackState;
+		public float LeftStickValue => _leftStickValue;
+		public MoveState GetMoveState => _moveState;
+		public JumpState GetJumpState => _jumpState;
+		public AttackState GetAttackState => _attackState;
 	
-	public bool IsLeadJumpKey => _isLeadJumpKey;
+		public bool IsLeadJumpKey => _isLeadJumpKey;
 	
 
-	public enum MoveState
-	{
-		None,
-		RightMove,
-		LeftMove,
-	}
+		public enum MoveState
+		{
+			None,
+			RightMove,
+			LeftMove,
+		}
 
-	public enum JumpState
-	{
-		None,
-		Jump,
-	}
+		public enum JumpState
+		{
+			None,
+			Jump,
+		}
 
-	public enum AttackState
-	{
-		None,
-		SheathOrUnSheath,
-		Attack,
-	}
+		public enum AttackState
+		{
+			None,
+			SheathOrUnSheath,
+			Attack,
+		}
 
-	private void Awake()
-	{
-		Current = this;
-	}
+		private void Awake()
+		{
+			Current = this;
+		}
 
-	private void Update()
-	{
-		Operate();
+		private void Update()
+		{
+			Operate();
 		
-		LeadKey();
-	}
-
-	private void Operate()
-	{
-		// 初期化
-		_moveState = MoveState.None;
-		_leftStickValue = 0;
-
-		// キーボード操作
-		KeyboradOperate();
-
-		// ゲームパッド操作
-		GamePadOperate();
-
-		//DebugLogger.Log($"操作：{_state}");
-		//DebugLogger.Log($"移動：{_leftStickValue}");
-	}
-
-	/// <summary>
-	/// キーボード操作
-	/// </summary>
-	private void KeyboradOperate()
-	{
-		// 左右操作
-		if (Input.GetKey(KeyCode.RightArrow))
-		{
-			_moveState = MoveState.RightMove;
-			_leftStickValue = 1.0f;
+			LeadKey();
 		}
-		else if (Input.GetKey(KeyCode.LeftArrow))
+
+		private void Operate()
 		{
-			_moveState = MoveState.LeftMove;
-			_leftStickValue = -1.0f;
-		}
-		else
-		{
+			// 初期化
 			_moveState = MoveState.None;
+			_leftStickValue = 0;
+
+			// キーボード操作
+			KeyboradOperate();
+
+			// ゲームパッド操作
+			GamePadOperate();
+
+			//DebugLogger.Log($"操作：{_state}");
+			//DebugLogger.Log($"移動：{_leftStickValue}");
 		}
 
-		// ジャンプ
-		if (Input.GetKeyDown(KeyCode.UpArrow))
+		/// <summary>
+		/// キーボード操作
+		/// </summary>
+		private void KeyboradOperate()
 		{
-			_jumpState = JumpState.Jump;
-		}
-		else
-		{
-			_jumpState = JumpState.None;
-		}
-
-		// 攻撃
-		// Zキーで納刀/抜刀
-		// Xキーで攻撃
-		if (Input.GetKeyDown(KeyCode.Z))
-		{
-			_attackState = AttackState.SheathOrUnSheath;
-		}
-		else if (Input.GetKeyDown(KeyCode.X))
-		{
-			_attackState = AttackState.Attack;
-		}
-		else
-		{
-			_attackState = AttackState.None;
-		}
-	}
-
-	/// <summary>
-	/// ゲームパッド操作
-	/// </summary>
-	private void GamePadOperate()
-	{
-		_gamepad = Gamepad.current;
-		if (_gamepad == null)
-		{
-			return;
-		}
-
-		// 左右操作
-		var stickInput = _gamepad.leftStick.ReadValue();
-		if (stickInput.x > 0.2f)
-		{
-			_moveState = MoveState.RightMove;
-			_leftStickValue = stickInput.x;
-		}
-		else if (stickInput.x < -0.2f)
-		{
-			_moveState = MoveState.LeftMove;
-			_leftStickValue = stickInput.x;
-		}
-		else
-		{
-			_moveState = MoveState.None;
-		}
-
-		// ジャンプ
-		if (_gamepad.aButton.IsPressed())
-		{
-			_jumpState = JumpState.Jump;
-		}
-		else
-		{
-			_jumpState = JumpState.None;
-		}
-
-		// 攻撃
-		if (_gamepad.xButton.IsPressed())
-		{
-			_attackState = AttackState.Attack;
-		}
-		else if (_gamepad.yButton.IsPressed())
-		{
-			_attackState = AttackState.SheathOrUnSheath;
-		}
-		else
-		{
-			_attackState = AttackState.None;
-		}
-	}
-	
-	/// <summary>
-	/// 先行キー保存
-	/// 必要に応じてジャンプ以外も対応
-	/// </summary>
-	private void LeadKey()
-	{
-		// キー入力
-		if (_jumpState == JumpState.Jump)
-		{
-			_isLeadJumpKey = true;
-			_leadKeyTimer = _leadKeyTime;
-		}
-
-		// 一定時間経ったら先行キー削除
-		if (_isLeadJumpKey)
-		{
-			_leadKeyTimer--;
-			if (_leadKeyTimer <= 0)
+			// 左右操作
+			if (Input.GetKey(KeyCode.RightArrow))
 			{
-				_isLeadJumpKey = false;
-			}			
+				_moveState = MoveState.RightMove;
+				_leftStickValue = 1.0f;
+			}
+			else if (Input.GetKey(KeyCode.LeftArrow))
+			{
+				_moveState = MoveState.LeftMove;
+				_leftStickValue = -1.0f;
+			}
+			else
+			{
+				_moveState = MoveState.None;
+			}
+
+			// ジャンプ
+			if (Input.GetKeyDown(KeyCode.UpArrow))
+			{
+				_jumpState = JumpState.Jump;
+			}
+			else
+			{
+				_jumpState = JumpState.None;
+			}
+
+			// 攻撃
+			// Zキーで納刀/抜刀
+			// Xキーで攻撃
+			if (Input.GetKeyDown(KeyCode.Z))
+			{
+				_attackState = AttackState.SheathOrUnSheath;
+			}
+			else if (Input.GetKeyDown(KeyCode.X))
+			{
+				_attackState = AttackState.Attack;
+			}
+			else
+			{
+				_attackState = AttackState.None;
+			}
+		}
+
+		/// <summary>
+		/// ゲームパッド操作
+		/// </summary>
+		private void GamePadOperate()
+		{
+			_gamepad = Gamepad.current;
+			if (_gamepad == null)
+			{
+				return;
+			}
+
+			// 左右操作
+			var stickInput = _gamepad.leftStick.ReadValue();
+			if (stickInput.x > 0.2f)
+			{
+				_moveState = MoveState.RightMove;
+				_leftStickValue = stickInput.x;
+			}
+			else if (stickInput.x < -0.2f)
+			{
+				_moveState = MoveState.LeftMove;
+				_leftStickValue = stickInput.x;
+			}
+			else
+			{
+				_moveState = MoveState.None;
+			}
+
+			// ジャンプ
+			if (_gamepad.aButton.IsPressed())
+			{
+				_jumpState = JumpState.Jump;
+			}
+			else
+			{
+				_jumpState = JumpState.None;
+			}
+
+			// 攻撃
+			if (_gamepad.xButton.IsPressed())
+			{
+				_attackState = AttackState.Attack;
+			}
+			else if (_gamepad.yButton.IsPressed())
+			{
+				_attackState = AttackState.SheathOrUnSheath;
+			}
+			else
+			{
+				_attackState = AttackState.None;
+			}
+		}
+	
+		/// <summary>
+		/// 先行キー保存
+		/// 必要に応じてジャンプ以外も対応
+		/// </summary>
+		private void LeadKey()
+		{
+			// キー入力
+			if (_jumpState == JumpState.Jump)
+			{
+				_isLeadJumpKey = true;
+				_leadKeyTimer = _leadKeyTime;
+			}
+
+			// 一定時間経ったら先行キー削除
+			if (_isLeadJumpKey)
+			{
+				_leadKeyTimer--;
+				if (_leadKeyTimer <= 0)
+				{
+					_isLeadJumpKey = false;
+				}			
+			}
 		}
 	}
 }
