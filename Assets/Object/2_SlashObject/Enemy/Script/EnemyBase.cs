@@ -1,3 +1,5 @@
+using Common.Script;
+using Object._2_SlashObject.Enemy.Script.EnemyParam;
 using Object._2_SlashObject.Script;
 using UnityEngine;
 
@@ -9,6 +11,11 @@ namespace Object._2_SlashObject.Enemy.Script
     public class EnemyBase : SlashBase
     {
         protected float ChaseVelocity = 1.0f;
+        
+        public virtual void SetEnemyParams(EnemyParamBase enemyParam)
+        {
+            DebugLogger.Log("SetEnemyParams");
+        }
     
         protected override void ObjectUpdate()
         {

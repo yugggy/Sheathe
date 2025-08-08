@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 using Common.Script;
+using Object._2_SlashObject.Enemy.Script;
+using Object._2_SlashObject.Enemy.Script.EnemyParam;
 using UnityEditor;
 using UnityEngine;
 
@@ -31,6 +33,12 @@ namespace Object._2_SlashObject.Script
 					if (slash.IsCanSlash)
 					{
 						ObjectManager.Current.SetSlashObjectList(slash);
+					}
+					
+					// EnemyParam
+					if (slash.TryGetComponent<EnemyBase>(out var enemy) && TryGetComponent<EnemyParamBase>(out var param))
+					{
+						enemy.SetEnemyParams(param);
 					}
 				}
 				else
