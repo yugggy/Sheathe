@@ -306,27 +306,22 @@ namespace Object._1_Player.Script
     
 		private void OnTriggerEnter2D(Collider2D collision)
 		{
-			ExplosionDamage();
-
 			// ダメージ判定
-			void ExplosionDamage()
+			int explosionLayer = LayerMask.NameToLayer("Explosion");
+			if (collision.gameObject.layer == explosionLayer && !_isDamage)
 			{
-				var explosionLayer = 10;
-				if (collision.gameObject.layer == explosionLayer && !_isDamage)
-				{
-					StartCoroutine(Damage());
-				}
+				StartCoroutine(Damage());
+			}
 
-				IEnumerator Damage()
-				{
-					_isDamage = true;
-					Utility.SetAnimationFlg(ObjAnimator, "IsDamage");
-					yield return WaitAnimeFinish();
+			IEnumerator Damage()
+			{
+				_isDamage = true;
+				Utility.SetAnimationFlg(ObjAnimator, "IsDamage");
+				yield return WaitAnimeFinish();
 				
-					// TODO：納刀せずにダメージを受けることがあれば復活
-					// 納刀時の結果発表と被らないよう対応必須
-					// TaskUtility.FireAndForget(SceneGameManager.Current.ReloadStageAsync(), "ReloadStageAsync");
-				}
+				// TODO：納刀せずにダメージを受けることがあれば復活
+				// 納刀時の結果発表と被らないよう対応必須
+				// TaskUtility.FireAndForget(SceneGameManager.Current.ReloadStageAsync(), "ReloadStageAsync");
 			}
 		}
 
