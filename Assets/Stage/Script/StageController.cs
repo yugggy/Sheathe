@@ -56,7 +56,8 @@ namespace Stage.Script
 			// 斬った敵殲滅
 			ObjectManager.Current.DestroySlashObject();
 		
-			await Task.Delay(500);
+			// TODO：敵の爆発が終わってから何f後にした方がよさそう
+			await Task.Delay(1500);
 		
 			// 全滅判定
 			if (ObjectManager.Current.GetDestroyCompletely() && !ObjectManager.Current.IsPlayerDamage())

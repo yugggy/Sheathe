@@ -78,7 +78,11 @@ namespace Object._2_SlashObject.Script
 		/// </summary>
 		public bool GetDestroyCompletely()
 		{
-			return _slashList.Any() && _slashList.All(x => x.IsSlashed);
+			// 敵が全員死亡しているか
+			return _slashList.Any() && _slashList.All(x => x.IsDead);
+			
+			// 旧全滅判定（敵全員が斬られているか）
+			// return _slashList.Any() && _slashList.All(x => x.IsSlashed);
 		}
 
 		/// <summary>
