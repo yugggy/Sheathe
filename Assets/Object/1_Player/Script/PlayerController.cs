@@ -19,15 +19,12 @@ namespace Object._1_Player.Script
 		[SerializeField, Label("ジャンプ力")] float _jumpPower;
 
 		private Vector3 _velocity;
-		private bool _isGround;
-		private bool _isJump;
 		private float _attackTimer;
 		private readonly float _attackTime = 0.1f;
 		private bool _isSheathing; // 納刀中
 		private bool _isUnSheathing; //抜刀中
 		private bool _isAttackable; //攻撃可能（抜刀完了状態）
 		private bool _isDamage;
-		private readonly float _groundCheckRayLength = 0.8f;
 	
 		public bool IsDamage => _isDamage;
 
@@ -169,10 +166,10 @@ namespace Object._1_Player.Script
 		/// </summary>
 		private void Jump()
 		{
-			if (_isGround && !_isJump && 
+			if (IsGround && !IsJump && 
 			    (ControllerManager.Current.GetJumpState == ControllerManager.JumpState.Jump || ControllerManager.Current.IsLeadJumpKey))
 			{
-				_isJump = true;
+				IsJump = true;
 				var velocity = ObjRigidBody.linearVelocity;
 				velocity.y = _jumpPower;
 				ObjRigidBody.linearVelocity = velocity;
@@ -294,14 +291,14 @@ namespace Object._1_Player.Script
 		private void GroundCheck()
 		{
 			int stageLayer = 1 << LayerMask.NameToLayer("Stage");
-			if (Physics2D.Raycast(transform.position, Vector2.down, _groundCheckRayLength, stageLayer))
+			if (Physics2D.Raycast(transform.position, Vector2.down, GroundCheckRayLength, stageLayer))
 			{
-				_isGround = true;
-				_isJump = false;
+				IsGround = true;
+				IsJump = false;
 			}
 			else
 			{
-				_isGround = false;
+				IsGround = false;
 			}
 		}
     
@@ -338,7 +335,7 @@ namespace Object._1_Player.Script
 		private void OnDrawGizmos()
 		{
 			Gizmos.color = Color.red;
-			Gizmos.DrawRay(transform.position,-transform.up * _groundCheckRayLength);
+			Gizmos.DrawRay(transform.position,-transform.up * GroundCheckRayLength);
 		}
 	}
 }

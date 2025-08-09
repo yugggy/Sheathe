@@ -22,6 +22,10 @@ namespace Object._2_SlashObject.Script
 		protected Animator ObjAnimator;
 		protected BoxCollider2D ObjAttackCollider;
 		protected BoxCollider2D ObjDamageCollider;
+		
+		protected bool IsGround;
+		protected bool IsJump;
+		protected readonly float GroundCheckRayLength = 0.8f;
 	
 		int _hitStopTimer;
 
@@ -150,7 +154,24 @@ namespace Object._2_SlashObject.Script
 	
 		protected virtual void ObjectUpdate()
 		{
+			GroundCheck();
+		}
 		
+		/// <summary>
+		/// 着地判定
+		/// </summary>
+		private void GroundCheck()
+		{
+			int stageLayer = 1 << LayerMask.NameToLayer("Stage");
+			if (Physics2D.Raycast(transform.position, Vector2.down, GroundCheckRayLength, stageLayer))
+			{
+				IsGround = true;
+				IsJump = false;
+			}
+			else
+			{
+				IsGround = false;
+			}
 		}
 
 		private void OnValidate()
@@ -171,6 +192,11 @@ namespace Object._2_SlashObject.Script
 			var eulerAngles = transform.eulerAngles;
 			eulerAngles.y = isRight ? 0 : 180;
 			transform.eulerAngles = eulerAngles;
+		}
+		
+		protected bool IsInitDirectionRight()
+		{
+			return _direction == Direction.Right;
 		}
 
 		/// <summary>
