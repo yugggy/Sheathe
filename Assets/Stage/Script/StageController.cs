@@ -76,8 +76,10 @@ namespace Stage.Script
 			// 全滅できなかったら
 			else
 			{
-				// TODO：納刀一回制限、無制限で決めかねている
-				// await SceneGameManager.Current.ReloadStageAsync();
+				DebugLogger.Log("ステージクリア失敗");
+				
+				// リトライの表示
+				DebugLogger.Log("要リトライ");
 			}
 		}
 

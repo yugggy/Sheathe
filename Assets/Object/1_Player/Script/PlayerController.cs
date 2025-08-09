@@ -255,15 +255,16 @@ namespace Object._1_Player.Script
 
 			IEnumerator SheathToResult()
 			{
-				// TODO：全敵斬った判定
-				if (!ObjectManager.Current.GetDestroyCompletely())
-				{
-					DebugLogger.Log("納刀失敗");
-					Utility.SetAnimationFlg(ObjAnimator, "IsFailureSheathe");
-					yield return null;
-					Utility.SetAnimationFlg(ObjAnimator, "IsFailureSheathe",false);
-					yield break;
-				}
+				// 現状、全ての敵を斬らなくても納刀できる仕様
+				// // 全敵斬った判定
+				// if (!ObjectManager.Current.GetDestroyCompletely())
+				// {
+				// 	DebugLogger.Log("納刀失敗");
+				// 	Utility.SetAnimationFlg(ObjAnimator, "IsFailureSheathe");
+				// 	yield return null;
+				// 	Utility.SetAnimationFlg(ObjAnimator, "IsFailureSheathe",false);
+				// 	yield break;
+				// }
 			
 				DebugLogger.Log("納刀");
 				_isSheathing = true;

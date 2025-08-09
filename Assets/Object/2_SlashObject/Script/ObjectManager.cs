@@ -78,7 +78,7 @@ namespace Object._2_SlashObject.Script
 		/// </summary>
 		public bool GetDestroyCompletely()
 		{
-			return _slashList.All(x => x.IsSlashed);
+			return _slashList.Any() && _slashList.All(x => x.IsSlashed);
 		}
 
 		/// <summary>
@@ -93,8 +93,6 @@ namespace Object._2_SlashObject.Script
 					TaskUtility.FireAndForget(slash.DestroyAsync(), "slash.DestroyAsync");
 				}
 			}
-
-			ClearSlashObjectList();
 		}
 
 		/// <summary>
