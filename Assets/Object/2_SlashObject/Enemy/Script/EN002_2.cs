@@ -12,6 +12,8 @@ namespace Object._2_SlashObject.Enemy.Script
         [SerializeField, Label("ポイント到達後の待機時間")] private float _waitTime;
         private Vector2 _targetPosTop;
         private Vector2 _targetPosBottom;
+        private Vector2 _relativeTargetPosTop;
+        private Vector2 _relativeTargetPosBottom;
         
         private Vector3 _initPos = Vector3.zero;
         private Vector3 _currentPos = Vector3.zero;
@@ -50,6 +52,8 @@ namespace Object._2_SlashObject.Enemy.Script
         {
             _initPos = transform.position;
             _currentPos = transform.position;
+            _relativeTargetPosTop.y = _initPos.y + _targetPosTop.y;
+            _relativeTargetPosBottom.y = _initPos.y + _targetPosBottom.y;
         }
 
         protected override void ObjectUpdate()
@@ -92,7 +96,7 @@ namespace Object._2_SlashObject.Enemy.Script
                         if (isUp)
                         {
                             _currentPos.y += _currentVelocityY;
-                            if (transform.position.y >= _targetPosTop.y)
+                            if (transform.position.y >= _relativeTargetPosTop.y)
                             {
                                 _moveState = 1;
                             }
@@ -100,7 +104,7 @@ namespace Object._2_SlashObject.Enemy.Script
                         else
                         {
                             _currentPos.y -= _currentVelocityY;
-                            if (transform.position.y <= _targetPosBottom.y)
+                            if (transform.position.y <= _relativeTargetPosBottom.y)
                             {
                                 _moveState = 1;
                             }
