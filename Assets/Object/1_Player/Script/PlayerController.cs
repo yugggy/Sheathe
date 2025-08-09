@@ -80,9 +80,6 @@ namespace Object._1_Player.Script
 				Sheath();    
 			}
         
-			// 着地判定
-			GroundCheck();
-        
 			// 移動値加算
 			DebugManager.Current.SetVelocityText(_velocity);
 			transform.position += _velocity;
@@ -283,23 +280,6 @@ namespace Object._1_Player.Script
 				Utility.SetAnimationFlg(ObjAnimator, "IsSheath", false);
 				Utility.SetAnimationFlg(ObjAnimator, "IsUnSheath", false);
 				ObjAnimator.Play("Neutral");
-			}
-		}
-
-		/// <summary>
-		/// 着地判定
-		/// </summary>
-		private void GroundCheck()
-		{
-			int stageLayer = 1 << LayerMask.NameToLayer("Stage");
-			if (Physics2D.Raycast(transform.position, Vector2.down, GroundCheckRayLength, stageLayer))
-			{
-				IsGround = true;
-				IsJump = false;
-			}
-			else
-			{
-				IsGround = false;
 			}
 		}
     
