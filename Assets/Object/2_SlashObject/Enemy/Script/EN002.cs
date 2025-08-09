@@ -38,14 +38,5 @@ namespace Object._2_SlashObject.Enemy.Script
             float sin = Mathf.Sin(Time.time*2) * 0.2f;
             transform.position = new Vector3(transform.position.x,_initY + sin,transform.position.z);
         }
-
-        /// <summary>
-        /// 斬られた
-        /// </summary>
-        public override void SetSlashed()
-        {
-            base.SetSlashed();
-            Utility.SetAnimationFlg(ObjAnimator, "IsFlash1");
-        }
     }
 }

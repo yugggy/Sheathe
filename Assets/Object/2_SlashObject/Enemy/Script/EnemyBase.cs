@@ -22,6 +22,15 @@ namespace Object._2_SlashObject.Enemy.Script
             base.ObjectUpdate();
             PlayerChase();
         }
+        
+        /// <summary>
+        /// 斬られた
+        /// </summary>
+        public override void SetSlashed()
+        {
+            base.SetSlashed();
+            Utility.SetAnimationFlg(ObjAnimator, "IsSlashed");
+        }
 
         /// <summary>
         /// 攻撃されたらプレイヤーを追いかける
