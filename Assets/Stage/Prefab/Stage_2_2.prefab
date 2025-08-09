@@ -330,8 +330,8 @@ Transform:
   m_GameObject: {fileID: 3201490496584564466}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4, y: 2.73, z: 0.13863337}
-  m_LocalScale: {x: 5, y: 0.29999998, z: 1}
+  m_LocalPosition: {x: 3.75, y: 2.73, z: 0.13863337}
+  m_LocalScale: {x: 4.5, y: 0.29999998, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3894778811937133618}
@@ -1084,8 +1084,8 @@ Transform:
   m_GameObject: {fileID: 6197033914092104723}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4, y: 2.73, z: 0.13863337}
-  m_LocalScale: {x: 5, y: 0.29999998, z: 1}
+  m_LocalPosition: {x: -3.75, y: 2.73, z: 0.13863337}
+  m_LocalScale: {x: 4.5, y: 0.29999998, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3894778811937133618}
@@ -1800,6 +1800,10 @@ PrefabInstance:
     - target: {fileID: 3705029530977671988, guid: f5060bcbb983e9e4ba15f831243abdb4, type: 3}
       propertyPath: m_Name
       value: SPN_EN001 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3705029530977671988, guid: f5060bcbb983e9e4ba15f831243abdb4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

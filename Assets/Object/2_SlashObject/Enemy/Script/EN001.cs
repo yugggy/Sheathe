@@ -15,6 +15,7 @@ namespace Object._2_SlashObject.Enemy.Script
         private int _moveState = 0;
         private float _waitCurrentTime = 0;
         private Vector2 _shortForwardPosition;
+        private int _arriveCenterCliffCount = 0; // 中心の崖に到達した回数 
 
         
         /// <summary>
@@ -69,16 +70,29 @@ namespace Object._2_SlashObject.Enemy.Script
                     }
                     else
                     {
-                        // 中心の崖なら反転
+                        // 端の崖なら反転
                         if (_isRightCliffWait ^ _isRightMove)
                         {
                             _isRightMove = !_isRightMove;
                             SetDirection(_isRightMove);
                         }
-                        // 端の崖なら待機
+                        // 中心の崖なら待機
                         else
                         {
                             _moveState = 1;
+                            
+                            // 中心の崖二回目到達時に待機
+                            // _arriveCenterCliffCount++;
+                            // if (_arriveCenterCliffCount >= 2)
+                            // {
+                            //     _arriveCenterCliffCount = 0;
+                            //     _moveState = 1;
+                            // }
+                            // else
+                            // {
+                            //     _isRightMove = !_isRightMove;
+                            //     SetDirection(_isRightMove);
+                            // }
                         }
                     }
                     break;

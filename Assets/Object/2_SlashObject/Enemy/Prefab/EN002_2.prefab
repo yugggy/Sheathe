@@ -608,7 +608,7 @@ MonoBehaviour:
   _velocityY: 0.08
   _decelerationVelocityY: 0.88
   _decelerationStopValue: 0.001
-  _topWaitTime: 0
+  _topWaitTime: 1
   _bottomWaitTime: 0
 --- !u!61 &2956529822489766233
 BoxCollider2D:
