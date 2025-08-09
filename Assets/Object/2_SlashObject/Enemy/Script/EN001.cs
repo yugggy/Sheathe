@@ -62,7 +62,7 @@ namespace Object._2_SlashObject.Enemy.Script
                 case 0: // 移動
                     // 少し前方から下に向けて、崖判定
                     int stageLayer = 1 << LayerMask.NameToLayer("Stage");
-                    _shortForwardPosition = transform.position + transform.right;
+                    _shortForwardPosition = transform.position + (transform.right * 0.8f);
                     if (Physics2D.Raycast(_shortForwardPosition, Vector2.down, GroundCheckRayLength, stageLayer))
                     {
                         _currentPos.x += (_isRightMove ? 1 : -1) * _velocityY;

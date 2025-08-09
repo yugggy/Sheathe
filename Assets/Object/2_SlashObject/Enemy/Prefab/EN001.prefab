@@ -537,8 +537,8 @@ MonoBehaviour:
   _isCanSlash: 1
   _isExplosion: 1
   _isRespawn: 0
-  _velocityY: 0.03
-  _waitTime: 1
+  _velocityY: 0.07
+  _waitTime: 2
 --- !u!50 &9093416054576471993
 Rigidbody2D:
   serializedVersion: 5

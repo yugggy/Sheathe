@@ -9,7 +9,9 @@ namespace Object._2_SlashObject.Enemy.Script
         [SerializeField, Label("移動の速さ")] private float _velocityY;
         [SerializeField, Label("減速度")] private float _decelerationVelocityY;
         [SerializeField, Label("減速停止値")] private float _decelerationStopValue;
-        [SerializeField, Label("ポイント到達後の待機時間")] private float _waitTime;
+        // 現状、待機時間を設定していないので本格的に不要になったら削除
+        [SerializeField, Label("ポイント到達後の待機時間（上）")] private float _topWaitTime;
+        [SerializeField, Label("ポイント到達後の待機時間（下）")] private float _bottomWaitTime;
         private Vector2 _targetPosTop;
         private Vector2 _targetPosBottom;
         private Vector2 _relativeTargetPosTop;
@@ -122,7 +124,7 @@ namespace Object._2_SlashObject.Enemy.Script
                         break;
                     case 2: // 待機
                         _waitCurrentTime += Time.deltaTime;
-                        if (_waitCurrentTime >= _waitTime)
+                        if (_waitCurrentTime >= (isUp ? _topWaitTime : _bottomWaitTime))
                         {
                             _waitCurrentTime = 0;
                             _moveState = 0;
