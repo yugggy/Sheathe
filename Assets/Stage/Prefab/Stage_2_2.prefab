@@ -1816,11 +1816,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2435843100336734462, guid: f51678ac501ada04aa7ffb81a58cc791, type: 3}
       propertyPath: _targetPosTop.y
-      value: 6
+      value: 4.8
       objectReference: {fileID: 0}
     - target: {fileID: 2435843100336734462, guid: f51678ac501ada04aa7ffb81a58cc791, type: 3}
       propertyPath: _targetPoBottom.y
       value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2435843100336734462, guid: f51678ac501ada04aa7ffb81a58cc791, type: 3}
+      propertyPath: _targetPosBottom.y
+      value: -5.8
       objectReference: {fileID: 0}
     - target: {fileID: 2446930681400899539, guid: f51678ac501ada04aa7ffb81a58cc791, type: 3}
       propertyPath: m_LocalPosition.x

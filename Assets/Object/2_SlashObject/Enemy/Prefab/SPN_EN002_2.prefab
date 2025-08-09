@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetPosTop: {x: 0, y: 6}
-  _targetPoBottom: {x: 0, y: -6}
+  _targetPosBottom: {x: 0, y: -6}
 --- !u!1 &4068194575604195694
 GameObject:
   m_ObjectHideFlags: 0

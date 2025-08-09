@@ -605,7 +605,10 @@ MonoBehaviour:
   _isCanSlash: 1
   _isExplosion: 1
   _isRespawn: 0
-  _velocityY: 0.001
+  _velocityY: 0.03
+  _decelerationVelocityY: 0.88
+  _decelerationStopValue: 0.001
+  _waitTime: 1.5
 --- !u!61 &2956529822489766233
 BoxCollider2D:
   m_ObjectHideFlags: 0
