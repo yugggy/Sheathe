@@ -8,6 +8,7 @@ namespace Object._2_SlashObject.Enemy.Script
     {
         [SerializeField, Label("移動の速さ")] private float _velocityY;
         [SerializeField, Label("左崖到達後の待機時間")] private float _waitTime;
+        private bool _isCanCliffWait;
         private bool _isRightCliffWait;
         
         private bool _isRightMove = true;
@@ -26,6 +27,7 @@ namespace Object._2_SlashObject.Enemy.Script
             switch (enemyParam)
             {
                 case EnemyParam_E001 param:
+                    _isCanCliffWait = param.IsCanCliffWait;
                     _isRightCliffWait = param.IsRightCliffWait;
                     break;
                 default:
@@ -70,8 +72,8 @@ namespace Object._2_SlashObject.Enemy.Script
                     }
                     else
                     {
-                        // 端の崖なら反転
-                        if (_isRightCliffWait ^ _isRightMove)
+                        // 崖待機フラグOFFもしくは端の崖なら反転
+                        if (!_isCanCliffWait || (_isRightCliffWait ^ _isRightMove))
                         {
                             _isRightMove = !_isRightMove;
                             SetDirection(_isRightMove);
