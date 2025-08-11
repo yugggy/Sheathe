@@ -82,6 +82,9 @@ namespace Stage.Script
 				// リトライの表示
 				DebugLogger.Log("要リトライ");
 			}
+
+			// 敵リスト初期化
+			ObjectManager.Current.ClearSlashObjectList();
 		}
 
 		/// <summary>

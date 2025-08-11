@@ -99,9 +99,6 @@ namespace Common.Script
 			_isReloadStage = true;
 		
 			DebugLogger.Log("ステージ再ロード");
-
-			// オブジェクトリスト初期化
-			ObjectManager.Current.ClearSlashObjectList();
 	
 			// プレイヤー削除
 			ObjectManager.Current.PlayerDestroy();
