@@ -288,7 +288,10 @@ namespace Object._1_Player.Script
 		{
 			// ダメージ判定
 			int explosionLayer = LayerMask.NameToLayer("Explosion");
-			if (collision.gameObject.layer == explosionLayer && !_isDamage)
+			int enemyAttackLayer = LayerMask.NameToLayer("EnemyAttack");
+			if (!_isDamage &&
+			    collision.gameObject.layer == explosionLayer || 
+			    collision.gameObject.layer == enemyAttackLayer)
 			{
 				StartCoroutine(Damage());
 			}

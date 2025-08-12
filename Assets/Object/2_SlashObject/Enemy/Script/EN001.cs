@@ -82,6 +82,11 @@ namespace Object._2_SlashObject.Enemy.Script
                         else
                         {
                             _moveState = 1;
+
+                            if (gameObject.name == "EN001_2(Clone)")
+                            {
+                                Utility.SetAnimationFlg(ObjAnimator, "IsWait");
+                            }
                             
                             // 中心の崖二回目到達時に待機
                             // _arriveCenterCliffCount++;
@@ -106,6 +111,10 @@ namespace Object._2_SlashObject.Enemy.Script
                         _moveState = 0;
                         _isRightMove = !_isRightMove;
                         SetDirection(_isRightMove);
+                        if (gameObject.name == "EN001_2(Clone)")
+                        {
+                            Utility.SetAnimationFlg(ObjAnimator, "IsWait", false);
+                        }
                     };
                     break;
             }
