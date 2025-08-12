@@ -192,6 +192,7 @@ namespace Object._2_SlashObject.Script
 			var eulerAngles = transform.eulerAngles;
 			eulerAngles.y = isRight ? 0 : 180;
 			transform.eulerAngles = eulerAngles;
+			_direction = isRight ? Direction.Right : Direction.Left;
 		}
 		
 		protected bool IsInitDirectionRight()

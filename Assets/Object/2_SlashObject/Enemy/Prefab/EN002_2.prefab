@@ -605,7 +605,7 @@ MonoBehaviour:
   _isCanSlash: 1
   _isExplosion: 1
   _isRespawn: 0
-  _velocityY: 0.08
+  _velocityY: 0.09
   _decelerationVelocityY: 0.88
   _decelerationStopValue: 0.001
   _topWaitTime: 1

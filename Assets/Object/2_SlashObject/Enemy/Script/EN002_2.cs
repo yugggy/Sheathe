@@ -11,6 +11,7 @@ namespace Object._2_SlashObject.Enemy.Script
         [SerializeField, Label("減速停止値")] private float _decelerationStopValue;
         [SerializeField, Label("ポイント到達後の待機時間（上）")] private float _topWaitTime;
         [SerializeField, Label("ポイント到達後の待機時間（下）")] private float _bottomWaitTime;
+        private bool _isMovingUp;
         private Vector2 _targetPosTop;
         private Vector2 _targetPosBottom;
         private Vector2 _relativeTargetPosTop;
@@ -32,6 +33,7 @@ namespace Object._2_SlashObject.Enemy.Script
             switch (enemyParam)
             {
                 case EnemyParam_E002_2 param:
+                    _isMovingUp = param.IsMovingUp;
                     _targetPosTop = param.TargetPosTop;
                     _targetPosBottom = param.TargetPoBottom;
                     break;
@@ -55,6 +57,7 @@ namespace Object._2_SlashObject.Enemy.Script
             _currentPos = transform.position;
             _relativeTargetPosTop.y = _initPos.y + _targetPosTop.y;
             _relativeTargetPosBottom.y = _initPos.y + _targetPosBottom.y;
+            _moveUpDownState = _isMovingUp ? 0 : 1;
         }
 
         protected override void ObjectUpdate()
