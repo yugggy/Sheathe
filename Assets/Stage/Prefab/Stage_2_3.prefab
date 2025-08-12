@@ -654,7 +654,7 @@ MonoBehaviour:
   _startGate: {fileID: 9106710658895265620}
   _endGate: {fileID: 7463199756241713471}
   _frontStageName: 2_2
-  _nextStageName: 
+  _nextStageName: 3_1
 --- !u!1 &6197033914092104723
 GameObject:
   m_ObjectHideFlags: 0
