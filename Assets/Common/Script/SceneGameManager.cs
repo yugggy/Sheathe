@@ -24,6 +24,8 @@ namespace Common.Script
 
 		public static SceneGameManager Current;
 
+		[SerializeField] public string _debugStageName;
+		
 		// TODO：今後別のクラスに移行する
 		[SerializeField] public int HitStopTime;
 	
@@ -37,7 +39,7 @@ namespace Common.Script
 			Application.targetFrameRate = 60;
 		
 			// TODO：ステージ名をセーブデータから読み込む
-			_stageName = "2_1";
+			_stageName = _debugStageName;
 			TaskUtility.FireAndForget(MoveStageAsync(_stageName, true), "MoveStageAsync");
 		}
 
