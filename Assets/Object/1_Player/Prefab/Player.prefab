@@ -271,7 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _direction: 0
   _landing: 0
-  _moveSpd: 13
+  _moveSpd: 12
   _deboostSpd: 0.28
   _brakeDeboostSpd: 0.4
   _jumpPower: 20
