@@ -275,6 +275,8 @@ MonoBehaviour:
   _deboostSpd: 0.28
   _brakeDeboostSpd: 0.4
   _jumpPower: 20
+  _isAttackMove: 1
+  _attackMoveSpd: 30
 --- !u!50 &590567414598285415
 Rigidbody2D:
   serializedVersion: 5

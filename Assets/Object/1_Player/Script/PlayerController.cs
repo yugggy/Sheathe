@@ -17,6 +17,8 @@ namespace Object._1_Player.Script
 		[SerializeField, Label("減速度")] float _deboostSpd;
 		[SerializeField, Label("ブレーキ減速度")] float _brakeDeboostSpd;
 		[SerializeField, Label("ジャンプ力")] float _jumpPower;
+		[SerializeField, Label("攻撃時に移動を行うか")] bool _isAttackMove = true;
+		[SerializeField, Label("攻撃速度倍率")] float _attackMoveSpd;
 
 		private Vector3 _velocity;
 		private float _attackTimer;
@@ -93,6 +95,12 @@ namespace Object._1_Player.Script
 			if (_moveSpd == 0)
 			{
 				DebugLogger.LogError("移動倍率0");
+			}
+
+			// 攻撃中はコントローラーで移動しない
+			if (_attackTimer > 0)
+			{
+				return;
 			}
 		
 			var leftStickValue = ControllerManager.Current.LeftStickValue * _moveSpd * Time.deltaTime;
@@ -182,6 +190,13 @@ namespace Object._1_Player.Script
 			{
 				ObjAttackCollider.gameObject.SetActive(true);
 				_attackTimer = _attackTime;
+
+				// 攻撃時に少し移動する
+				if (_isAttackMove)
+				{
+					var leftStickValue = _attackMoveSpd * Time.deltaTime;
+					_velocity.x = IsInitDirectionRight() ? leftStickValue : -leftStickValue;
+				}
 			}
 
 			// 0.1秒後に無効
